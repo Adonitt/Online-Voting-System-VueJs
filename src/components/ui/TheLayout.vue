@@ -10,6 +10,7 @@ import TheContainer from "@/components/ui/TheContainer.vue";
     <the-side-bar/>
 
     <div class="main-panel">
+
       <the-nav-bar/>
       <the-container/>
 
