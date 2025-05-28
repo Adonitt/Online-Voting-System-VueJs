@@ -67,8 +67,10 @@ const onLogout = () => {
             >
 
               <span class="profile-username">
-                      <span class="op-7">Hi,</span>
-                      <span class="fw-bold">Hizrian</span>
+                      <span class="op-7">Hi, </span>
+                      <span class="fw-bold">{{
+                          authStore.loggedInUser?.firstName + " " + authStore.loggedInUser?.lastName
+                        }}</span>
                     </span>
             </a>
             <ul class="dropdown-menu dropdown-user animated fadeIn">
@@ -77,12 +79,13 @@ const onLogout = () => {
                   <div class="user-box">
 
                     <div class="u-text">
-                      <h4>Hizrian</h4>
-                      <p class="text-muted">hello@example.com</p>
-                      <a
-                          href=""
+                      <h4>{{ authStore.loggedInUser?.firstName + " " + authStore.loggedInUser?.lastName }}</h4>
+                      <p class="text-muted">{{ authStore.loggedInUser?.sub }}</p>
+                      <router-link
+                          :to="{name:'my-profile'}"
                           class="btn btn-xs btn-secondary btn-sm"
-                      >View Profile</a
+                      >View Profile
+                      </router-link
                       >
                     </div>
                   </div>
@@ -90,7 +93,6 @@ const onLogout = () => {
                 <li>
                   <div class="dropdown-divider"></div>
 
-                  <a class="dropdown-item" href="#">Account Setting</a>
                   <div class="dropdown-divider"></div>
                   <a class="dropdown-item" @click="onLogout">Logout</a>
                 </li>

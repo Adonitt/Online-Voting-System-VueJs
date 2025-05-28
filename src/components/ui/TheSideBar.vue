@@ -26,16 +26,16 @@
       <div class="sidebar-content">
         <ul class="nav nav-secondary">
           <li class="nav-item active">
-            <a
+            <router-link
+                :to="{name:'home'}"
                 data-bs-toggle="collapse"
-                href="#dashboard"
                 class="collapsed"
                 aria-expanded="false"
             >
               <i class="fas fa-home"></i>
               <p>Dashboard</p>
               <span class="caret"></span>
-            </a>
+            </router-link>
             <div class="collapse" id="dashboard">
               <ul class="nav nav-collapse">
                 <li>
