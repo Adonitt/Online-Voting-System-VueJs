@@ -2,6 +2,7 @@ import {createRouter, createWebHistory} from "vue-router";
 import {useAuthStore} from "@/stores/authStore.js";
 import AuthView from "@/views/auth/AuthView.vue";
 import TheContainer from "@/components/ui/TheContainer.vue";
+import TheLayout from "@/components/ui/TheLayout.vue";
 
 const routes = [
     {
@@ -15,7 +16,7 @@ const routes = [
     {
         path: '/',
         name: 'home',
-        component: TheContainer,
+        component: TheLayout,
         meta: {
             requireAuth: true,
         }

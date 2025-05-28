@@ -1,6 +1,21 @@
 // TheNavBar.vue
 <script setup>
 
+import {useAuthStore} from "@/stores/authStore.js";
+import {useRouter} from "vue-router";
+import {useAppToast} from "@/composables/useAppToast.js";
+import {toFormData} from "axios";
+
+const authStore = useAuthStore();
+const router = useRouter()
+const toast = useAppToast()
+
+const onLogout = () => {
+  authStore.logout()
+  router.push({name: 'login'})
+  toast.showSuccess("You're logged out!");
+}
+
 
 </script>
 
@@ -50,52 +65,37 @@
                 href="#"
                 aria-expanded="false"
             >
-              <div class="avatar-sm">
-                <img
-                    src="@/assets/img/profile.jpg"
-                    alt="..."
-                    class="avatar-img rounded-circle"
-                />
-              </div>
+
               <span class="profile-username">
                       <span class="op-7">Hi,</span>
                       <span class="fw-bold">Hizrian</span>
                     </span>
             </a>
-            <!--                <ul class="dropdown-menu dropdown-user animated fadeIn">-->
-            <!--                  <div class="dropdown-user-scroll scrollbar-outer">-->
-            <!--                    <li>-->
-            <!--                      <div class="user-box">-->
-            <!--                        <div class="avatar-lg">-->
-            <!--                          <img-->
-            <!--                              src="assets/img/profile.jpg"-->
-            <!--                              alt="image profile"-->
-            <!--                              class="avatar-img rounded"-->
-            <!--                          />-->
-            <!--                        </div>-->
-            <!--                        <div class="u-text">-->
-            <!--                          <h4>Hizrian</h4>-->
-            <!--                          <p class="text-muted">hello@example.com</p>-->
-            <!--                          <a-->
-            <!--                              href="profile.html"-->
-            <!--                              class="btn btn-xs btn-secondary btn-sm"-->
-            <!--                          >View Profile</a-->
-            <!--                          >-->
-            <!--                        </div>-->
-            <!--                      </div>-->
-            <!--                    </li>-->
-            <!--                    <li>-->
-            <!--                      <div class="dropdown-divider"></div>-->
-            <!--                      <a class="dropdown-item" href="#">My Profile</a>-->
-            <!--                      <a class="dropdown-item" href="#">My Balance</a>-->
-            <!--                      <a class="dropdown-item" href="#">Inbox</a>-->
-            <!--                      <div class="dropdown-divider"></div>-->
-            <!--                      <a class="dropdown-item" href="#">Account Setting</a>-->
-            <!--                      <div class="dropdown-divider"></div>-->
-            <!--                      <a class="dropdown-item" href="#">Logout</a>-->
-            <!--                    </li>-->
-            <!--                  </div>-->
-            <!--                </ul>-->
+            <ul class="dropdown-menu dropdown-user animated fadeIn">
+              <div class="dropdown-user-scroll scrollbar-outer">
+                <li>
+                  <div class="user-box">
+
+                    <div class="u-text">
+                      <h4>Hizrian</h4>
+                      <p class="text-muted">hello@example.com</p>
+                      <a
+                          href=""
+                          class="btn btn-xs btn-secondary btn-sm"
+                      >View Profile</a
+                      >
+                    </div>
+                  </div>
+                </li>
+                <li>
+                  <div class="dropdown-divider"></div>
+
+                  <a class="dropdown-item" href="#">Account Setting</a>
+                  <div class="dropdown-divider"></div>
+                  <a class="dropdown-item" @click="onLogout">Logout</a>
+                </li>
+              </div>
+            </ul>
           </li>
         </ul>
       </div>

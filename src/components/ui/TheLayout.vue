@@ -6,6 +6,7 @@ import TheContainer from "@/components/ui/TheContainer.vue";
 </script>
 
 <template>
+
   <div id="app">
     <the-side-bar/>
 
@@ -13,7 +14,6 @@ import TheContainer from "@/components/ui/TheContainer.vue";
 
       <the-nav-bar/>
       <the-container/>
-
     </div>
     <the-footer/>
   </div>
