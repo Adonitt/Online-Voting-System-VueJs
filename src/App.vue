@@ -12,7 +12,7 @@ const authStore = useAuthStore()
   <error-boundary>
     <main>
       <auth-view v-if="!authStore.isLoggedIn"/>
-      <TheLayout v-else/>
+      <the-layout v-else/>
     </main>
   </error-boundary>
 

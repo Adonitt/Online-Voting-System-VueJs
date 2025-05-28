@@ -11,12 +11,12 @@ import TheContainer from "@/components/ui/TheContainer.vue";
     <the-side-bar/>
 
     <div class="main-panel">
-
       <the-nav-bar/>
 
       <div class="container">
         <router-view/>
       </div>
+
     </div>
     <the-footer/>
   </div>
