@@ -7,7 +7,7 @@ import UserService from "@/services/userService.js";
 const breadCrumbItems = [
   {label: "Dashboard", to: "/home"},
   {label: "My Profile", to: "/my-profile"},
-  {label: "Change Password", to: "/change-password"},
+  {label: "Change Password", to: "/change-password"}
 ]
 
 const currentPassword = ref('')

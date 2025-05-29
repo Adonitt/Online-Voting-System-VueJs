@@ -2,9 +2,12 @@ import {createRouter, createWebHistory} from "vue-router";
 import {useAuthStore} from "@/stores/authStore.js";
 import AuthView from "@/views/auth/AuthView.vue";
 import TheContainer from "@/components/ui/TheContainer.vue";
-import TheLayout from "@/components/ui/TheLayout.vue";
 import ProfileView from "@/views/profile/ProfileView.vue";
 import ChangePasswordView from "@/views/profile/ChangePasswordView.vue";
+import RegisterView from "@/views/auth/RegisterView.vue";
+import TheLayout from "@/components/ui/TheLayout.vue";
+import profileRoute from "@/router/profileRoutes.js";
+import profileRoutes from "@/router/profileRoutes.js";
 
 const routes = [
     {
@@ -16,31 +19,30 @@ const routes = [
         }
     },
     {
-        path: '/',
-        name: 'home',
-        component: TheContainer,
+        path: '/auth/register',
+        name: 'register',
+        component: RegisterView,
         meta: {
-            requireAuth: true,
+            requireAuth: false,
         }
     },
-    {
-        path: '/my-profile',
-        name: 'my-profile',
-        component: ProfileView,
-        meta: {
-            requireAuth: true
-        }
-    },
-    {
-        path: "/my-profile/change-password",
-        name: 'change-password',
-        component: ChangePasswordView,
-        meta: {
-            requireAuth: true,
-        }
-    }
-]
 
+    {
+        path: '/',
+        component: TheLayout,
+        meta: {
+            requireAuth: true,
+        },
+        children: [
+            {
+                path: '',
+                name: 'home',
+                component: TheContainer,
+            },
+            ...profileRoutes
+        ]
+    },
+]
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL), routes,
 });

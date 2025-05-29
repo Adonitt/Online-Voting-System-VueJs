@@ -10,10 +10,12 @@ const authStore = useAuthStore()
 <template>
 
   <error-boundary>
-    <main>
-      <auth-view v-if="!authStore.isLoggedIn"/>
-      <the-layout v-else/>
-    </main>
+<!--    <main>-->
+<!--      <auth-view v-if="!authStore.isLoggedIn)" />-->
+<!--      <the-layout v-else/>-->
+<!--    </main>-->
+    <router-view/>
+
   </error-boundary>
 
 </template>
