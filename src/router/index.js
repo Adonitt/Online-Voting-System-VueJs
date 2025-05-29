@@ -3,7 +3,8 @@ import {useAuthStore} from "@/stores/authStore.js";
 import AuthView from "@/views/auth/AuthView.vue";
 import TheContainer from "@/components/ui/TheContainer.vue";
 import TheLayout from "@/components/ui/TheLayout.vue";
-import ProfileView from "@/views/ProfileView.vue";
+import ProfileView from "@/views/profile/ProfileView.vue";
+import ChangePasswordView from "@/views/profile/ChangePasswordView.vue";
 
 const routes = [
     {
@@ -28,6 +29,14 @@ const routes = [
         component: ProfileView,
         meta: {
             requireAuth: true
+        }
+    },
+    {
+        path: "/my-profile/change-password",
+        name: 'change-password',
+        component: ChangePasswordView,
+        meta: {
+            requireAuth: true,
         }
     }
 ]

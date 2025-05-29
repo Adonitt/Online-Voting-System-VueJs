@@ -93,6 +93,7 @@ const onLogout = () => {
                 <li>
                   <div class="dropdown-divider"></div>
 
+                  <router-link :to="{name:'change-password'}" class="dropdown-item" href="#">Change Password</router-link>
                   <div class="dropdown-divider"></div>
                   <a class="dropdown-item" @click="onLogout">Logout</a>
                 </li>

@@ -26,8 +26,9 @@ const handleSubmit = async () => {
     const response = await authStore.login(user)
     const redirect = `${route.query.redirect || '/'}`
     await router.push(redirect)
-    toast.showSuccess("You're logged in!");
+    // toast.showSuccess("You're logged in!");
   } catch (error) {
+    toast.showError(error.response?.data?.message || "An error has occured!");
     console.log(error)
   } finally {
     isLoading.value = false
@@ -83,11 +84,5 @@ const handleSubmit = async () => {
 </template>
 
 <style scoped>
-.login-section {
-  background: linear-gradient(135deg, #e0eafc, #cfdef3);
-}
 
-.card {
-  border-radius: 1rem;
-}
 </style>

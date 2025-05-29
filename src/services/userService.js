@@ -14,6 +14,10 @@ class UserService {
         return response.status === 200 ? response.data : null;
     }
 
+    async changePassword(data) {
+        const response = await client.put('auth/change-password', data);
+        return response.data;
+    }
 
 }
 
