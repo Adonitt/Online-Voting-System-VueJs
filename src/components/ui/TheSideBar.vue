@@ -17,9 +17,19 @@
               width="50px"/>
         </router-link>
 
-        <button class="topbar-toggler more">
-          <i class="gg-more-vertical-alt"></i>
-        </button>
+
+<!--        <div class="nav-toggle">-->
+<!--          <button class="btn btn-toggle toggle-sidebar">-->
+<!--            <i class="gg-menu-right"></i>-->
+<!--          </button>-->
+<!--          <button class="btn btn-toggle sidenav-toggler">-->
+<!--            <i class="gg-menu-left"></i>-->
+<!--          </button>-->
+<!--        </div>-->
+<!--        <button class="topbar-toggler more">-->
+<!--          <i class="gg-more-vertical-alt"></i>-->
+<!--        </button>-->
+<!--      -->
       </div>
       <!-- End Logo Header -->
     </div>
@@ -38,11 +48,19 @@
           </li>
           <li class="nav-item">
             <router-link
+                :to="{name:'party'}">
+              <i class="bi-flag"></i>
+              <p>Parties</p>
+            </router-link>
+          </li>
+          <li class="nav-item">
+            <router-link
                 :to="{name:'my-profile'}">
               <i class="bi-person"></i>
               <p>My Profile</p>
             </router-link>
           </li>
+
 
         </ul>
       </div>

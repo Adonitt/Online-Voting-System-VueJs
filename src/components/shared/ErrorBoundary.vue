@@ -15,7 +15,7 @@ onErrorCaptured((err) => {
 
   if (err.response && (err.response.status === 401 || err.response.status === 403)) {
     store.logout()
-    showError(err.response?.data?.message || 'Session expired! Please log in again.')
+    showError(err.response?.data?.message || 'An error has occured. Please log in again.')
 
     setTimeout(() => {
       router.push({name: 'login'});

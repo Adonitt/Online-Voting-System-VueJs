@@ -32,7 +32,22 @@ export function useAppToast() {
             title: message,
         })
     }
+    const showDialog = (
+        title = "Are you sure",
+        text = "You won't be able to revert this!",
+        confirmBtnText = "Yes, delete it!"
+        ,) => {
+        return Swal.fire({
+            title: title,
+            text: text,
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: confirmBtnText
+        })
+    }
 
 
-    return {showSuccess, showError, showWarning}
+    return {showSuccess, showError, showWarning,showDialog}
 }

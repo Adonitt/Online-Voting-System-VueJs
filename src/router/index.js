@@ -8,6 +8,7 @@ import RegisterView from "@/views/auth/RegisterView.vue";
 import TheLayout from "@/components/ui/TheLayout.vue";
 import profileRoute from "@/router/profileRoutes.js";
 import profileRoutes from "@/router/profileRoutes.js";
+import partyRoutes from "@/router/partyRoutes.js";
 
 const routes = [
     {
@@ -39,7 +40,8 @@ const routes = [
                 name: 'home',
                 component: TheContainer,
             },
-            ...profileRoutes
+            ...profileRoutes,
+            ...partyRoutes
         ]
     },
 ]

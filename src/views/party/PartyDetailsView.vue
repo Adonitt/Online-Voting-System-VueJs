@@ -1,0 +1,168 @@
+<script setup>
+import AppCard from "@/components/app/AppCard.vue";
+import {onMounted, ref} from "vue";
+import PartyService from "@/services/partyService.js";
+import {useRoute, useRouter} from "vue-router";
+import {useLoading} from "@/composables/useLoading.js";
+import BreadCrumb from "@/components/shared/BreadCrumb.vue";
+import CandidateService from "@/services/candidateService.js";
+import AppButton from "@/components/app/AppButton.vue";
+import {useAppToast} from "@/composables/useAppToast.js";
+import DataTable from 'datatables.net-vue3'
+import DataTablesCore from 'datatables.net'
+import DataTablesBS5 from 'datatables.net-bs5'
+
+DataTable.use(DataTablesCore)
+DataTable.use(DataTablesBS5)
+
+const breadcrumb = [
+  {label: 'Dashboard', to: '/',},
+  {label: 'Parties', to: {name: 'party'},},
+  {label: 'Party Details'},
+]
+
+const route = useRoute()
+const router = useRouter()
+const partyId = ref(route.params.id)
+
+const party = ref(null)
+
+const {isLoading, withLoading} = useLoading()
+
+const loadPartyById = async (id) => {
+  await withLoading(async () => {
+    party.value = await PartyService.getPartyById(id)
+    console.log("Fetched Party:", party.value);
+  })
+}
+const {showSuccess, showDialog} = useAppToast()
+
+const onDeleteParty = async (id) => {
+  const result = await showDialog();
+
+  if (result.isConfirmed) {
+    try {
+      await withLoading(async () => {
+        const response = await PartyService.deleteParty(id);
+        await router.push({name: 'party'});
+        showSuccess('Party with id ' + id + " has been deleted successfully.");
+      });
+    } catch (error) {
+      throw error;
+    }
+  }
+}
+
+
+onMounted(async () => {
+  await loadPartyById(partyId.value)
+  await CandidateService.getAllCandidates()
+  new DataTablesCore("#candidates", {
+    pageLength: 5
+  })
+
+})
+
+</script>
+<template>
+  <bread-crumb :items="breadcrumb"/>
+  <app-card>
+    <div v-if="party && party.id">
+      <div class="d-flex justify-content-center gap-2 mt-3">
+        <router-link class="btn btn-secondary  " :to="{name:'updateParty', params:{id:route.params.id}}">Update Party
+        </router-link>
+
+        <app-button class="btn btn-danger flex" @click="onDeleteParty(partyId)">Delete</app-button>
+      </div>
+      <div class="page-inner">
+        <div class="container" id="main-body">
+          <div class="main-body">
+            <div class="row gutters-sm">
+              <div class="col-md-4 mb-3">
+                <div class="card">
+                  <div class="card-body">
+                    <p class="text-center text-secondary">Party ID: {{ partyId }}</p>
+                    <div class="d-flex flex-column align-items-center text-center">
+                      <img
+                          :src="party.symbol ? `/uploads/${party.symbol}` : '/src/assets/img/default.png'"
+                          alt="Party Symbol"
+                          class="rounded-circle"
+                          width="200"
+                          height="200"/>
+                      <div class="mt-3 text-secondary">
+                        <h4>{{ party.name + ' - ' + party.abbreviationName }} </h4>
+                        <h4>Number: <b>{{ party.numberOfParty }} </b></h4>
+                        <p class="text-muted font-size-sm">
+                          {{ party.description }}
+                        </p>
+
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="card">
+                  <div class="card-body">
+                    <p class="text-muted font-size-sm">
+                      Created By: <span class="text-secondary">{{ party.createdBy }}</span>
+                    </p>
+                    <p class="text-muted font-size-sm">
+                      Created At: <span class="text-secondary">                      {{
+                        new Date(party.createdAt).toISOString().slice(0, 16).replace('T', ' ')
+                      }}
+</span>
+                    </p>
+                    <p class="text-muted font-size-sm">
+                      Updated At: <span class="text-secondary">                      {{
+                        new Date(party.updatedAt).toISOString().slice(0, 16).replace('T', ' ')
+                      }}</span>
+                    </p>
+                    <p class="text-muted font-size-sm">
+                      Updated By: <span class="text-secondary">{{ party.updatedBy }}</span>
+
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-8">
+                <div class="card mb-5">
+                  <div class="card-body">
+
+                    <table id="candidates" class="table" v-if="party.candidates && party.candidates.length">
+                      <thead>
+                      <tr>
+                        <th scope="col" style="width: 33%;">Candidate Number</th>
+                        <th scope="col" style="width: 33%;">Candidate Name</th>
+                        <th scope="col" style="width: 33%;">Nationality</th>
+                        <th scope="col" style="width: 33%;">Actions</th>
+                      </tr>
+                      </thead>
+                      <tbody>
+                      <tr v-for="candidate in party.candidates" :key="candidate.id">
+                        <td>{{ candidate.candidateNumber }}</td>
+                        <td>{{ candidate.firstName + ' ' + candidate.lastName }}</td>
+                        <td>{{ candidate.nationality }}</td>
+                        <td>
+                          <router-link to="" class="btn btn-primary">Details</router-link>
+                        </td>
+                      </tr>
+                      </tbody>
+                    </table>
+                    <p v-else>No candidates found.</p>
+
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </app-card>
+</template>
+
+<style scoped>
+
+</style>
