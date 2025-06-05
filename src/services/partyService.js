@@ -20,7 +20,10 @@ class PartyService {
     }
 
     async updateParty(id, partyToUpdate) {
-        const response = await client.put(`parties/${id}`, partyToUpdate)
+        const response = await client.put(`parties/${id}`, partyToUpdate, {
+            headers: {'Content-Type': 'multipart/form-data'}
+        })
+
         console.log("party updated successfully")
         return response.data === 200 ? response.data : null;
     }

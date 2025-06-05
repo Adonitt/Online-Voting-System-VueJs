@@ -1,23 +1,23 @@
 <script setup>
 import BreadCrumb from "@/components/shared/BreadCrumb.vue";
-import { reactive, ref, nextTick } from "vue";
-import { useLoading } from "@/composables/useLoading.js";
-import { useAppToast } from "@/composables/useAppToast.js";
-import { useRouter } from "vue-router";
+import {reactive, ref, nextTick} from "vue";
+import {useLoading} from "@/composables/useLoading.js";
+import {useAppToast} from "@/composables/useAppToast.js";
+import {useRouter} from "vue-router";
 import PartyService from "@/services/partyService.js";
 
 const breadcrumbs = [
-  { label: 'Dashboard', to: '/' },
-  { label: 'Parties', to: { name: 'party' } },
-  { label: 'Create Party' },
+  {label: 'Dashboard', to: '/'},
+  {label: 'Parties', to: {name: 'party'}},
+  {label: 'Create Party'},
 ];
 
 const formData = reactive({
-  name: { val: '', isValid: true },
-  partySymbol: { val: '', isValid: true },
-  numberOfParty: { val: '', isValid: true },
-  abbreviationName: { val: '', isValid: true },
-  description: { val: '', isValid: true },
+  name: {val: '', isValid: true},
+  partySymbol: {val: '', isValid: true},
+  numberOfParty: {val: '', isValid: true},
+  abbreviationName: {val: '', isValid: true},
+  description: {val: '', isValid: true}
 });
 
 const formIsValid = ref(true);
@@ -26,20 +26,37 @@ const validateForm = () => {
   formIsValid.value = true;
 
   for (const key in formData) {
-    formData[key].isValid = !!formData[key].val;
-    if (!formData[key].isValid) {
-      formIsValid.value = false;
+    if (formData[key] && typeof formData[key] === 'object' && 'val' in formData[key]) {
+      formData[key].isValid = !!formData[key].val;
+      if (!formData[key].isValid) {
+        formIsValid.value = false;
+      }
     }
   }
 };
 
+
+// const fd = new FormData();
+// fd.append('data', new Blob([JSON.stringify(obj)], {type: 'application/json'}))
+// if (formData.symbol) {
+//   fd.append('image', formData.symbol);
+// }
+
+const previewImage = ref(null);
 const onFileChange = (e) => {
   const file = e.target.files?.[0] || null;
   formData.partySymbol.val = file;
   formData.partySymbol.isValid = !!file;
+
+  if (file) {
+    previewImage.value = URL.createObjectURL(file);
+  } else {
+    previewImage.value = null;
+  }
 };
 
-const { isLoading, withLoading } = useLoading();
+
+const {isLoading, withLoading} = useLoading();
 const toast = useAppToast();
 const router = useRouter();
 
@@ -47,33 +64,37 @@ const handleSubmit = async () => {
   validateForm();
   if (!formIsValid.value) return;
 
-  const partyToCreate = {
-    name: formData.name.val,
-    symbol: formData.partySymbol.val,
-    numberOfParty: formData.numberOfParty.val,
-    description: formData.description.val,
-    abbreviationName: formData.abbreviationName.val,
-  };
+  const form = new FormData();
+  form.append("name", formData.name.val);
+  form.append("abbreviationName", formData.abbreviationName.val);
+  form.append("numberOfParty", formData.numberOfParty.val);
+  form.append("description", formData.description.val);
+
+  if (formData.partySymbol.val) {
+    form.append("symbol", formData.partySymbol.val);
+  }
 
   await withLoading(async () => {
     try {
-      const res = await PartyService.createParty(partyToCreate);
+      const res = await PartyService.createParty(form);
       toast.showSuccess("Party created successfully");
-      await nextTick(); // Wait for DOM/toast
-      await router.push({ name: 'party' });
+      await nextTick();
+      await router.push({name: "party"});
     } catch (error) {
       if (error.response?.status === 409) {
         toast.showError(error.response.data.message || "Party already exists!");
       } else {
         toast.showError("Failed to create party");
+        console.error(error);
       }
     }
   });
 };
+
 </script>
 
 <template>
-  <bread-crumb :items="breadcrumbs" />
+  <bread-crumb :items="breadcrumbs"/>
 
   <div class="page-inner">
     <h5>Create new Party</h5>
@@ -83,7 +104,12 @@ const handleSubmit = async () => {
         <!-- Symbol Input -->
         <div class="col-md-3 border-right">
           <div class="d-flex flex-column align-items-center text-center p-3 py-5">
-            <img class="rounded-circle mt-5" width="150px" src="/src/assets/img/foto/ks.jpeg" />
+            <img
+                class="rounded-circle mt-5"
+                width="150px"
+                :src="previewImage || '/src/assets/img/foto/ks.jpeg'"
+                alt="Party Symbol Preview"
+            />
             <p>Choose Party Symbol</p>
             <input type="file"
                    class="form-control"
@@ -91,7 +117,7 @@ const handleSubmit = async () => {
                    name="partySymbol"
                    accept="image/*"
                    @change="onFileChange"
-                   :class="{ 'is-invalid': !formData.partySymbol.isValid }" />
+                   :class="{ 'is-invalid': !formData.partySymbol.isValid }"/>
             <p class="invalid-feedback">Party symbol is required</p>
           </div>
         </div>
@@ -107,7 +133,7 @@ const handleSubmit = async () => {
                        class="form-control"
                        v-model="formData.name.val"
                        :class="{ 'is-invalid': !formData.name.isValid }"
-                       placeholder="Party Name" />
+                       placeholder="Party Name"/>
                 <p class="invalid-feedback">Party name is required</p>
               </div>
 
@@ -118,7 +144,7 @@ const handleSubmit = async () => {
                        class="form-control"
                        v-model="formData.abbreviationName.val"
                        :class="{ 'is-invalid': !formData.abbreviationName.isValid }"
-                       placeholder="Abbreviation Name" />
+                       placeholder="Abbreviation Name"/>
                 <p class="invalid-feedback">Abbreviation name is required</p>
               </div>
 
@@ -129,7 +155,7 @@ const handleSubmit = async () => {
                        class="form-control"
                        v-model="formData.numberOfParty.val"
                        :class="{ 'is-invalid': !formData.numberOfParty.isValid }"
-                       placeholder="Number Of Party" />
+                       placeholder="Number Of Party"/>
                 <p class="invalid-feedback">Number of party is required</p>
               </div>
 
@@ -140,7 +166,7 @@ const handleSubmit = async () => {
                        class="form-control"
                        v-model="formData.description.val"
                        :class="{ 'is-invalid': !formData.description.isValid }"
-                       placeholder="Description" />
+                       placeholder="Description"/>
                 <p class="invalid-feedback">Description is required</p>
               </div>
 

@@ -30,7 +30,14 @@ const loadParties = async () => {
   })
 }
 
+const getFullImageUrl = (path) => {
+  console.log("Symbol path:", path);
+  if (!path || typeof path !== "string") return null;
+  // console.log("VITE_IMG_URL:", import.meta.env.VITE_IMG_URL);
+  // console.log("party.symbol:", path);
 
+  return "http://localhost:8080/" + path;
+};
 const {showDialog, showSuccess} = useAppToast()
 const route = useRoute()
 
@@ -88,7 +95,9 @@ onMounted(async () => {
       <tr v-for="party in parties" :key="party.id">
         <td>{{ party.id }}</td>
         <td>
-          <img :src="party.symbol" alt="Party Symbol" width="50" height="50"/>
+          <img v-if="party.symbol"
+               :src="getFullImageUrl(party.symbol)"
+               :alt="`Image of ${party.name}`" width="50" height="50"/>
         </td>
         <td>{{ party.numberOfParty }}</td>
         <td>{{ party.name }}</td>

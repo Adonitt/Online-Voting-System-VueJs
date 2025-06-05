@@ -54,11 +54,21 @@ const onDeleteParty = async (id) => {
 }
 
 
+const getFullImageUrl = (path) => {
+  console.log("Symbol path:", path);
+  if (!path || typeof path !== "string") return null;
+  console.log("VITE_IMG_URL:", import.meta.env.VITE_IMG_URL);
+  console.log("party.symbol:", path);
+
+  return "http://localhost:8080/" + path;
+};
+
+console.log("Full image URL:", getFullImageUrl(party.symbol));
 onMounted(async () => {
   await loadPartyById(partyId.value)
   await CandidateService.getAllCandidates()
   new DataTablesCore("#candidates", {
-    pageLength: 5
+    pageLength: 10
   })
 
 })
@@ -83,12 +93,17 @@ onMounted(async () => {
                   <div class="card-body">
                     <p class="text-center text-secondary">Party ID: {{ partyId }}</p>
                     <div class="d-flex flex-column align-items-center text-center">
+
                       <img
-                          :src="party.symbol ? `/uploads/${party.symbol}` : '/src/assets/img/default.png'"
-                          alt="Party Symbol"
+                          v-if="party.symbol"
+                          :src="getFullImageUrl(party.symbol)"
+                          :alt="`Image of ${party.name}`"
+                          style="max-width: 300px"
                           class="rounded-circle"
                           width="200"
-                          height="200"/>
+                          height="200"
+                      />
+
                       <div class="mt-3 text-secondary">
                         <h4>{{ party.name + ' - ' + party.abbreviationName }} </h4>
                         <h4>Number: <b>{{ party.numberOfParty }} </b></h4>
@@ -111,12 +126,13 @@ onMounted(async () => {
                       }}
 </span>
                     </p>
-                    <p class="text-muted font-size-sm">
-                      Updated At: <span class="text-secondary">                      {{
-                        new Date(party.updatedAt).toISOString().slice(0, 16).replace('T', ' ')
-                      }}</span>
+                    <p v-if="party.updatedAt" class="text-muted font-size-sm">
+                      Updated At: <span class="text-secondary">
+    {{ new Date(party.updatedAt).toISOString().slice(0, 16).replace('T', ' ') }}
+  </span>
                     </p>
-                    <p class="text-muted font-size-sm">
+
+                    <p v-if="party.updatedBy" class="text-muted font-size-sm">
                       Updated By: <span class="text-secondary">{{ party.updatedBy }}</span>
 
                     </p>
@@ -138,14 +154,20 @@ onMounted(async () => {
                       </tr>
                       </thead>
                       <tbody>
-                      <tr v-for="candidate in party.candidates" :key="candidate.id">
-                        <td>{{ candidate.candidateNumber }}</td>
-                        <td>{{ candidate.firstName + ' ' + candidate.lastName }}</td>
-                        <td>{{ candidate.nationality }}</td>
-                        <td>
-                          <router-link to="" class="btn btn-primary">Details</router-link>
+                      <tr v-for="candidate in party.candidates" :key="candidate.id" style="font-size: 13px;">
+                        <td style="padding: 2px 4px; width: 50px;">{{ candidate.candidateNumber }}</td>
+                        <td style="padding: 2px 4px; max-width: 100px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                          {{ candidate.firstName + ' ' + candidate.lastName }}
+                        </td>
+                        <td style="padding: 2px 4px; max-width: 80px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                          {{ candidate.nationality }}
+                        </td>
+                        <td style="padding: 2px 4px; width: 60px;">
+                          <router-link to="" class="btn btn-sm btn-outline-primary py-0 px-1" style="font-size: 11px;">Details</router-link>
                         </td>
                       </tr>
+
+
                       </tbody>
                     </table>
                     <p v-else>No candidates found.</p>

@@ -68,10 +68,11 @@ const clearValidity = (key) => {
 const {isLoading, withLoading} = useLoading();
 const toast = useAppToast();
 const router = useRouter();
-
 const handleSubmit = async () => {
   validateForm();
   if (!formIsValid.value) return;
+
+  const form = new FormData();
 
   const partyToUpdate = {
     name: formData.name.val,
@@ -81,9 +82,31 @@ const handleSubmit = async () => {
     description: formData.description.val,
   };
 
-  const response = await PartyService.updateParty(partyId, partyToUpdate);
-  toast.showSuccess("Party with id " + partyId + " updated successfully");
-  await router.push({name: 'party'});
+  form.append("data", new Blob([JSON.stringify(partyToUpdate)], {type: "application/json"}));
+
+  const symbolInput = document.querySelector("#partySymbol");
+  if (symbolInput?.files?.length) {
+    form.append("symbol", symbolInput.files[0]);
+  }
+
+
+  await withLoading(async () => {
+    try {
+      await PartyService.updateParty(partyId, form);
+      toast.showSuccess("Party with id " + partyId + " updated successfully");
+      await router.push({name: "party"});
+    } catch (error) {
+      toast.showError("Failed to update party");
+    }
+  });
+};
+const getFullImageUrl = (path) => {
+  console.log("Symbol path:", path);
+  if (!path || typeof path !== "string") return null;
+  // console.log("VITE_IMG_URL:", import.meta.env.VITE_IMG_URL);
+  // console.log("party.symbol:", path);
+
+  return "http://localhost:8080/" + path;
 };
 </script>
 
@@ -102,9 +125,13 @@ const handleSubmit = async () => {
         <div class="col-md-3 border-right">
           <div class="d-flex flex-column align-items-center text-center p-3 py-5">
             <img
+                v-if="formData.partySymbol.val"
+                :src="getFullImageUrl(formData.partySymbol.val)"
+                :alt="`Image of ${formData.name.val}`"
+
                 class="rounded-circle mt-5"
                 width="150px"
-                src="/src/assets/img/foto/ks.jpeg"
+
             />
             <p>Choose Party Symbol</p>
             <input type="hidden"/>
