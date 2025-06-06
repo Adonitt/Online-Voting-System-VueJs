@@ -72,7 +72,7 @@ const handleSubmit = async () => {
         </div>
 
         <div class="d-flex justify-content-between align-items-center mb-3">
-          <router-link to="/forgot-password" class="text-decoration-none small">Forgot password?</router-link>
+          <router-link :to="{ name: 'forgot-password' }" class="text-decoration-none small">Forgot password?</router-link>
         </div>
 
         <div class="d-grid">
