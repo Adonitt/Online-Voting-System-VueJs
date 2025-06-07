@@ -84,7 +84,6 @@ const handleSubmit = async () => {
 .forgot-password-section {
   background-color: #f8f9fa;
 }
-
 .btn-link {
   color: #6c757d;
 }
