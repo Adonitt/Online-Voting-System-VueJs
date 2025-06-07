@@ -24,6 +24,7 @@ class UserService {
                 email: email.trim().toLowerCase()
             });
 
+
             if (response.data.success) {
                 return response.data;
             }

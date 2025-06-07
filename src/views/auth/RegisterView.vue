@@ -72,6 +72,7 @@ const handleSubmit = async () => {
 }
 </script>
 
+
 <template>
   <section class="register-section vh-100 d-flex align-items-center justify-content-center">
     <div class="card shadow p-4" style="max-width: 600px; width: 100%;">
