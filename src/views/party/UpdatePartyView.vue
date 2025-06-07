@@ -100,6 +100,7 @@ const handleSubmit = async () => {
     }
   });
 };
+
 const getFullImageUrl = (path) => {
   console.log("Symbol path:", path);
   if (!path || typeof path !== "string") return null;
@@ -108,6 +109,8 @@ const getFullImageUrl = (path) => {
 
   return "http://localhost:8080/" + path;
 };
+
+
 </script>
 
 <template>

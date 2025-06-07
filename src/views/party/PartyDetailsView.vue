@@ -64,8 +64,10 @@ const getFullImageUrl = (path) => {
 };
 
 console.log("Full image URL:", getFullImageUrl(party.symbol));
+
 onMounted(async () => {
   await loadPartyById(partyId.value)
+
   await CandidateService.getAllCandidates()
   new DataTablesCore("#candidates", {
     pageLength: 10
@@ -163,11 +165,11 @@ onMounted(async () => {
                           {{ candidate.nationality }}
                         </td>
                         <td style="padding: 2px 4px; width: 60px;">
-                          <router-link to="" class="btn btn-sm btn-outline-primary py-0 px-1" style="font-size: 11px;">Details</router-link>
+                          <router-link :to="{name:'candidate-details',params:{id:candidate.id}}"
+                                       class="btn btn-sm btn-outline-primary py-0 px-1" style="font-size: 11px;">Details
+                          </router-link>
                         </td>
                       </tr>
-
-
                       </tbody>
                     </table>
                     <p v-else>No candidates found.</p>

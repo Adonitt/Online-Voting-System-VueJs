@@ -11,7 +11,6 @@ import DataTablesBS5 from 'datatables.net-bs5';
 import AppButton from "@/components/app/AppButton.vue";
 import {useAppToast} from "@/composables/useAppToast.js";
 import {useRoute} from "vue-router";
-import router from "@/router/index.js";
 
 DataTable.use(DataTablesCore);
 DataTable.use(DataTablesBS5);

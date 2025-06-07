@@ -9,6 +9,7 @@ import TheLayout from "@/components/ui/TheLayout.vue";
 import profileRoute from "@/router/profileRoutes.js";
 import profileRoutes from "@/router/profileRoutes.js";
 import partyRoutes from "@/router/partyRoutes.js";
+import candidateRoutes from "@/router/candidateRoutes.js";
 
 const routes = [
     {
@@ -41,7 +42,8 @@ const routes = [
                 component: TheContainer,
             },
             ...profileRoutes,
-            ...partyRoutes
+            ...partyRoutes,
+            ...candidateRoutes
         ]
     },
 ]

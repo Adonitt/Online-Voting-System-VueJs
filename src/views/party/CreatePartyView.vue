@@ -35,13 +35,6 @@ const validateForm = () => {
   }
 };
 
-
-// const fd = new FormData();
-// fd.append('data', new Blob([JSON.stringify(obj)], {type: 'application/json'}))
-// if (formData.symbol) {
-//   fd.append('image', formData.symbol);
-// }
-
 const previewImage = ref(null);
 const onFileChange = (e) => {
   const file = e.target.files?.[0] || null;
@@ -64,19 +57,19 @@ const handleSubmit = async () => {
   validateForm();
   if (!formIsValid.value) return;
 
-  const form = new FormData();
-  form.append("name", formData.name.val);
-  form.append("abbreviationName", formData.abbreviationName.val);
-  form.append("numberOfParty", formData.numberOfParty.val);
-  form.append("description", formData.description.val);
+  const obj = new FormData();
+  obj.append("name", formData.name.val);
+  obj.append("abbreviationName", formData.abbreviationName.val);
+  obj.append("numberOfParty", formData.numberOfParty.val);
+  obj.append("description", formData.description.val);
 
   if (formData.partySymbol.val) {
-    form.append("symbol", formData.partySymbol.val);
+    obj.append("symbol", formData.partySymbol.val);
   }
 
   await withLoading(async () => {
     try {
-      const res = await PartyService.createParty(form);
+      const res = await PartyService.createParty(obj);
       toast.showSuccess("Party created successfully");
       await nextTick();
       await router.push({name: "party"});
@@ -105,12 +98,14 @@ const handleSubmit = async () => {
         <div class="col-md-3 border-right">
           <div class="d-flex flex-column align-items-center text-center p-3 py-5">
             <img
-                class="rounded-circle mt-5"
-                width="150px"
-                :src="previewImage || '/src/assets/img/foto/ks.jpeg'"
+                class="rounded-circle mb-3"
+                width="150"
+                height="150"
+                :src="previewImage"
                 alt="Party Symbol Preview"
+                v-if="previewImage"
             />
-            <p>Choose Party Symbol</p>
+            <p class="fw-semibold">Party Symbol</p>
             <input type="file"
                    class="form-control"
                    id="partySymbol"
