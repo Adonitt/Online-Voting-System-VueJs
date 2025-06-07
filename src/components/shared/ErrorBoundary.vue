@@ -11,21 +11,19 @@ const store = useAuthStore()
 const router = useRouter()
 
 onErrorCaptured((err) => {
-  console.log(err)
+  const status = err?.response?.status;
 
-  if (err.response && (err.response.status === 401 || err.response.status === 403)) {
-    store.logout()
-    showError(err.response?.data?.message || 'An error has occured. Please log in again.')
-
-    setTimeout(() => {
-      router.push({name: 'login'});
-    }, 100)
-    return
+  if (status === 401 || status === 403) {
+    store.logout();
+    showError(err.response?.data?.message || 'Unauthorized. Please log in again.');
+    setTimeout(() => router.push({name: 'login'}), 200);
+    return false; // stop the error from propagating further
   }
 
-  showError(err.response?.data?.message || 'An error occured!.')
+  showError(err.response?.data?.message || 'An unexpected error occurred.');
   return false;
-})
+});
+
 
 </script>
 

@@ -13,10 +13,10 @@ import TheFooter from "@/components/ui/TheFooter.vue";
       <the-nav-bar/>
 
       <div class="container">
-        <router-view />
+        <router-view/>
       </div>
+      <the-footer/>
     </div>
 
-    <the-footer/>
   </div>
 </template>

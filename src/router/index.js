@@ -10,6 +10,7 @@ import profileRoute from "@/router/profileRoutes.js";
 import profileRoutes from "@/router/profileRoutes.js";
 import partyRoutes from "@/router/partyRoutes.js";
 import candidateRoutes from "@/router/candidateRoutes.js";
+import voteRoutes from "@/router/voteRoutes.js";
 
 const routes = [
     {
@@ -43,7 +44,8 @@ const routes = [
             },
             ...profileRoutes,
             ...partyRoutes,
-            ...candidateRoutes
+            ...candidateRoutes,
+            ...voteRoutes
         ]
     },
 ]

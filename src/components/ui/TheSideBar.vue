@@ -64,6 +64,14 @@
 
           <li class="nav-item">
             <router-link
+                :to="{name:'cast-vote'}">
+              <i class="bi-pen"></i>
+              <p>Cast Vote</p>
+            </router-link>
+          </li>
+
+          <li class="nav-item">
+            <router-link
                 :to="{name:'my-profile'}">
               <i class="bi-person"></i>
               <p>My Profile</p>

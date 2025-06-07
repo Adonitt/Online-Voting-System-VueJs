@@ -57,9 +57,6 @@ const onDeleteParty = async (id) => {
 const getFullImageUrl = (path) => {
   console.log("Symbol path:", path);
   if (!path || typeof path !== "string") return null;
-  console.log("VITE_IMG_URL:", import.meta.env.VITE_IMG_URL);
-  console.log("party.symbol:", path);
-
   return "http://localhost:8080/" + path;
 };
 
@@ -149,6 +146,7 @@ onMounted(async () => {
                     <table id="candidates" class="table" v-if="party.candidates && party.candidates.length">
                       <thead>
                       <tr>
+                        <th scope="col" style="width: 33%;">ID</th>
                         <th scope="col" style="width: 33%;">Candidate Number</th>
                         <th scope="col" style="width: 33%;">Candidate Name</th>
                         <th scope="col" style="width: 33%;">Nationality</th>
@@ -157,6 +155,7 @@ onMounted(async () => {
                       </thead>
                       <tbody>
                       <tr v-for="candidate in party.candidates" :key="candidate.id" style="font-size: 13px;">
+                        <td style="padding: 2px 4px; width: 50px;">{{ candidate.id }}</td>
                         <td style="padding: 2px 4px; width: 50px;">{{ candidate.candidateNumber }}</td>
                         <td style="padding: 2px 4px; max-width: 100px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
                           {{ candidate.firstName + ' ' + candidate.lastName }}

@@ -82,6 +82,12 @@ onMounted(async () => {
 
     </div>
     <router-link :to="{name:'change-password'}" class="btn btn-primary">Change Password</router-link>
+    <router-link
+                 :to="{name:'my-vote-details', params:{id:authStore.loggedInUser?.id}}"
+                 class="inline-block bg-green-600 m-4 hover:bg-green-700 text-white text-sm font-medium py-2 px-4 rounded-lg transition btn btn-secondary"
+    >
+      View Vote Details
+    </router-link>
 
 
   </app-card>
