@@ -9,7 +9,6 @@ import TheLayout from "@/components/ui/TheLayout.vue";
 import profileRoute from "@/router/profileRoutes.js";
 import profileRoutes from "@/router/profileRoutes.js";
 import partyRoutes from "@/router/partyRoutes.js";
-import ForgotPasswordView from "@/views/auth/ForgotPasswordView.vue";
 
 const routes = [
     {
@@ -45,16 +44,7 @@ const routes = [
             ...partyRoutes
         ]
     },
-    {
-        path: '/auth/forgot-password',
-        name: 'forgot-password',
-        component: ForgotPasswordView,
-        meta: {
-            requireAuth: false,
-        }
-    },
 ]
-
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL), routes,
 });
