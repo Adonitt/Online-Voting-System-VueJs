@@ -27,7 +27,6 @@ const handleSubmit = async () => {
     const redirect = route.query.redirect || { name: 'home' }
     await router.push(redirect)
 
-    // toast.showSuccess("You're logged in!");
   } catch (error) {
     toast.showError(error.response?.data?.message || "An error has occured!");
     console.log(error)

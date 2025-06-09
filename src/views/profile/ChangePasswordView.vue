@@ -3,6 +3,7 @@ import BreadCrumb from "@/components/shared/BreadCrumb.vue";
 import {ref} from "vue";
 import {useAppToast} from "@/composables/useAppToast.js";
 import UserService from "@/services/userService.js";
+import router from "@/router/index.js";
 
 const breadCrumbItems = [
   {label: "Dashboard", to: "/home"},
@@ -28,6 +29,7 @@ const handleChangePassword = async () => {
     currentPassword.value = '';
     newPassword.value = '';
     confirmPassword.value = '';
+    await router.push({name: 'my-profile'})
 
   } catch (error) {
     toast.showError(error.response?.data?.message || "Something went wrong");

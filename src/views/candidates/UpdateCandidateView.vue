@@ -102,7 +102,7 @@ const onHandleSubmit = async () => {
 };
 
 const getFullImageUrl = (path) => {
-  console.log("Symbol path:", path);
+  // console.log("Symbol path:", path);
   if (!path || typeof path !== "string") return null;
 
   return "http://localhost:8080/" + path;

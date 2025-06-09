@@ -12,6 +12,8 @@ import CandidateService from "@/services/candidateService.js";
 import {useAppToast} from "@/composables/useAppToast.js";
 import AppButton from "@/components/app/AppButton.vue";
 import {usePartyStore} from "@/stores/partyStore.js";
+import {useAuthStore} from "@/stores/authStore.js";
+import {ROLES} from "@/composables/useAdministration.js";
 
 DataTable.use(DataTablesCore)
 DataTable.use(DataTablesBS5)
@@ -23,6 +25,8 @@ const breadcrumb = [
 ]
 
 const partyStore = usePartyStore()
+const authStore = useAuthStore()
+const role = authStore.loggedInUser?.role
 const route = useRoute()
 const router = useRouter()
 const candidateId = ref(route.params.id)
@@ -88,11 +92,13 @@ onMounted(async () => {
     </template>
     <div v-if="candidate && candidate.id">
       <div class="d-flex justify-content-center gap-2 mt-3">
-        <router-link class="btn btn-secondary  " :to="{name:'edit-candidate', params:{id:route.params.id}}">Update
-          Candidate
+        <router-link class="btn btn-secondary  " :to="{name:'edit-candidate', params:{id:route.params.id}}"
+                     v-if="role === ROLES.ADMIN"
+        >Update Candidate
         </router-link>
 
-        <app-button class="btn btn-danger flex" @click="onDeleteCandidate(candidate.id)"
+        <app-button class="btn btn-danger flex" @click="onDeleteCandidate(candidate.id) "
+                    v-if="role === ROLES.ADMIN"
         >Delete Candidate
         </app-button>
       </div>
@@ -123,7 +129,7 @@ onMounted(async () => {
                     </div>
                   </div>
                 </div>
-                <div class="card">
+                <div class="card" v-if="role === ROLES.ADMIN">
                   <div class="card-body">
                     <p class="text-muted font-size-sm">
                       Created By: <span class="text-secondary">{{ candidate.createdBy }}</span>

@@ -37,6 +37,7 @@
       <div class="sidebar-content">
         <ul class="nav nav-secondary">
           <li class="nav-item ">
+
             <router-link :to="{name:'home'}">
               <i class="fas fa-home"></i>
               <p>Dashboard</p>

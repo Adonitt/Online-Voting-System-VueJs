@@ -1,4 +1,4 @@
-<script setup >
+<script setup>
 import AppCard from "@/components/app/AppCard.vue";
 import AppInput from "@/components/app/AppInput.vue";
 import AppSelect from "@/components/app/AppSelect.vue";
@@ -79,21 +79,9 @@ const onHandleSubmit = async () => {
       toast.showSuccess("Candidate created successfully");
       await router.push({name: 'candidates'});
     } catch (err) {
-      console.error("Upload Error:", err);
-
-      // Log response error details (if available)
-      if (err.response) {
-        console.error("Server responded with:", err.response.data);
-        toast.showError(err.response.data.message || "Failed to create candidate.");
-      } else if (err.request) {
-        console.error("Request was made but no response received:", err.request);
-        toast.showError("No response from server.");
-      } else {
-        console.error("Error setting up the request:", err.message);
-        toast.showError("Something went wrong.");
-      }
+      toast.showError(err.response?.data?.message);
+      console.log(err.response?.data?.message);
     }
-
   });
 };
 

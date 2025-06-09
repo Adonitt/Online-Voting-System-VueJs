@@ -3,9 +3,9 @@ import client from "@/helpers/client.js";
 
 class UserService {
     async getAllUsers() {
+        console.log(response.data);
         const response = await client.get('users');
         return response.data;
-        console.log(response.data);
     }
 
     async getUserById(id) {
@@ -16,6 +16,11 @@ class UserService {
     async registerUser(userData) {
         const response = await client.post('users/register', userData);
         return response.status === 200 || response.status === 201 ? response.data : null;
+    }
+
+    async changePassword(data) {
+        const response = await client.put('auth/change-password', data);
+        return response.data;
     }
 
     async forgotPassword(email) {

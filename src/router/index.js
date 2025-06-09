@@ -9,6 +9,9 @@ import TheLayout from "@/components/ui/TheLayout.vue";
 import profileRoute from "@/router/profileRoutes.js";
 import profileRoutes from "@/router/profileRoutes.js";
 import partyRoutes from "@/router/partyRoutes.js";
+import candidateRoutes from "@/router/candidateRoutes.js";
+import voteRoutes from "@/router/voteRoutes.js";
+import ForgotPasswordView from "@/views/auth/ForgotPasswordView.vue";
 
 const routes = [
     {
@@ -27,13 +30,22 @@ const routes = [
             requireAuth: false,
         }
     },
-
+    {
+        path: '/auth/forgot-password',
+        name: 'forgot-password',
+        component: ForgotPasswordView,
+        meta: {
+            requireAuth: false,
+        }
+    },
     {
         path: '/',
         component: TheLayout,
-        meta: {
-            requireAuth: true,
-        },
+        meta:
+            {
+                requireAuth: true,
+            }
+        ,
         children: [
             {
                 path: '',
@@ -41,7 +53,9 @@ const routes = [
                 component: TheContainer,
             },
             ...profileRoutes,
-            ...partyRoutes
+            ...partyRoutes,
+            ...candidateRoutes,
+            ...voteRoutes
         ]
     },
 ]
@@ -52,6 +66,15 @@ const router = createRouter({
 
 router.beforeEach((to, from) => {
     const authStore = useAuthStore();
+
+    if (to.meta.roles && to.meta.roles.length > 0 && authStore.isLoggedIn) {
+        const isAllowed = to.meta.roles.includes(authStore.loggedInUser?.role);
+
+        if (!isAllowed) {
+            return {name: 'home'}
+        }
+    }
+
 
     if (to.meta.requireAuth && !authStore.isLoggedIn) {
         return {

@@ -2,6 +2,7 @@ import PartyListingView from "@/views/party/PartyListingView.vue";
 import PartyDetailsView from "@/views/party/PartyDetailsView.vue";
 import CreatePartyView from "@/views/party/CreatePartyView.vue";
 import UpdatePartyView from "@/views/party/UpdatePartyView.vue";
+import {ROLES} from "@/composables/useAdministration.js";
 
 export default [
     {
@@ -26,6 +27,7 @@ export default [
         component: CreatePartyView,
         meta: {
             requireAuth: true,
+            roles: ROLES.ADMIN
         }
     }, {
         path: 'party/modify/:id',
@@ -33,6 +35,8 @@ export default [
         component: UpdatePartyView,
         meta: {
             requireAuth: true,
+            roles: ROLES.ADMIN
+
         }
     }
 

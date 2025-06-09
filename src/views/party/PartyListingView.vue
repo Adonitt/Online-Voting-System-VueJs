@@ -11,6 +11,8 @@ import DataTablesBS5 from 'datatables.net-bs5';
 import AppButton from "@/components/app/AppButton.vue";
 import {useAppToast} from "@/composables/useAppToast.js";
 import {useRoute} from "vue-router";
+import {useAuthStore} from "@/stores/authStore.js";
+import {ROLES} from "@/composables/useAdministration.js";
 
 DataTable.use(DataTablesCore);
 DataTable.use(DataTablesBS5);
@@ -19,6 +21,8 @@ const breadcrumb = [
   {label: 'Dashboard', to: "/"},
   {label: 'Parties',}
 ]
+const authStore = useAuthStore()
+const role = authStore.loggedInUser?.role
 
 const {isLoading, withLoading} = useLoading()
 const parties = ref([])
@@ -30,7 +34,7 @@ const loadParties = async () => {
 }
 
 const getFullImageUrl = (path) => {
-  console.log("Symbol path:", path);
+  // console.log("Symbol path:", path);
   if (!path || typeof path !== "string") return null;
   // console.log("VITE_IMG_URL:", import.meta.env.VITE_IMG_URL);
   // console.log("party.symbol:", path);
@@ -73,7 +77,10 @@ onMounted(async () => {
     </template>
 
     <div class="d-flex justify-content-end m-3 ">
-      <router-link :to="{name:'createParty'}" class="btn btn-secondary">Add Party</router-link>
+      <router-link :to="{name:'createParty'}" class="btn btn-secondary"
+                   v-if="role === ROLES.ADMIN"
+      >Add Party
+      </router-link>
     </div>
 
     <div class="text-center" v-if="isLoading">
@@ -106,11 +113,13 @@ onMounted(async () => {
             <i class="fas fa-info-circle m-2"></i>
           </router-link>
 
-          <router-link :to="{name:'updateParty',params:{id:party.id}}" class="btn btn-icon btn-round btn-warning me-2">
+          <router-link :to="{name:'updateParty',params:{id:party.id}}" class="btn btn-icon btn-round btn-warning me-2"
+                       v-if="role === ROLES.ADMIN">
             <i class="fas fa-edit m-2"></i>
           </router-link>
 
-          <app-button class="btn btn-icon btn-round btn-danger" @click="onDeleteParty(party.id)">
+          <app-button class="btn btn-icon btn-round btn-danger" @click="onDeleteParty(party.id)"
+                      v-if="role === ROLES.ADMIN">
             <i class="fas fa-trash m-2"></i>
           </app-button>
 

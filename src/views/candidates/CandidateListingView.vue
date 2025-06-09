@@ -6,11 +6,14 @@ import {useLoading} from "@/composables/useLoading";
 import DataTable from "datatables.net-vue3";
 import DataTablesCore from "datatables.net";
 import DataTablesBS5 from "datatables.net-bs5";
-import {onMounted, ref} from "vue";
+import {computed, onMounted, ref} from "vue";
 import CandidateService from "@/services/candidateService";
 import AppSpinner from "@/components/app/AppSpinner.vue";
 import AppButton from "@/components/app/AppButton.vue";
 import {useAppToast} from "@/composables/useAppToast.js";
+import {useAuthStore} from "@/stores/authStore.js";
+import {ROLES} from "@/composables/useAdministration.js";
+import {usePartyStore} from "@/stores/partyStore.js";
 
 DataTable.use(DataTablesCore);
 DataTable.use(DataTablesBS5);
@@ -19,12 +22,14 @@ const breadcrumb = [
   {label: 'Candidates'},
 ]
 
+const authStore = useAuthStore()
+const role = authStore.loggedInUser?.role
 const {isLoading, withLoading} = useLoading()
 
 const candidates = ref([])
 
 const getFullImageUrl = (path) => {
-  console.log("Symbol path:", path);
+  // console.log("Symbol path:", path);
   if (!path || typeof path !== "string") return null;
   return "http://localhost:8080/" + path;
 };
@@ -71,7 +76,7 @@ onMounted(async () => {
     </template>
 
 
-    <div class="d-flex justify-content-end m-3 ">
+    <div class="d-flex justify-content-end m-3 " v-if="role === ROLES.ADMIN">
       <router-link :to="{name:'create-candidate'}" class="btn btn-secondary">Add Candidate</router-link>
     </div>
 
@@ -103,11 +108,13 @@ onMounted(async () => {
           </router-link>
 
           <router-link :to="{name:'edit-candidate',params:{id:candidate.id}}"
+                       v-if="role === ROLES.ADMIN"
                        class="btn btn-icon btn-round btn-warning me-2">
             <i class="fas fa-edit m-2"></i>
           </router-link>
 
-          <app-button class="btn btn-icon btn-round btn-danger" @click="onDeleteCandidate(candidate.id)">
+          <app-button class="btn btn-icon btn-round btn-danger" @click="onDeleteCandidate(candidate.id)"
+                      v-if="role === ROLES.ADMIN">
             <i class="fas fa-trash m-2"></i>
           </app-button>
 

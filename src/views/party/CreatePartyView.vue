@@ -75,10 +75,9 @@ const handleSubmit = async () => {
       await router.push({name: "party"});
     } catch (error) {
       if (error.response?.status === 409) {
-        toast.showError(error.response.data.message || "Party already exists!");
+        toast.showError(error.response?.data?.message || "Party already exists!");
       } else {
-        toast.showError("Failed to create party");
-        console.error(error);
+        toast.showError(error.response?.data?.message || "Failed to create party");
       }
     }
   });

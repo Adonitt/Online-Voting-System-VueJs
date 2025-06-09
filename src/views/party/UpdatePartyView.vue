@@ -102,7 +102,7 @@ const handleSubmit = async () => {
 };
 
 const getFullImageUrl = (path) => {
-  console.log("Symbol path:", path);
+  // console.log("Symbol path:", path);
   if (!path || typeof path !== "string") return null;
   // console.log("VITE_IMG_URL:", import.meta.env.VITE_IMG_URL);
   // console.log("party.symbol:", path);

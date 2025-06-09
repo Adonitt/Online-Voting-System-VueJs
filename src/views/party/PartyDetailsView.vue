@@ -11,6 +11,8 @@ import {useAppToast} from "@/composables/useAppToast.js";
 import DataTable from 'datatables.net-vue3'
 import DataTablesCore from 'datatables.net'
 import DataTablesBS5 from 'datatables.net-bs5'
+import {useAuthStore} from "@/stores/authStore.js";
+import {ROLES} from "@/composables/useAdministration.js";
 
 DataTable.use(DataTablesCore)
 DataTable.use(DataTablesBS5)
@@ -24,6 +26,9 @@ const breadcrumb = [
 const route = useRoute()
 const router = useRouter()
 const partyId = ref(route.params.id)
+const authStore = useAuthStore()
+const role = authStore.loggedInUser?.role
+
 
 const party = ref(null)
 
@@ -55,7 +60,7 @@ const onDeleteParty = async (id) => {
 
 
 const getFullImageUrl = (path) => {
-  console.log("Symbol path:", path);
+  // console.log("Symbol path:", path);
   if (!path || typeof path !== "string") return null;
   return "http://localhost:8080/" + path;
 };
@@ -78,10 +83,15 @@ onMounted(async () => {
   <app-card>
     <div v-if="party && party.id">
       <div class="d-flex justify-content-center gap-2 mt-3">
-        <router-link class="btn btn-secondary  " :to="{name:'updateParty', params:{id:route.params.id}}">Update Party
+        <router-link class="btn btn-secondary  " :to="{name:'updateParty', params:{id:route.params.id}}"
+                     v-if="role === ROLES.ADMIN"
+        >Update Party
         </router-link>
 
-        <app-button class="btn btn-danger flex" @click="onDeleteParty(partyId)">Delete</app-button>
+        <app-button class="btn btn-danger flex" @click="onDeleteParty(partyId)"
+                    v-if="role === ROLES.ADMIN"
+        >Delete
+        </app-button>
       </div>
       <div class="page-inner">
         <div class="container" id="main-body">
@@ -114,7 +124,7 @@ onMounted(async () => {
                     </div>
                   </div>
                 </div>
-                <div class="card">
+                <div class="card" v-if="role === ROLES.ADMIN">
                   <div class="card-body">
                     <p class="text-muted font-size-sm">
                       Created By: <span class="text-secondary">{{ party.createdBy }}</span>

@@ -1,14 +1,18 @@
 <script setup>
-import AppCard from "@/components/app/AppCard.vue";
-import {computed, markRaw, onMounted, ref, watch, withKeys} from "vue";
+import {computed, onMounted, ref, watch} from "vue";
 import {useLoading} from "@/composables/useLoading.js";
 import PartyService from "@/services/partyService.js";
-import CandidateService from "@/services/candidateService.js";
 import {useAppToast} from "@/composables/useAppToast.js";
 import VoteService from "@/services/voteService.js";
 import {useAuthStore} from "@/stores/authStore.js";
 import router from "@/router/index.js";
 import UserService from "@/services/userService.js";
+import BreadCrumb from "@/components/shared/BreadCrumb.vue";
+
+const breadcrumb = [
+  {label: 'Dashboard', to: '/'},
+  {label: 'Cast Vote'}
+]
 
 const parties = ref([])
 const candidates = ref([])
@@ -26,10 +30,11 @@ onMounted(async () => {
           user.value = await UserService.getUserById(store.loggedInUser?.id)
         })
       } catch (error) {
-        console.log(error)
+        console.log(error.response?.data)
       }
     }
 )
+
 watch(selectedParty, async (partyId) => {
   if (!partyId) {
     candidates.value = []
@@ -43,13 +48,14 @@ watch(selectedParty, async (partyId) => {
       console.log("Candidates:", party.candidates)
       console.log("Party:", party)
     } catch (error) {
+      toast.showError(error.response?.data?.message || 'Error accured!')
       console.log("Error fetching party:", error)
     }
   })
 })
 
 const getFullImageUrl = (path) => {
-  console.log("Symbol path:", path);
+  // console.log("Symbol path:", path);
   if (!path || typeof path !== "string") return null;
   return "http://localhost:8080/" + path;
 };
@@ -104,6 +110,7 @@ const submitVote = async () => {
 
 </script>
 <template>
+  <bread-crumb :items="breadcrumb"/>
 
   <div v-if="user.hasVoted" class="flex justify-center mt-10">
     <div
