@@ -1,5 +1,12 @@
-// TheSideBar.vue
+<!-- TheSideBar.vue -->
 <script setup>
+import { useAuthStore } from "@/stores/authStore.js"; // Import your auth store
+import { computed } from "vue"; // Import computed
+
+const authStore = useAuthStore();
+
+// Computed property to check if the user is an admin
+const isAdmin = computed(() => authStore.isAdmin);
 
 </script>
 
@@ -16,20 +23,6 @@
               height="50px"
               width="50px"/>
         </router-link>
-
-
-        <!--        <div class="nav-toggle">-->
-        <!--          <button class="btn btn-toggle toggle-sidebar">-->
-        <!--            <i class="gg-menu-right"></i>-->
-        <!--          </button>-->
-        <!--          <button class="btn btn-toggle sidenav-toggler">-->
-        <!--            <i class="gg-menu-left"></i>-->
-        <!--          </button>-->
-        <!--        </div>-->
-        <!--        <button class="topbar-toggler more">-->
-        <!--          <i class="gg-more-vertical-alt"></i>-->
-        <!--        </button>-->
-        <!--      -->
       </div>
       <!-- End Logo Header -->
     </div>
@@ -37,7 +30,6 @@
       <div class="sidebar-content">
         <ul class="nav nav-secondary">
           <li class="nav-item ">
-
             <router-link :to="{name:'home'}">
               <i class="fas fa-home"></i>
               <p>Dashboard</p>
@@ -79,6 +71,14 @@
             </router-link>
           </li>
 
+          <!-- *** NEW: Admin Users Link (Conditional) *** -->
+          <li class="nav-item" v-if="isAdmin">
+            <router-link :to="{ name: 'admin-users' }">
+              <i class="bi bi-people"></i> <!-- Using Bootstrap Icons for a people icon -->
+              <p>All Users</p>
+            </router-link>
+          </li>
+          <!-- End New Admin Users Link -->
 
         </ul>
       </div>

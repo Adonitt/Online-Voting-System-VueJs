@@ -1,31 +1,58 @@
-import axios from "axios";
 import client from "@/helpers/client.js";
 
 class UserService {
+    // Modified to target the correct backend API endpoint relative to the client.js baseURL
     async getAllUsers() {
-        console.log(response.data);
-        const response = await client.get('users');
-        return response.data;
+        try {
+            // Your backend endpoint is /api/v1/users
+            // Since client.js has baseURL: 'http://localhost:8080/api/v1',
+            // we just need the remainder of the path: '/users' or 'users'
+            const response = await client.get('/users'); // CORRECTED: Removed duplicate 'api/v1'
+            return response.data;
+        } catch (error) {
+            console.error("Failed to fetch all users:", error.response?.data || error.message);
+            throw error; // Re-throw to handle in the component
+        }
     }
 
     async getUserById(id) {
-        const response = await client.get(`users/${id}`);
-        return response.status === 200 ? response.data : null;
+        try {
+            // This correctly appends to /api/v1/users
+            const response = await client.get(`/users/${id}`);
+            return response.data;
+        } catch (error) {
+            console.error(`Failed to fetch user by ID ${id}:`, error.response?.data || error.message);
+            throw error;
+        }
+    }
+
+    async updateUser(id, userData) {
+        try {
+            // This correctly appends to /api/v1/users
+            const response = await client.put(`/users/${id}`, userData);
+            return response.data; // Return the updated user data
+        } catch (error) {
+            console.error(`Failed to update user with ID ${id}:`, error.response?.data || error.message);
+            throw error; // Re-throw to handle in the component
+        }
     }
 
     async registerUser(userData) {
-        const response = await client.post('users/register', userData);
+        // This correctly appends to /api/v1/users/register
+        const response = await client.post('/users/register', userData);
         return response.status === 200 || response.status === 201 ? response.data : null;
     }
 
     async changePassword(data) {
-        const response = await client.put('auth/change-password', data);
+        // This correctly appends to /api/v1/auth/change-password
+        const response = await client.put('/auth/change-password', data);
         return response.data;
     }
 
     async forgotPassword(email) {
         try {
-            const response = await client.post('users/forgot-password', {
+            // This correctly appends to /api/v1/users/forgot-password
+            const response = await client.post('/users/forgot-password', {
                 email: email.trim().toLowerCase()
             });
 
@@ -40,7 +67,6 @@ class UserService {
                 "Failed to process your request");
         }
     }
-
 }
 
-export default new UserService()
+export default new UserService();
