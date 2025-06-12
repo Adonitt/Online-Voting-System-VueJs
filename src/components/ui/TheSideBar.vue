@@ -71,17 +71,32 @@ const isAdmin = computed(() => authStore.isAdmin);
             </router-link>
           </li>
 
-          <!-- *** NEW: Admin Users Link (Conditional) *** -->
+          <!-- Admin-specific links, conditionally rendered -->
           <li class="nav-item" v-if="isAdmin">
             <router-link :to="{ name: 'admin-users' }">
               <i class="bi bi-people"></i> <!-- Using Bootstrap Icons for a people icon -->
               <p>All Users</p>
             </router-link>
           </li>
-          <!-- End New Admin Users Link -->
+
+          <!-- *** NEW: Admin All Votes Link (Conditional) *** -->
+          <li class="nav-item" v-if="isAdmin">
+            <router-link :to="{ name: 'admin-votes' }">
+              <i class="bi bi-check-all"></i> <!-- Icon for votes -->
+              <p>All Votes</p>
+            </router-link>
+          </li>
+          <!-- End New Admin All Votes Link -->
 
         </ul>
       </div>
     </div>
   </div>
 </template>
+
+<style scoped>
+/* Add any specific styles here if needed. Ensure your existing styles for .sidebar,
+   .sidebar-logo, .sidebar-wrapper, .nav-item, .nav-link, etc., are properly defined
+   elsewhere (e.g., in global CSS or a parent component).
+*/
+</style>

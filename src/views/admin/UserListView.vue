@@ -5,9 +5,18 @@ import UserService from '@/services/UserService'; // Import the updated service
 const users = ref([]);
 const loading = ref(true);
 const error = ref(null);
+
 const showEditModal = ref(false);
 const editingUser = ref(null);
 const saveError = ref(null);
+
+const showDetailsModal = ref(false);
+const viewingUser = ref(null);
+
+const showDeleteConfirmModal = ref(false);
+const userToDelete = ref(null);
+const deleteError = ref(null);
+
 
 // Hardcode available roles based on your backend enum (USER, ADMIN)
 const availableRoles = ['USER', 'ADMIN'];
@@ -74,18 +83,20 @@ const saveUserChanges = async () => {
   if (!editingUser.value) return;
 
   try {
-    // Construct the payload with all editable attributes
-    // Only send the fields that are being displayed/edited based on the role
+    // Construct the payload with ALL editable attributes, including the newly added ones.
     const payload = {
       id: editingUser.value.id, // ID is needed for the PUT request URL
       email: editingUser.value.email,
+      personalNo: editingUser.value.personalNo, // Added for editing
+      firstName: editingUser.value.firstName,   // Added for editing
+      lastName: editingUser.value.lastName,     // Added for editing
+      birthDate: editingUser.value.birthDate,   // Added for editing
       role: editingUser.value.role,
+      hasVoted: editingUser.value.hasVoted, // Keep hasVoted in payload if your backend uses it for updates
     };
 
     // Conditionally add other fields if the user is NOT an admin in the modal
-    // hasVoted is explicitly excluded from this section now
     if (editingUser.value.role !== 'ADMIN') {
-      // payload.hasVoted = editingUser.value.hasVoted; // Removed
       payload.nationality = editingUser.value.nationality;
       payload.city = editingUser.value.city;
     }
@@ -105,6 +116,53 @@ const saveUserChanges = async () => {
     saveError.value = err.response?.data?.message || err.message || 'Failed to save changes.';
   }
 };
+
+// --- New: View Details functionality ---
+const openDetailsModal = (user) => {
+  viewingUser.value = user;
+  showDetailsModal.value = true;
+};
+
+const closeDetailsModal = () => {
+  showDetailsModal.value = false;
+  viewingUser.value = null;
+};
+
+// --- New: Delete User functionality ---
+const openDeleteConfirmModal = (user) => {
+  userToDelete.value = user;
+  deleteError.value = null; // Clear previous errors
+  showDeleteConfirmModal.value = true;
+};
+
+const closeDeleteConfirmModal = () => {
+  showDeleteConfirmModal.value = false;
+  userToDelete.value = null;
+};
+
+const deleteUser = async () => {
+  deleteError.value = null;
+  if (!userToDelete.value) return;
+
+  // --- NEW: Prevent deletion of ADMIN users ---
+  if (userToDelete.value.role === 'ADMIN') {
+    deleteError.value = 'Cannot delete an administrator account.';
+    return; // Stop the function execution
+  }
+  // --- END NEW ---
+
+  try {
+    await UserService.deleteUser(userToDelete.value.id);
+    // Remove the user from the local `users` array
+    users.value = users.value.filter(u => u.id !== userToDelete.value.id);
+    closeDeleteConfirmModal();
+    // Success message
+  } catch (err) {
+    console.error('Failed to delete user:', err);
+    deleteError.value = err.response?.data?.message || err.message || 'Failed to delete user.';
+  }
+};
+
 
 onMounted(() => {
   fetchUsers();
@@ -162,8 +220,21 @@ onMounted(() => {
               <td>{{ user.nationality || 'N/A' }}</td>
               <td>{{ user.city || 'N/A' }}</td>
               <td>
-                <button @click="openEditModal(user)" class="btn btn-sm btn-primary">
+                <button @click="openDetailsModal(user)" class="btn btn-sm btn-info me-2">
+                  <i class="bi bi-info-circle"></i> Details
+                </button>
+                <button @click="openEditModal(user)" class="btn btn-sm btn-primary me-2">
                   <i class="bi bi-pencil-square"></i> Edit
+                </button>
+                <!-- NEW: Disable delete button for ADMIN roles -->
+                <button
+                    @click="openDeleteConfirmModal(user)"
+                    class="btn btn-sm"
+                    :class="{'btn-danger': user.role !== 'ADMIN', 'btn-secondary disabled': user.role === 'ADMIN'}"
+                    :disabled="user.role === 'ADMIN'"
+                    :title="user.role === 'ADMIN' ? 'Cannot delete administrator' : 'Delete user'"
+                >
+                  <i class="bi bi-trash"></i> Delete
                 </button>
               </td>
             </tr>
@@ -195,9 +266,56 @@ onMounted(() => {
                 />
               </div>
 
+              <!-- NEW: Personal Number -->
+              <div class="mb-3">
+                <label for="editPersonalNo" class="form-label">Personal No:</label>
+                <input
+                    type="text"
+                    id="editPersonalNo"
+                    v-model="editingUser.personalNo"
+                    class="form-control"
+                    required
+                />
+              </div>
+
+              <!-- NEW: First Name -->
+              <div class="mb-3">
+                <label for="editFirstName" class="form-label">First Name:</label>
+                <input
+                    type="text"
+                    id="editFirstName"
+                    v-model="editingUser.firstName"
+                    class="form-control"
+                    required
+                />
+              </div>
+
+              <!-- NEW: Last Name -->
+              <div class="mb-3">
+                <label for="editLastName" class="form-label">Last Name:</label>
+                <input
+                    type="text"
+                    id="editLastName"
+                    v-model="editingUser.lastName"
+                    class="form-control"
+                    required
+                />
+              </div>
+
+              <!-- NEW: Birth Date -->
+              <div class="mb-3">
+                <label for="editBirthDate" class="form-label">Birth Date:</label>
+                <input
+                    type="date"
+                    id="editBirthDate"
+                    v-model="editingUser.birthDate"
+                    class="form-control"
+                    required
+                />
+              </div>
+
               <!-- Conditional rendering: Show Nationality, City ONLY if NOT Admin -->
               <template v-if="editingUser.role !== 'ADMIN'">
-                <!-- The 'hasVoted' input field has been removed from here -->
                 <div class="mb-3">
                   <label for="editNationality" class="form-label">Nationality:</label>
                   <select
@@ -256,8 +374,100 @@ onMounted(() => {
         </div>
       </div>
     </div>
+
+    <!-- User Details Modal -->
+    <div v-if="showDetailsModal" class="modal fade show" style="display: block;" tabindex="-1" role="dialog">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">User Details: {{ viewingUser.email }}</h5>
+            <button type="button" class="btn-close" @click="closeDetailsModal"></button>
+          </div>
+          <div class="modal-body">
+            <dl class="row">
+              <dt class="col-sm-4">ID:</dt>
+              <dd class="col-sm-8">{{ viewingUser.id }}</dd>
+
+              <dt class="col-sm-4">Personal No:</dt>
+              <dd class="col-sm-8">{{ viewingUser.personalNo }}</dd>
+
+              <dt class="col-sm-4">First Name:</dt>
+              <dd class="col-sm-8">{{ viewingUser.firstName }}</dd>
+
+              <dt class="col-sm-4">Last Name:</dt>
+              <dd class="col-sm-8">{{ viewingUser.lastName }}</dd>
+
+              <dt class="col-sm-4">Email:</dt>
+              <dd class="col-sm-8">{{ viewingUser.email }}</dd>
+
+              <dt class="col-sm-4">Birth Date:</dt>
+              <dd class="col-sm-8">{{ viewingUser.birthDate }}</dd>
+
+              <dt class="col-sm-4">Nationality:</dt>
+              <dd class="col-sm-8">{{ viewingUser.nationality || 'N/A' }}</dd>
+
+              <dt class="col-sm-4">City:</dt>
+              <dd class="col-sm-8">{{ viewingUser.city || 'N/A' }}</dd>
+
+              <dt class="col-sm-4">Has Voted:</dt>
+              <dd class="col-sm-8">
+                <span :class="{'badge bg-success': viewingUser.hasVoted, 'badge bg-secondary': !viewingUser.hasVoted}">
+                  {{ viewingUser.hasVoted ? 'Yes' : 'No' }}
+                </span>
+              </dd>
+
+              <dt class="col-sm-4">Role:</dt>
+              <dd class="col-sm-8">{{ viewingUser.role || 'N/A' }}</dd>
+
+              <dt class="col-sm-4">Registered At:</dt>
+              <dd class="col-sm-8">{{ viewingUser.registeredAt }}</dd>
+
+              <dt class="col-sm-4">Updated At:</dt>
+              <dd class="col-sm-8">{{ viewingUser.updatedAt || 'N/A' }}</dd>
+
+              <dt class="col-sm-4">Updated By:</dt>
+              <dd class="col-sm-8">{{ viewingUser.updatedBy || 'N/A' }}</dd>
+            </dl>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" @click="closeDetailsModal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- User Delete Confirmation Modal -->
+    <div v-if="showDeleteConfirmModal" class="modal fade show" style="display: block;" tabindex="-1" role="dialog">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Confirm Deletion</h5>
+            <button type="button" class="btn-close" @click="closeDeleteConfirmModal"></button>
+          </div>
+          <div class="modal-body">
+            <p>Are you sure you want to delete user: <strong>{{ userToDelete.email }}</strong> (ID: {{ userToDelete.id }})?</p>
+            <!-- Display the error message here -->
+            <div v-if="deleteError" class="alert alert-danger mt-3" role="alert">
+              {{ deleteError }}
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" @click="closeDeleteConfirmModal">Cancel</button>
+            <button
+                type="button"
+                class="btn btn-danger"
+                @click="deleteUser"
+                :disabled="userToDelete && userToDelete.role === 'ADMIN'"
+            >
+              Delete
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!-- Modal Backdrop -->
-    <div v-if="showEditModal" class="modal-backdrop fade show"></div>
+    <div v-if="showEditModal || showDetailsModal || showDeleteConfirmModal" class="modal-backdrop fade show"></div>
   </div>
 </template>
 
