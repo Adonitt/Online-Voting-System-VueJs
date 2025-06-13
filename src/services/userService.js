@@ -7,7 +7,7 @@ class UserService {
             // Your backend endpoint is /api/v1/users
             // Since client.js has baseURL: 'http://localhost:8080/api/v1',
             // we just need the remainder of the path: '/users' or 'users'
-            const response = await client.get('/users'); // CORRECTED: Removed duplicate 'api/v1'
+            const response = await client.get('/users');
             return response.data;
         } catch (error) {
             console.error("Failed to fetch all users:", error.response?.data || error.message);
@@ -33,6 +33,18 @@ class UserService {
             return response.data; // Return the updated user data
         } catch (error) {
             console.error(`Failed to update user with ID ${id}:`, error.response?.data || error.message);
+            throw error; // Re-throw to handle in the component
+        }
+    }
+
+    // New: Method to delete a user
+    async deleteUser(id) {
+        try {
+            // This correctly sends an HTTP DELETE request to /api/v1/users/{id}
+            const response = await client.delete(`/users/${id}`);
+            return response.data; // You might return a success message or confirmation
+        } catch (error) {
+            console.error(`Failed to delete user with ID ${id}:`, error.response?.data || error.message);
             throw error; // Re-throw to handle in the component
         }
     }

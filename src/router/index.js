@@ -6,15 +6,17 @@ import ProfileView from "@/views/profile/ProfileView.vue";
 import ChangePasswordView from "@/views/profile/ChangePasswordView.vue";
 import RegisterView from "@/views/auth/RegisterView.vue";
 import TheLayout from "@/components/ui/TheLayout.vue";
-import profileRoute from "@/router/profileRoutes.js"; // This might be a duplicate, assuming 'profileRoutes' is used
 import partyRoutes from "@/router/partyRoutes.js";
 import candidateRoutes from "@/router/candidateRoutes.js";
-import voteRoutes from "@/router/voteRoutes.js";
+import voteRoutes from "@/router/voteRoutes.js"; // This might be for user-specific votes, not admin
 import ForgotPasswordView from "@/views/auth/ForgotPasswordView.vue";
 
-// *** NEW IMPORT ***
-import UserList from "@/views/admin/UserListView.vue";
-import profileRoutes from "@/router/profileRoutes.js"; // Path to your new component
+// *** EXISTING ADMIN IMPORTS ***
+import UserList from "@/views/admin/UserListView.vue"; // Your existing Admin Users List component
+import profileRoutes from "@/router/profileRoutes.js"; // Ensure this is not a duplicate import if already used
+
+// *** NEW IMPORT FOR ALL VOTES VIEW ***
+import AllVotesView from "@/views/admin/AllVotesView.vue"; // Path to your new AllVotesView component
 
 const routes = [
     {
@@ -58,15 +60,28 @@ const routes = [
             ...profileRoutes,
             ...partyRoutes,
             ...candidateRoutes,
+            // Assuming 'voteRoutes' is for something different (e.g., casting a vote for a user),
+            // and 'admin-votes' is for listing all votes as an admin.
             ...voteRoutes,
 
+            // *** EXISTING ROUTE FOR ADMIN USERS LIST ***
             {
-                path: 'admin/users',
+                path: 'admin/users', // This makes the full path /admin/users
                 name: 'admin-users',
                 component: UserList,
                 meta: {
                     requireAuth: true,
-                    roles: ['ADMIN']
+                    roles: ['ADMIN'] // Only ADMIN role can access this
+                }
+            },
+            // *** NEW ROUTE FOR ADMIN ALL VOTES LIST ***
+            {
+                path: 'admin/votes', // This makes the full path /admin/votes
+                name: 'admin-votes', // A unique name for this route
+                component: AllVotesView, // Your newly created AllVotesView component
+                meta: {
+                    requireAuth: true,
+                    roles: ['ADMIN'] // Only ADMIN role can access this
                 }
             }
         ]
@@ -87,11 +102,12 @@ router.beforeEach((to, from) => {
         const isAllowed = to.meta.roles.includes(authStore.loggedInUser?.role);
 
         if (!isAllowed) {
-            // alert('Access Denied: You do not have the required role.'); // Use a better notification system
+            // Using a better notification system than alert is recommended.
+            // For now, redirect to home.
+            console.warn('Access Denied: You do not have the required role for this page.');
             return {name: 'home'} // Redirect to home or another suitable page
         }
     }
-
 
     // Check for general authentication
     if (to.meta.requireAuth && !authStore.isLoggedIn) {
@@ -103,10 +119,11 @@ router.beforeEach((to, from) => {
         };
     } else if (!to.meta.requireAuth && authStore.isLoggedIn) {
         // If not required auth but user is logged in, redirect to home
+        // This prevents logged-in users from accessing login/register/forgot password pages.
         return {name: 'home'};
     }
 
-    // If none of the above, proceed
+    // If none of the above conditions met, proceed with navigation
     return true; // Explicitly return true to allow navigation
 });
 
