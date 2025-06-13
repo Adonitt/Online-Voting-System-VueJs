@@ -12,6 +12,12 @@ class VoteService {
         return response.data;
     }
 
+    async getAllUsersVotes() {
+        const response = await client.get("votes/results/all-users")
+        // console.log(response.data)
+        return response.data;
+    }
+
 }
 
 export default new VoteService();

@@ -16,7 +16,8 @@ import UserList from "@/views/admin/UserListView.vue"; // Your existing Admin Us
 import profileRoutes from "@/router/profileRoutes.js"; // Ensure this is not a duplicate import if already used
 
 // *** NEW IMPORT FOR ALL VOTES VIEW ***
-import AllVotesView from "@/views/admin/AllVotesView.vue"; // Path to your new AllVotesView component
+import AllVotesView from "@/views/vote/AllVotesView.vue";
+import userRoutes from "@/router/userRoutes.js"; // Path to your new AllVotesView component
 
 const routes = [
     {
@@ -60,30 +61,8 @@ const routes = [
             ...profileRoutes,
             ...partyRoutes,
             ...candidateRoutes,
-            // Assuming 'voteRoutes' is for something different (e.g., casting a vote for a user),
-            // and 'admin-votes' is for listing all votes as an admin.
             ...voteRoutes,
-
-            // *** EXISTING ROUTE FOR ADMIN USERS LIST ***
-            {
-                path: 'admin/users', // This makes the full path /admin/users
-                name: 'admin-users',
-                component: UserList,
-                meta: {
-                    requireAuth: true,
-                    roles: ['ADMIN'] // Only ADMIN role can access this
-                }
-            },
-            // *** NEW ROUTE FOR ADMIN ALL VOTES LIST ***
-            {
-                path: 'admin/votes', // This makes the full path /admin/votes
-                name: 'admin-votes', // A unique name for this route
-                component: AllVotesView, // Your newly created AllVotesView component
-                meta: {
-                    requireAuth: true,
-                    roles: ['ADMIN'] // Only ADMIN role can access this
-                }
-            }
+            ...userRoutes
         ]
     },
 ];

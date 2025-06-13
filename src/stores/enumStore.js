@@ -5,6 +5,8 @@ import EnumService from '@/services/enumService'
 
 export const useEnumStore = defineStore('enum', () => {
     const nationalities = ref([])
+    const cities = ref([])
+
 
     const loadNationalities = async () => {
         try {
@@ -24,13 +26,35 @@ export const useEnumStore = defineStore('enum', () => {
         }
     }
 
+
+    const loadCities = async () => {
+        try {
+            const data = await EnumService.getCities()
+            if (Array.isArray(data)) {
+                cities.value = data.map(n => ({
+                    label: n.charAt(0) + n.slice(1).toLowerCase(),
+                    value: n
+                }))
+            } else {
+                console.error('Expected array but got:', data)
+            }
+        } catch (error) {
+            console.error(error)
+        }
+    }
     const nationalitiesForDropdown = computed(() => {
         return nationalities.value
+    })
+
+    const citiesForDropdown = computed(() => {
+        return cities.value
     })
 
     return {
         nationalities,
         loadNationalities,
-        nationalitiesForDropdown
+        nationalitiesForDropdown,
+        loadCities,
+        citiesForDropdown
     }
 })

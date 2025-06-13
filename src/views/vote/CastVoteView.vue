@@ -88,7 +88,6 @@ const submitVote = async () => {
       party: selectedParty.value,
       candidates: selectedCandidates.value,
     };
-
     try {
       await VoteService.castVote(votePayload);
       toast.showSuccess("You have successfully voted!");
@@ -112,7 +111,7 @@ const submitVote = async () => {
 <template>
   <bread-crumb :items="breadcrumb"/>
 
-  <div v-if="user.hasVoted" class="flex justify-center mt-10">
+  <div v-if="user && user.hasVoted === true" class="flex justify-center mt-10">
     <div
         class="bg-green-50 border border-green-400 text-green-700 p-6 rounded-xl shadow-md w-full max-w-xl text-center">
       <div class="flex items-center justify-center mb-4">

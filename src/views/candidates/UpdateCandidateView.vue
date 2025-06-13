@@ -67,6 +67,7 @@ const loadCandidate = async () => {
   formData.party.val = candidate.party
   formData.nationality.val = candidate.nationality
 }
+
 const onHandleSubmit = async () => {
   validateForm();
   if (!formIsValid.value) return;
