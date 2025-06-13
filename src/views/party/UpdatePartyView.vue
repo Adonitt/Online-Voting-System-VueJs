@@ -68,6 +68,7 @@ const clearValidity = (key) => {
 const {isLoading, withLoading} = useLoading();
 const toast = useAppToast();
 const router = useRouter();
+
 const handleSubmit = async () => {
   validateForm();
   if (!formIsValid.value) return;

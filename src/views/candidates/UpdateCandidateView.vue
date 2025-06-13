@@ -38,7 +38,6 @@ const enumStore = useEnumStore()
 const candidateId = +route.params.id
 
 const formData = reactive({
-
   party: {val: '', isValid: true},
   nationality: {val: '', isValid: true},
   photo: null
@@ -65,10 +64,8 @@ const onFileChange = (e) => {
 
 const loadCandidate = async () => {
   const candidate = await CandidateService.getCandidateById(candidateId)
-
   formData.party.val = candidate.party
   formData.nationality.val = candidate.nationality
-
 }
 const onHandleSubmit = async () => {
   validateForm();
@@ -108,6 +105,7 @@ const getFullImageUrl = (path) => {
   return "http://localhost:8080/" + path;
 };
 console.log(candidate.value)
+
 onMounted(async () => {
   await partyStore.getParties()
   await enumStore.loadNationalities()
@@ -179,8 +177,6 @@ onMounted(async () => {
 
         <div class="col-md-8">
           <div class="row g-3">
-
-
             <app-select id="party"
                         label="Party"
                         v-model="formData.party.val"

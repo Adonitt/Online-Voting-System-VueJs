@@ -59,14 +59,14 @@ const routes = [
             ...partyRoutes,
             ...candidateRoutes,
             ...voteRoutes,
-            // *** NEW ROUTE FOR ADMIN USERS LIST ***
+
             {
-                path: 'admin/users', // This makes the full path /admin/users
+                path: 'admin/users',
                 name: 'admin-users',
                 component: UserList,
                 meta: {
                     requireAuth: true,
-                    roles: ['ADMIN'] // Only ADMIN role can access this
+                    roles: ['ADMIN']
                 }
             }
         ]

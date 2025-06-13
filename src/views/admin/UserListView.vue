@@ -9,10 +9,8 @@ const showEditModal = ref(false);
 const editingUser = ref(null);
 const saveError = ref(null);
 
-// Hardcode available roles based on your backend enum (USER, ADMIN)
 const availableRoles = ['USER', 'ADMIN'];
 
-// Updated with ALL specified nationalities
 const availableNationalities = [
   'ALBANIAN',
   'BOSNIAN',
@@ -22,7 +20,6 @@ const availableNationalities = [
   'ROMANIAN'
 ];
 
-// Updated with ALL specified cities
 const availableCities = [
   'PODUJEVO',
   'PRISTINA',
