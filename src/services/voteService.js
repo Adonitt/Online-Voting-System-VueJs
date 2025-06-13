@@ -18,6 +18,26 @@ class VoteService {
         return response.data;
     }
 
+    async getPartyResults() {
+        const response = await client.get("/votes/results/party")
+        return response.data;
+    }
+
+    async getPartyResultsById(partyId) {
+        const response = await client.get(`/votes/results/${partyId}`);
+        return response.data
+    }
+
+    async getCandidateResults(candidateId) {
+        const response = await client.get(`/votes/results/candidate`);
+        return response.data;
+    }
+
+    async getCityVoteSummary() {
+        const response = await client.get(`/votes/results/city-summary`);
+        return response.data
+    }
+
 }
 
 export default new VoteService();

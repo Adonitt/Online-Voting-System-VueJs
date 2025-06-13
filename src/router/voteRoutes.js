@@ -1,5 +1,7 @@
 import CastVoteView from "@/views/vote/CastVoteView.vue";
 import MyVoteDetails from "@/views/vote/MyVoteDetails.vue";
+import CandidateResultsView from "@/views/vote/CandidateResultsView.vue";
+import CityVotesView from "@/views/vote/CityVotesView.vue";
 
 export default [
     {
@@ -17,5 +19,22 @@ export default [
         meta: {
             requireAuth: true,
         }
+    },
+    {
+        path: '/results/candidate',
+        name: 'candidate-results',
+        component: CandidateResultsView,
+        meta: {
+            requireAuth: true,
+        }
+    },
+    {
+        path: 'results/city',
+        name: 'city-results',
+        component: CityVotesView,
+        meta: {
+            requireAuth: true,
+        }
+
     }
 ]

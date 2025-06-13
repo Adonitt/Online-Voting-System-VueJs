@@ -1,4 +1,3 @@
-
 <script setup>
 import {useAuthStore} from "@/stores/authStore.js";
 import {computed} from "vue";
@@ -74,6 +73,20 @@ const isAdmin = computed(() => authStore.isAdmin);
             <router-link :to="{ name: 'admin-votes' }">
               <i class="bi bi-check-all"></i>
               <p>All Users that has Voted</p>
+            </router-link>
+          </li>
+
+          <li class="nav-item" v-if="isAdmin">
+            <router-link :to="{ name: 'candidate-results' }">
+              <i class="bi bi-person"></i>
+              <p>Candidate Results</p>
+            </router-link>
+          </li>
+
+          <li class="nav-item" v-if="isAdmin">
+            <router-link :to="{ name: 'city-results' }">
+              <i class="bi bi-person"></i>
+              <p>City Votes Summary</p>
             </router-link>
           </li>
 
