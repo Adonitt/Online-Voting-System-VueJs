@@ -79,8 +79,11 @@ const onHandleSubmit = async () => {
       toast.showSuccess("Candidate created successfully");
       await router.push({name: 'candidates'});
     } catch (err) {
-      toast.showError(err.response?.data?.message);
-      console.log(err.response?.data?.message);
+      toast.showError(
+          err.response?.data?.message ||
+          err.response?.data?.birthDate ||
+          'An error occurred registering candidate!'
+      );
     }
   });
 };

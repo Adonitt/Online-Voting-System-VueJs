@@ -15,9 +15,8 @@ import ForgotPasswordView from "@/views/auth/ForgotPasswordView.vue";
 import UserList from "@/views/admin/UserListView.vue"; // Your existing Admin Users List component
 import profileRoutes from "@/router/profileRoutes.js"; // Ensure this is not a duplicate import if already used
 
-// *** NEW IMPORT FOR ALL VOTES VIEW ***
 import AllVotesView from "@/views/vote/AllVotesView.vue";
-import userRoutes from "@/router/userRoutes.js"; // Path to your new AllVotesView component
+import userRoutes from "@/router/userRoutes.js";
 
 const routes = [
     {
