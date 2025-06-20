@@ -75,8 +75,8 @@ const deleteUser = async () => {
   try {
     await UserService.deleteUser(userToDelete.value.id);
     users.value = users.value.filter(u => u.id !== userToDelete.value.id);
-    closeDeleteConfirmModal();
     toast.showSuccess("User with id: " + userToDelete.value.id + " deleted successfully.");
+    closeDeleteConfirmModal();
   } catch (err) {
     console.error('Failed to delete user:', err);
     deleteError.value = err.response?.data?.message || err.message || 'Failed to delete user.';

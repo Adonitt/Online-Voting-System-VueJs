@@ -13,6 +13,7 @@ import DataTablesCore from 'datatables.net'
 import DataTablesBS5 from 'datatables.net-bs5'
 import {useAuthStore} from "@/stores/authStore.js";
 import {ROLES} from "@/composables/useAdministration.js";
+import VoteService from "@/services/voteService.js";
 
 DataTable.use(DataTablesCore)
 DataTable.use(DataTablesBS5)
@@ -66,7 +67,8 @@ const getFullImageUrl = (path) => {
 };
 
 console.log("Full image URL:", getFullImageUrl(party.symbol));
-
+const deadline = ref(null)
+const isBeforeDeadline = ref(true)
 onMounted(async () => {
   await loadPartyById(partyId.value)
 
@@ -74,8 +76,13 @@ onMounted(async () => {
   new DataTablesCore("#candidates", {
     pageLength: 10
   })
+  const res = await VoteService.getVotingDates()
+  deadline.value = new Date(res.partyCreationDeadline)
 
+  const now = new Date()
+  isBeforeDeadline.value = now <= deadline.value
 })
+
 
 </script>
 <template>
@@ -84,12 +91,12 @@ onMounted(async () => {
     <div v-if="party && party.id">
       <div class="d-flex justify-content-center gap-2 mt-3">
         <router-link class="btn btn-secondary  " :to="{name:'updateParty', params:{id:route.params.id}}"
-                     v-if="role === ROLES.ADMIN"
+                     v-if="isBeforeDeadline && role === ROLES.ADMIN"
         >Update Party
         </router-link>
 
         <app-button class="btn btn-danger flex" @click="onDeleteParty(partyId)"
-                    v-if="role === ROLES.ADMIN"
+                    v-if="isBeforeDeadline && role === ROLES.ADMIN "
         >Delete
         </app-button>
       </div>

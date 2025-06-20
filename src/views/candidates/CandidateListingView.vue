@@ -14,6 +14,7 @@ import {useAppToast} from "@/composables/useAppToast.js";
 import {useAuthStore} from "@/stores/authStore.js";
 import {ROLES} from "@/composables/useAdministration.js";
 import {usePartyStore} from "@/stores/partyStore.js";
+import VoteService from "@/services/voteService.js";
 
 DataTable.use(DataTablesCore);
 DataTable.use(DataTablesBS5);
@@ -52,18 +53,25 @@ const onDeleteCandidate = async (id) => {
         await loadCandidates();
       })
     } catch (error) {
-      // console.log(error);
       throw error
     }
   }
 
 }
 
+const deadline = ref(null)
+const isBeforeDeadline = ref(true)
+
 onMounted(async () => {
   await loadCandidates()
+  const res = await VoteService.getVotingDates()
+  deadline.value = new Date(res.partyCreationDeadline)
+
+  const now = new Date()
+  isBeforeDeadline.value = now <= deadline.value
+
   new DataTablesCore("#candidates")
 })
-
 
 </script>
 
@@ -75,8 +83,11 @@ onMounted(async () => {
       <h1>Candidates</h1>
     </template>
 
+    <div class="alert alert-warning text-center mx-3" v-if="role === ROLES.ADMIN">
+      The deadline for creating or updating parties is on ({{ deadline?.toLocaleDateString() }}).
+    </div>
 
-    <div class="d-flex justify-content-end m-3 " v-if="role === ROLES.ADMIN">
+    <div class="d-flex justify-content-end m-3 " v-if="role === ROLES.ADMIN && isBeforeDeadline">
       <router-link :to="{name:'create-candidate'}" class="btn btn-secondary">Add Candidate</router-link>
     </div>
 
@@ -108,13 +119,13 @@ onMounted(async () => {
           </router-link>
 
           <router-link :to="{name:'edit-candidate',params:{id:candidate.id}}"
-                       v-if="role === ROLES.ADMIN"
+                       v-if="role === ROLES.ADMIN && isBeforeDeadline"
                        class="btn btn-icon btn-round btn-warning me-2">
             <i class="fas fa-edit m-2"></i>
           </router-link>
 
           <app-button class="btn btn-icon btn-round btn-danger" @click="onDeleteCandidate(candidate.id)"
-                      v-if="role === ROLES.ADMIN">
+                      v-if="role === ROLES.ADMIN && isBeforeDeadline">
             <i class="fas fa-trash m-2"></i>
           </app-button>
 

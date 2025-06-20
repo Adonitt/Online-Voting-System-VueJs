@@ -69,7 +69,7 @@ onMounted(async () => {
       <div class="row mb-2">
         <div class="col-sm-4"><strong>City</strong></div>
         <div class="col-sm-8 text-secondary">
-          {{ user.city.charAt(0).toUpperCase() + user.city.slice(1).toLowerCase() }}
+          {{ user.city }}
         </div>
       </div>
       <div class="row mb-2">
@@ -83,8 +83,8 @@ onMounted(async () => {
     </div>
     <router-link :to="{name:'change-password'}" class="btn btn-primary">Change Password</router-link>
     <router-link
-                 :to="{name:'my-vote-details', params:{id:authStore.loggedInUser?.id}}"
-                 class="inline-block bg-green-600 m-4 hover:bg-green-700 text-white text-sm font-medium py-2 px-4 rounded-lg transition btn btn-secondary"
+        :to="{name:'my-vote-details', params:{id:authStore.loggedInUser?.id}}"
+        class="inline-block bg-green-600 m-4 hover:bg-green-700 text-white text-sm font-medium py-2 px-4 rounded-lg transition btn btn-secondary"
     >
       View Vote Details
     </router-link>

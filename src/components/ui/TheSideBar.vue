@@ -83,13 +83,6 @@ const isAdmin = computed(() => authStore.isAdmin);
             </router-link>
           </li>
 
-          <li class="nav-item" v-if="isAdmin">
-            <router-link :to="{ name: 'city-results' }">
-              <i class="bi bi-person"></i>
-              <p>City Votes Summary</p>
-            </router-link>
-          </li>
-
           <li class="nav-item">
             <router-link
                 :to="{name:'my-profile'}">

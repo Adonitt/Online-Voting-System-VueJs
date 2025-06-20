@@ -19,7 +19,9 @@ export default [
         component: CreateCandidateView,
         meta: {
             requiredAuth: true,
-            roles: ROLES.ADMIN
+            roles: ROLES.ADMIN,
+            checkDeadline: true
+
         }
     },
     {
@@ -28,7 +30,9 @@ export default [
         component: UpdateCandidateView,
         meta: {
             requiredAuth: true,
-            roles: ROLES.ADMIN
+            roles: ROLES.ADMIN,
+            checkDeadline: true
+
         }
     }, {
         path: '/candidates/:id',
@@ -36,6 +40,7 @@ export default [
         component: CandidateDetailsView,
         meta: {
             requireAuth: true,
+
         }
     }
 

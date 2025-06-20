@@ -123,30 +123,31 @@ onMounted(async () => {
         <div class="invalid-feedback w-100 text-start">Photo is required.</div>
       </div>
 
-      <!-- Right: Inputs -->
       <div class="col-md-8">
         <div class="row g-3">
+
           <app-input
               id="personalNo"
               label="Personal Number"
               v-model="formData.personalNo.val"
-              :is-valid="formData.personalNo.isValid"
+              :is-invalid="formData.personalNo.isValid"
               placeholder="Enter personal number"
               minlength="10"
               maxlength="10"
           />
+
           <app-input
               id="firstName"
               label="First Name"
               v-model="formData.firstName.val"
-              :is-valid="formData.firstName.isValid"
+              :is-invalid="formData.firstName.isValid"
               placeholder="Enter first name"
           />
           <app-input
               id="lastName"
               label="Last Name"
               v-model="formData.lastName.val"
-              :is-valid="formData.lastName.isValid"
+              :is-invalid="formData.lastName.isValid"
               placeholder="Enter last name"
           />
           <app-input
@@ -154,20 +155,20 @@ onMounted(async () => {
               label="Birthdate"
               type="date"
               v-model="formData.birthDate.val"
-              :is-valid="formData.birthDate.isValid"
+              :is-invalid="formData.birthDate.isValid"
           />
           <app-select
               id="party"
               label="Party"
               v-model="formData.party.val"
-              :is-valid="formData.party.isValid"
+              :is-invalid="formData.party.isValid"
               :options="partyStore.partiesForDropdown"
           />
           <app-select
               id="nationality"
               label="Nationality"
               v-model="formData.nationality.val"
-              :is-valid="formData.nationality.isValid"
+              :is-invalid="formData.nationality.isValid"
               :options="enumStore.nationalitiesForDropdown"
           />
 

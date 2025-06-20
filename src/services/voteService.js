@@ -38,6 +38,11 @@ class VoteService {
         return response.data
     }
 
+    async getVotingDates() {
+        const response = await client.get('/votes/voting-days');
+        return response.data;
+    }
+
 }
 
 export default new VoteService();
