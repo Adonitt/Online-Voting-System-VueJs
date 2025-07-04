@@ -108,7 +108,7 @@ const getFullImageUrl = (path) => {
   // console.log("VITE_IMG_URL:", import.meta.env.VITE_IMG_URL);
   // console.log("party.symbol:", path);
 
-  return "http://localhost:8080/" + path;
+  return "https://online-voting-system-rest-api-5.onrender.com/" + path;
 };
 
 

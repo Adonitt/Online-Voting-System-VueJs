@@ -20,7 +20,7 @@ const form = reactive({
   confirmPassword: {val: '', isValid: true},
   birthDate: {val: '', isValid: true},
   nationality: {val: '', isValid: true},
-  city: {val: '', isValid: true}, // Added city field
+  city: {val: '', isValid: true},
   role: 'USER'
 })
 
@@ -60,20 +60,25 @@ const handleSubmit = async () => {
     confirmPassword: form.confirmPassword.val,
     birthDate: form.birthDate.val,
     nationality: form.nationality.val,
-    city: form.city.val, // Added city to the payload
+    city: form.city.val,
     role: form.role
   }
 
   await withLoading(async () => {
-    const response = await userService.registerUser(obj)
-    if (response) {
-      toast.showSuccess("Registration successful!")
-      await router.push({name: 'login'})
+    try {
+
+      const response = await userService.registerUser(obj)
+      if (response) {
+        toast.showSuccess("Registration successful!")
+        await router.push({name: 'login'})
+      }
+    } catch (err) {
+      toast.showError(err.response?.data?.birthDate || err.response?.data?.message || 'Registration failed!')
+      console.error("Registration error:", err)
     }
   })
 }
 
-// Defined cities for the dropdown
 const availableCities = [
   'PODUJEVO', 'PRISTINA', 'FERIZAJ', 'GJILAN', 'MITROVICA',
   'PRIZREN', 'GJAKOVE', 'MALISHEVE', 'PEJE', 'DRENICE', 'DRENAS', 'SKENDERAJ'

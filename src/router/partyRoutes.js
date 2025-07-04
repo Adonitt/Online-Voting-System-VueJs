@@ -27,7 +27,8 @@ export default [
         component: CreatePartyView,
         meta: {
             requireAuth: true,
-            roles: ROLES.ADMIN
+            roles: ROLES.ADMIN,
+            checkDeadline: true
         }
     }, {
         path: 'party/modify/:id',
@@ -35,7 +36,8 @@ export default [
         component: UpdatePartyView,
         meta: {
             requireAuth: true,
-            roles: ROLES.ADMIN
+            roles: ROLES.ADMIN,
+            checkDeadline: true
 
         }
     }

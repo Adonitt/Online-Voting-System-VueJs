@@ -93,7 +93,7 @@ const handleSubmit = async () => {
 
     <div class="container rounded bg-white mt-1 mb-15" id="main-body">
       <form class="row" @submit.prevent="handleSubmit">
-        <!-- Symbol Input -->
+
         <div class="col-md-3 border-right">
           <div class="d-flex flex-column align-items-center text-center p-3 py-5">
             <img

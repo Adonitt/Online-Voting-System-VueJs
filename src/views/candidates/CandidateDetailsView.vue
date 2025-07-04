@@ -14,6 +14,7 @@ import AppButton from "@/components/app/AppButton.vue";
 import {usePartyStore} from "@/stores/partyStore.js";
 import {useAuthStore} from "@/stores/authStore.js";
 import {ROLES} from "@/composables/useAdministration.js";
+import VoteService from "@/services/voteService.js";
 
 DataTable.use(DataTablesCore)
 DataTable.use(DataTablesBS5)
@@ -46,7 +47,7 @@ const {showSuccess, showDialog} = useAppToast()
 // Helper function to build full image URL
 const getFullImageUrl = (path) => {
   if (!path || typeof path !== "string") return null;
-  const baseUrl = "http://localhost:8080/";
+  const baseUrl = "https://online-voting-system-rest-api-5.onrender.com/";
   return baseUrl + path;
 };
 
@@ -73,13 +74,20 @@ const onDeleteCandidate = async (id) => {
       throw error
     }
   }
-
 }
+const deadline = ref(null)
+const isBeforeDeadline = ref(true)
+
 onMounted(async () => {
   await withLoading(async () => {
     candidate.value = await CandidateService.getCandidateById(candidateId.value);
   });
   await partyStore.getParties()
+  const res = await VoteService.getVotingDates()
+  deadline.value = new Date(res.partyCreationDeadline)
+
+  const now = new Date()
+  isBeforeDeadline.value = now <= deadline.value
 });
 
 </script>
@@ -93,12 +101,12 @@ onMounted(async () => {
     <div v-if="candidate && candidate.id">
       <div class="d-flex justify-content-center gap-2 mt-3">
         <router-link class="btn btn-secondary  " :to="{name:'edit-candidate', params:{id:route.params.id}}"
-                     v-if="role === ROLES.ADMIN"
+                     v-if="role === ROLES.ADMIN && isBeforeDeadline"
         >Update Candidate
         </router-link>
 
         <app-button class="btn btn-danger flex" @click="onDeleteCandidate(candidate.id) "
-                    v-if="role === ROLES.ADMIN"
+                    v-if="role === ROLES.ADMIN && isBeforeDeadline"
         >Delete Candidate
         </app-button>
       </div>

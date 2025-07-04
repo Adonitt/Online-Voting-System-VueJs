@@ -13,6 +13,7 @@ import {useAppToast} from "@/composables/useAppToast.js";
 import {useRoute} from "vue-router";
 import {useAuthStore} from "@/stores/authStore.js";
 import {ROLES} from "@/composables/useAdministration.js";
+import VoteService from "@/services/voteService.js";
 
 DataTable.use(DataTablesCore);
 DataTable.use(DataTablesBS5);
@@ -34,12 +35,8 @@ const loadParties = async () => {
 }
 
 const getFullImageUrl = (path) => {
-  // console.log("Symbol path:", path);
   if (!path || typeof path !== "string") return null;
-  // console.log("VITE_IMG_URL:", import.meta.env.VITE_IMG_URL);
-  // console.log("party.symbol:", path);
-
-  return "http://localhost:8080/" + path;
+  return "https://online-voting-system-rest-api-5.onrender.com/" + path;
 };
 const {showDialog, showSuccess} = useAppToast()
 const route = useRoute()
@@ -59,12 +56,19 @@ const onDeleteParty = async (id) => {
     }
   }
 }
+const deadline = ref(null)
+const isBeforeDeadline = ref(true)
+
 onMounted(async () => {
   await loadParties()
-  // console.log(loadParties())
+  const res = await VoteService.getVotingDates()
+  deadline.value = new Date(res.partyCreationDeadline)
+
+  const now = new Date()
+  isBeforeDeadline.value = now <= deadline.value
+
   new DataTablesCore("#parties")
 })
-
 
 </script>
 
@@ -76,9 +80,13 @@ onMounted(async () => {
       <h1>Parties</h1>
     </template>
 
+    <div class="alert alert-warning text-center mx-3" v-if="role === ROLES.ADMIN">
+      The deadline for creating or updating parties is on ({{ deadline?.toLocaleDateString() }}).
+    </div>
+
     <div class="d-flex justify-content-end m-3 ">
       <router-link :to="{name:'createParty'}" class="btn btn-secondary"
-                   v-if="role === ROLES.ADMIN"
+                   v-if="role === ROLES.ADMIN && isBeforeDeadline"
       >Add Party
       </router-link>
     </div>
@@ -114,12 +122,12 @@ onMounted(async () => {
           </router-link>
 
           <router-link :to="{name:'updateParty',params:{id:party.id}}" class="btn btn-icon btn-round btn-warning me-2"
-                       v-if="role === ROLES.ADMIN">
+                       v-if="role === ROLES.ADMIN && isBeforeDeadline">
             <i class="fas fa-edit m-2"></i>
           </router-link>
 
           <app-button class="btn btn-icon btn-round btn-danger" @click="onDeleteParty(party.id)"
-                      v-if="role === ROLES.ADMIN">
+                      v-if="role === ROLES.ADMIN && isBeforeDeadline">
             <i class="fas fa-trash m-2"></i>
           </app-button>
 

@@ -17,6 +17,7 @@ import profileRoutes from "@/router/profileRoutes.js"; // Ensure this is not a d
 
 import AllVotesView from "@/views/vote/AllVotesView.vue";
 import userRoutes from "@/router/userRoutes.js";
+import VoteService from "@/services/voteService.js";
 
 const routes = [
     {
@@ -71,23 +72,39 @@ const router = createRouter({
     routes,
 });
 
-router.beforeEach((to, from) => {
+router.beforeEach(async (to, from) => {
     const authStore = useAuthStore();
 
-    // Check for role-based access before authentication
     if (to.meta.roles && to.meta.roles.length > 0 && authStore.isLoggedIn) {
-        // Your existing role check logic
         const isAllowed = to.meta.roles.includes(authStore.loggedInUser?.role);
 
         if (!isAllowed) {
-            // Using a better notification system than alert is recommended.
-            // For now, redirect to home.
             console.warn('Access Denied: You do not have the required role for this page.');
-            return {name: 'home'} // Redirect to home or another suitable page
+            return {name: 'home'}
         }
     }
 
-    // Check for general authentication
+
+    if (to.meta.checkDeadline) {
+        try {
+            const res = await VoteService.getVotingDates();
+            const deadline = new Date(res.partyCreationDeadline);
+            const now = new Date();
+
+            if (now > deadline) {
+                console.warn('Party creation deadline has passed.');
+                return {
+                    name: 'home',
+                    query: { error: 'party-deadline-passed' }
+                };
+            }
+        } catch (e) {
+            console.error("Error fetching deadline:", e);
+            return { name: 'home' };
+        }
+    }
+
+
     if (to.meta.requireAuth && !authStore.isLoggedIn) {
         return {
             name: 'login',
@@ -96,13 +113,10 @@ router.beforeEach((to, from) => {
             }
         };
     } else if (!to.meta.requireAuth && authStore.isLoggedIn) {
-        // If not required auth but user is logged in, redirect to home
-        // This prevents logged-in users from accessing login/register/forgot password pages.
         return {name: 'home'};
     }
 
-    // If none of the above conditions met, proceed with navigation
-    return true; // Explicitly return true to allow navigation
+    return true;
 });
 
 

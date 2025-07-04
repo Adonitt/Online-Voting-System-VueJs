@@ -1,5 +1,5 @@
 <script setup>
-import {ref, onMounted} from "vue";
+import {onMounted, ref} from "vue";
 import VoteService from "@/services/voteService.js";
 import {useAuthStore} from "@/stores/authStore.js";
 import {useLoading} from "@/composables/useLoading.js";
@@ -25,7 +25,8 @@ onMounted(async () => {
 </script>
 <template>
 
-  <app-card class="bg-gradient-to-br from-white to-gray-50 shadow-lg rounded-xl p-8 max-w-5xl mx-auto mt-10 col-md-5 mt-5">
+  <app-card
+      class="bg-gradient-to-br from-white to-gray-50 shadow-lg rounded-xl p-8 max-w-5xl mx-auto mt-10 col-md-5 mt-5">
     <template #header>
       <h2 class="text-3xl font-bold text-blue-800 mb-8 text-center">
         🗳️ Your Vote Details
@@ -50,7 +51,7 @@ onMounted(async () => {
 
           <p>
             <span class="font-medium text-gray-800">🎉 Party Name: </span>
-            <span class="ml-1"><b>{{vote.party }}}</b></span>
+            <span class="ml-1"><b>{{ vote.party }}}</b></span>
           </p>
 
           <div>
