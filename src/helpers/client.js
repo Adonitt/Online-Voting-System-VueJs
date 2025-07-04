@@ -26,16 +26,17 @@ client.interceptors.request.use(
     }
 );
 
-// Response Interceptor: Handle errors, e.g., 401 Unauthorized
-client.interceptors.response.use(
-    (response) => response,
-    (error) => {
-        if (error.response && error.response.status === 401) {
-            const authStore = useAuthStore();
-            authStore.logout(); // Log out if token is expired or invalid
-            // Optionally, redirect to login page here using router, but be careful
-            // with direct router access in interceptors. Better to handle in components.
+client.interceptors.request.use(
+    (config) => {
+        const authStore = useAuthStore(); // ❌ Problem këtu
+        const token = authStore.token;
+
+        if (token) {
+            config.headers['Authorization'] = `Bearer ${token}`;
         }
+        return config;
+    },
+    (error) => {
         return Promise.reject(error);
     }
 );
