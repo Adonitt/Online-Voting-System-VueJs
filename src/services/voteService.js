@@ -8,7 +8,7 @@ class VoteService {
     }
 
     async getVoteById(userId) {
-        const response = await client.get(`/votes/results/user/${userId}`);
+        const response = await client.get(`votes/results/user/${userId}`);
         return response.data;
     }
 
@@ -19,27 +19,27 @@ class VoteService {
     }
 
     async getPartyResults() {
-        const response = await client.get("/votes/results/party")
+        const response = await client.get("votes/results/party")
         return response.data;
     }
 
     async getPartyResultsById(partyId) {
-        const response = await client.get(`/votes/results/${partyId}`);
+        const response = await client.get(`votes/results/${partyId}`);
         return response.data
     }
 
     async getCandidateResults(candidateId) {
-        const response = await client.get(`/votes/results/candidate`);
+        const response = await client.get(`votes/results/candidate`);
         return response.data;
     }
 
     async getCityVoteSummary() {
-        const response = await client.get(`/votes/results/city-summary`);
+        const response = await client.get(`votes/results/city-summary`);
         return response.data
     }
 
     async getVotingDates() {
-        const response = await client.get('/votes/voting-days');
+        const response = await client.get('votes/voting-days');
         return response.data;
     }
 

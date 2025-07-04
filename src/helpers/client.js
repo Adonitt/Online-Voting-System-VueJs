@@ -4,7 +4,7 @@ import axios from 'axios';
 import { useAuthStore } from '@/stores/authStore'; // Import your auth store
 
 const client = axios.create({
-    baseURL: 'https://online-voting-system-rest-api-5.onrender.com/api/v1', // Adjust your Spring Boot backend URL here
+    baseURL: 'https://online-voting-system-rest-api-5.onrender.com/api/v1/', // Adjust your Spring Boot backend URL here
     headers: {
         'Content-Type': 'application/json',
     },

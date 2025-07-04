@@ -17,7 +17,6 @@ const isLoading = ref(false)
 
 const handleSubmit = async () => {
   if (!user.email || !user.password) {
-    // alert('Please fill all fields.');
     toast.showWarning("Please fill all fields!");
     return
   }
