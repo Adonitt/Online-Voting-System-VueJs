@@ -3,7 +3,6 @@ import {useRoute, useRouter} from "vue-router";
 import {useAuthStore} from "@/stores/authStore.js";
 import {reactive, ref} from "vue";
 import {useAppToast} from "@/composables/useAppToast.js";
-import logo from '@/assets/img/foto/ks.jpeg'
 
 
 const router = useRouter()
@@ -44,7 +43,7 @@ const handleSubmit = async () => {
   <section class="login-section vh-100 d-flex align-items-center justify-content-center">
     <div class="card shadow p-4" style="max-width: 500px; width: 100%;">
       <div class="text-center mb-4">
-        <img :src="logo" alt="Logo" class="img-fluid mb-3" style="max-height: 150px;">
+        <img src="@/assets/img/foto/ks.jpeg" alt="Logo" class="img-fluid mb-3" style="max-height: 150px;">
         <h2 class="fw-bold">Login to Voting System</h2>
       </div>
 
