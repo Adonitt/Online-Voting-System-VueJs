@@ -1,5 +1,4 @@
 <script setup>
-import { ref, watch } from "vue";
 import { useAuthStore } from "@/stores/authStore.js";
 
 const emit = defineEmits(["toggle-sidebar", "toggle-profile-dropdown", "logout"]);
