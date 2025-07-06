@@ -59,7 +59,7 @@ watch(selectedParty, async (partyId) => {
 
 const getFullImageUrl = (path) => {
   if (!path || typeof path !== "string") return null;
-  return "https://online-voting-system-rest-api-1-xvys.onrender.com/api/v1//" + path;
+  return "https://online-voting-system-rest-api-1-xvys.onrender.com/api/v1/" + path;
 };
 
 const selectParty = (partyId) => {

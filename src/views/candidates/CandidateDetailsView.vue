@@ -47,7 +47,7 @@ const {showSuccess, showDialog} = useAppToast()
 // Helper function to build full image URL
 const getFullImageUrl = (path) => {
   if (!path || typeof path !== "string") return null;
-  const baseUrl = "https://online-voting-system-rest-api-1-xvys.onrender.com/api/v1//";
+  const baseUrl = "https://online-voting-system-rest-api-1-xvys.onrender.com/api/v1/";
   return baseUrl + path;
 };
 
