@@ -1,22 +1,17 @@
-// TheNavBar.vue
 <script setup>
-
-import {useAuthStore} from "@/stores/authStore.js";
-import {useRouter} from "vue-router";
-import {useAppToast} from "@/composables/useAppToast.js";
-import {toFormData} from "axios";
+import { useAuthStore } from "@/stores/authStore.js";
+import { useRouter } from "vue-router";
+import { useAppToast } from "@/composables/useAppToast.js";
 
 const authStore = useAuthStore();
-const router = useRouter()
-const toast = useAppToast()
+const router = useRouter();
+const toast = useAppToast();
 
 const onLogout = () => {
-  authStore.logout()
-  router.push({name: 'login'})
+  authStore.logout();
+  router.push({ name: "login" });
   toast.showSuccess("You're logged out!");
-}
-
-
+};
 </script>
 
 <template>
@@ -27,15 +22,14 @@ const onLogout = () => {
         data-background-color="white"
     >
       <div class="container-fluid">
+        <!-- Left nav empty placeholder for large screens -->
         <nav
             class="navbar navbar-header-left navbar-expand-lg navbar-form nav-search p-0 d-none d-lg-flex"
-        >
-        </nav>
+        ></nav>
 
         <ul class="navbar-nav topbar-nav ms-md-auto align-items-center">
-          <li
-              class="nav-item topbar-icon dropdown hidden-caret d-flex d-lg-none"
-          >
+          <!-- Mobile Search icon -->
+          <li class="nav-item topbar-icon dropdown hidden-caret d-flex d-lg-none">
             <a
                 class="nav-link dropdown-toggle"
                 data-bs-toggle="dropdown"
@@ -58,6 +52,8 @@ const onLogout = () => {
               </form>
             </ul>
           </li>
+
+          <!-- Profile dropdown -->
           <li class="nav-item topbar-user dropdown hidden-caret">
             <a
                 class="dropdown-toggle profile-pic"
@@ -65,37 +61,51 @@ const onLogout = () => {
                 href="#"
                 aria-expanded="false"
             >
-
               <span class="profile-username">
-                      <span class="op-7">Hi, </span>
-                      <span class="fw-bold">{{
-                          authStore.loggedInUser?.firstName + " " + authStore.loggedInUser?.lastName
-                        }}</span>
-                    </span>
+                <span class="op-7">Hi, </span>
+                <span class="fw-bold">{{
+                    authStore.loggedInUser?.firstName + " " + authStore.loggedInUser?.lastName
+                  }}</span>
+              </span>
             </a>
+
             <ul class="dropdown-menu dropdown-user animated fadeIn">
               <div class="dropdown-user-scroll scrollbar-outer">
                 <li>
                   <div class="user-box">
-
                     <div class="u-text">
-                      <h4>{{ authStore.loggedInUser?.firstName + " " + authStore.loggedInUser?.lastName }}</h4>
+                      <h4>{{
+                          authStore.loggedInUser?.firstName + " " + authStore.loggedInUser?.lastName
+                        }}</h4>
                       <p class="text-muted">{{ authStore.loggedInUser?.sub }}</p>
                       <router-link
-                          :to="{name:'my-profile'}"
+                          :to="{ name: 'my-profile' }"
                           class="btn btn-xs btn-secondary btn-sm"
-                      >View Profile
-                      </router-link
                       >
+                        View Profile
+                      </router-link>
                     </div>
                   </div>
                 </li>
+
                 <li>
                   <div class="dropdown-divider"></div>
-
-                  <router-link :to="{name:'change-password'}" class="dropdown-item" href="#">Change Password</router-link>
+                  <router-link
+                      :to="{ name: 'change-password' }"
+                      class="dropdown-item"
+                  >
+                    Change Password
+                  </router-link>
                   <div class="dropdown-divider"></div>
-                  <a class="dropdown-item" @click="onLogout">Logout</a>
+
+                  <!-- Logout with prevent default to avoid page reload -->
+                  <a
+                      href="#"
+                      class="dropdown-item"
+                      @click.prevent="onLogout"
+                  >
+                    Logout
+                  </a>
                 </li>
               </div>
             </ul>
@@ -105,5 +115,4 @@ const onLogout = () => {
     </nav>
     <!-- End Navbar -->
   </div>
-
 </template>
