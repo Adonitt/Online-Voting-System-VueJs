@@ -103,7 +103,7 @@ const getFullImageUrl = (path) => {
   // console.log("Symbol path:", path);
   if (!path || typeof path !== "string") return null;
 
-  return "https://online-voting-system-rest-api-5.onrender.com/" + path;
+  return "https://online-voting-system-rest-api-1-xvys.onrender.com/api/v1//" + path;
 };
 console.log(candidate.value)
 
