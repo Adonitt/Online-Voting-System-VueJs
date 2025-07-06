@@ -1,8 +1,8 @@
 <script setup>
-import {useAuthStore} from "@/stores/authStore.js";
-import {useRouter} from "vue-router";
-import {useAppToast} from "@/composables/useAppToast.js";
-import {ref} from "vue";
+import { useAuthStore } from "@/stores/authStore.js";
+import { useRouter } from "vue-router";
+import { useAppToast } from "@/composables/useAppToast.js";
+import { ref } from "vue";
 
 const authStore = useAuthStore();
 const router = useRouter();
@@ -18,7 +18,7 @@ const toggleProfileDropdown = () => {
 
 const onLogout = () => {
   authStore.logout();
-  router.push({name: "login"});
+  router.push({ name: "login" });
   toast.showSuccess("You're logged out!");
 };
 </script>
@@ -26,8 +26,7 @@ const onLogout = () => {
 <template>
   <div class="main-header">
     <!-- Mobile Header -->
-    <div class="logo-header d-block d-lg-none px-3 py-2 d-flex align-items-center justify-content-between"
-         data-background-color="dark">
+    <div class="logo-header d-block d-lg-none px-3 py-2 d-flex align-items-center justify-content-between" data-background-color="dark">
       <!-- Logo -->
       <router-link :to="{ name: 'home' }" class="logo d-flex align-items-center">
         <img
@@ -51,8 +50,7 @@ const onLogout = () => {
         </button>
 
         <!-- Profile Dropdown -->
-        <ul v-if="showProfileDropdown" class="dropdown-menu dropdown-user show animated fadeIn"
-            style="right: 0; left: auto;">
+        <ul v-if="showProfileDropdown" class="dropdown-menu dropdown-user show animated fadeIn" style="right: 0; left: auto;">
           <li>
             <div class="user-box text-center p-2">
               <h6>{{ authStore.loggedInUser?.firstName + " " + authStore.loggedInUser?.lastName }}</h6>
@@ -60,8 +58,7 @@ const onLogout = () => {
               <router-link
                   :to="{ name: 'my-profile' }"
                   class="btn btn-sm btn-secondary mb-1"
-              >View Profile
-              </router-link>
+              >View Profile</router-link>
             </div>
           </li>
           <li>
@@ -69,8 +66,7 @@ const onLogout = () => {
             <router-link
                 :to="{ name: 'change-password' }"
                 class="dropdown-item"
-            >Change Password
-            </router-link>
+            >Change Password</router-link>
             <div class="dropdown-divider"></div>
             <a class="dropdown-item" @click="onLogout">Logout</a>
           </li>
@@ -105,8 +101,7 @@ const onLogout = () => {
                   <router-link
                       :to="{ name: 'my-profile' }"
                       class="btn btn-sm btn-secondary mb-1"
-                  >View Profile
-                  </router-link>
+                  >View Profile</router-link>
                 </div>
               </li>
               <li>
@@ -114,8 +109,7 @@ const onLogout = () => {
                 <router-link
                     :to="{ name: 'change-password' }"
                     class="dropdown-item"
-                >Change Password
-                </router-link>
+                >Change Password</router-link>
                 <div class="dropdown-divider"></div>
                 <a class="dropdown-item" @click="onLogout">Logout</a>
               </li>
