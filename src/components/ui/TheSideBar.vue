@@ -1,60 +1,34 @@
 <script setup>
-import { useAuthStore } from "@/stores/authStore.js";
-import { computed } from "vue";
+import {useAuthStore} from "@/stores/authStore.js";
+import {computed} from "vue";
 
 const authStore = useAuthStore();
 
+
 const isAdmin = computed(() => authStore.isAdmin);
+
 </script>
 
 <template>
   <div class="sidebar">
+    <div class="sidebar-logo">
+
+      <div class="logo-header" data-background-color="white">
+        <router-link :to="{name:'home'}" class="logo">
+          <img
+              src="@/assets/img/foto/ks.jpeg"
+              alt="navbar brand"
+              class="navbar-brand"
+              height="50px"
+              width="50px"/>
+        </router-link>
+      </div>
+    </div>
     <div class="sidebar-wrapper scrollbar scrollbar-inner">
       <div class="sidebar-content">
-        <!-- User Profile in Sidebar (Optional, if you want it here) -->
-        <!-- You had a user section here previously, re-adding it based on your original code -->
-        <div class="user">
-          <div class="avatar-sm float-left mr-2">
-            <img
-                src="assets/img/profile.jpg"
-                alt="..."
-                class="avatar-img rounded-circle"
-            />
-          </div>
-          <div class="info">
-            <a
-                data-toggle="collapse"
-                href="#collapseExample"
-                aria-expanded="true"
-            >
-              <span>
-                {{ authStore.loggedInUser?.firstName }}
-                <span class="user-level">{{ authStore.loggedInUser?.sub }}</span>
-                <span class="caret"></span>
-              </span>
-            </a>
-            <div class="clearfix"></div>
-
-            <div class="collapse in" id="collapseExample">
-              <ul class="nav">
-                <li>
-                  <router-link :to="{ name: 'my-profile' }">
-                    <span class="link-collapse">My Profile</span>
-                  </router-link>
-                </li>
-                <li>
-                  <router-link :to="{ name: 'change-password' }">
-                    <span class="link-collapse">Change Password</span>
-                  </router-link>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div>
-
         <ul class="nav nav-secondary">
-          <li class="nav-item">
-            <router-link :to="{ name: 'home' }">
+          <li class="nav-item ">
+            <router-link :to="{name:'home'}">
               <i class="fas fa-home"></i>
               <p>Results</p>
             </router-link>
@@ -64,25 +38,29 @@ const isAdmin = computed(() => authStore.isAdmin);
             <h4 class="text-section">Components</h4>
           </li>
           <li class="nav-item">
-            <router-link :to="{ name: 'party' }">
+            <router-link
+                :to="{name:'party'}">
               <i class="bi-flag"></i>
               <p>Parties</p>
             </router-link>
           </li>
 
           <li class="nav-item">
-            <router-link :to="{ name: 'candidates' }">
+            <router-link
+                :to="{name:'candidates'}">
               <i class="bi-file-person"></i>
               <p>Candidates</p>
             </router-link>
           </li>
 
           <li class="nav-item">
-            <router-link :to="{ name: 'cast-vote' }">
+            <router-link
+                :to="{name:'cast-vote'}">
               <i class="bi-pen"></i>
               <p>Cast Vote</p>
             </router-link>
           </li>
+
 
           <li class="nav-item" v-if="isAdmin">
             <router-link :to="{ name: 'admin-users' }">
@@ -106,7 +84,8 @@ const isAdmin = computed(() => authStore.isAdmin);
           </li>
 
           <li class="nav-item">
-            <router-link :to="{ name: 'my-profile' }">
+            <router-link
+                :to="{name:'my-profile'}">
               <i class="bi-person"></i>
               <p>My Profile</p>
             </router-link>
@@ -118,5 +97,4 @@ const isAdmin = computed(() => authStore.isAdmin);
 </template>
 
 <style scoped>
-/* Add any specific styles for TheSideBar here if needed, or rely on global CSS */
 </style>
