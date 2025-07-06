@@ -81,6 +81,7 @@ const handleSubmit = async () => {
       </form>
       <div class="mt-3">Don't have an account?
         <router-link :to="{name:'register'}">Register now</router-link>
+        <router-link :to="{name:'citizens'}">How to register</router-link>
       </div>
     </div>
   </section>

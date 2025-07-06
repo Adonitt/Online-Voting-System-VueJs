@@ -1,4 +1,5 @@
 import client from "@/helpers/client.js";
+import axios from "axios";
 
 class UserService {
     async getAllUsers() {
@@ -68,6 +69,12 @@ class UserService {
                 "Failed to process your request");
         }
     }
+
+    async getAllCitizens() {
+        const response = await axios.get("https://online-voting-system-rest-api-1-xvys.onrender.com/rks/suffrages")
+        return response.data;
+    }
+
 }
 
 export default new UserService();

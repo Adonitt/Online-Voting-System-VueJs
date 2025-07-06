@@ -181,6 +181,7 @@ const availableCities = [
         <div class="d-flex justify-content-between align-items-center mt-3">
           <span class="text-muted">Already have an account?
             <router-link to="/auth/login" class="text-decoration-none">Login</router-link>
+        <router-link :to="{name:'citizens'}">How to register</router-link>
           </span>
         </div>
       </form>

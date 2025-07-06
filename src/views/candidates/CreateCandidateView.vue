@@ -176,6 +176,7 @@ onMounted(async () => {
             <i class="fas fa-save me-2"></i>
             Create Candidate
           </button>
+          <router-link :to="{name:'citizens'}">How to add candidate?</router-link>
         </div>
 
       </div>

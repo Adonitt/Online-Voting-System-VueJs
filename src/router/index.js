@@ -18,6 +18,7 @@ import profileRoutes from "@/router/profileRoutes.js"; // Ensure this is not a d
 import AllVotesView from "@/views/vote/AllVotesView.vue";
 import userRoutes from "@/router/userRoutes.js";
 import VoteService from "@/services/voteService.js";
+import Citizens from "@/views/Citizens.vue";
 
 const routes = [
     {
@@ -32,6 +33,14 @@ const routes = [
         path: '/auth/register',
         name: 'register',
         component: RegisterView,
+        meta: {
+            requireAuth: false,
+        }
+    },
+    {
+        path: '/auth/citizens',
+        name: 'citizens',
+        component: Citizens,
         meta: {
             requireAuth: false,
         }
@@ -95,12 +104,12 @@ router.beforeEach(async (to, from) => {
                 console.warn('Party creation deadline has passed.');
                 return {
                     name: 'home',
-                    query: { error: 'party-deadline-passed' }
+                    query: {error: 'party-deadline-passed'}
                 };
             }
         } catch (e) {
             console.error("Error fetching deadline:", e);
-            return { name: 'home' };
+            return {name: 'home'};
         }
     }
 
