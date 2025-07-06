@@ -1,44 +1,48 @@
+// TheNavBar.vue
 <script setup>
-import { useAuthStore } from "@/stores/authStore.js";
-import { useRouter } from "vue-router";
-import { useAppToast } from "@/composables/useAppToast.js";
+
+import {useAuthStore} from "@/stores/authStore.js";
+import {useRouter} from "vue-router";
+import {useAppToast} from "@/composables/useAppToast.js";
+import {toFormData} from "axios";
 
 const authStore = useAuthStore();
-const router = useRouter();
-const toast = useAppToast();
+const router = useRouter()
+const toast = useAppToast()
 
 const onLogout = () => {
-  authStore.logout();
-  router.push({ name: "login" });
+  authStore.logout()
+  router.push({name: 'login'})
   toast.showSuccess("You're logged out!");
-};
+}
+
+
 </script>
 
 <template>
   <div class="main-header">
+    <!-- Navbar Header -->
     <nav
-        class="navbar navbar-expand-lg navbar-light bg-white border-bottom"
+        class="navbar navbar-header navbar-header-transparent navbar-expand-lg border-bottom"
+        data-background-color="white"
     >
-      <div class="container-fluid d-flex align-items-center justify-content-between">
-        <!-- Hamburger toggle for mobile -->
-        <button
-            class="btn btn-toggle d-lg-none"
-            type="button"
-            aria-label="Toggle sidebar"
-            @click="$emit('toggle-sidebar')"
+      <div class="container-fluid">
+        <nav
+            class="navbar navbar-header-left navbar-expand-lg navbar-form nav-search p-0 d-none d-lg-flex"
         >
-          <i class="fas fa-bars"></i>
-        </button>
+        </nav>
 
-        <!-- Optional: search icon for mobile -->
-        <ul class="navbar-nav d-flex align-items-center d-lg-none">
-          <li class="nav-item dropdown">
+        <ul class="navbar-nav topbar-nav ms-md-auto align-items-center">
+          <li
+              class="nav-item topbar-icon dropdown hidden-caret d-flex d-lg-none"
+          >
             <a
                 class="nav-link dropdown-toggle"
-                href="#"
                 data-bs-toggle="dropdown"
+                href="#"
                 role="button"
                 aria-expanded="false"
+                aria-haspopup="true"
             >
               <i class="fa fa-search"></i>
             </a>
@@ -54,85 +58,52 @@ const onLogout = () => {
               </form>
             </ul>
           </li>
-        </ul>
-
-        <!-- Profile dropdown -->
-        <ul class="navbar-nav ms-auto align-items-center">
-          <li class="nav-item dropdown">
+          <li class="nav-item topbar-user dropdown hidden-caret">
             <a
-                class="nav-link dropdown-toggle profile-pic"
-                href="#"
+                class="dropdown-toggle profile-pic"
                 data-bs-toggle="dropdown"
+                href="#"
                 aria-expanded="false"
             >
+
               <span class="profile-username">
-                <span class="op-7">Hi, </span>
-                <span class="fw-bold">
-                  {{
-                    authStore.loggedInUser?.firstName +
-                    " " +
-                    authStore.loggedInUser?.lastName
-                  }}
-                </span>
-              </span>
+                      <span class="op-7">Hi, </span>
+                      <span class="fw-bold">{{
+                          authStore.loggedInUser?.firstName + " " + authStore.loggedInUser?.lastName
+                        }}</span>
+                    </span>
             </a>
-            <ul class="dropdown-menu dropdown-user animated fadeIn dropdown-menu-end">
-              <li>
-                <div class="user-box px-3 py-2">
-                  <div class="u-text">
-                    <h6 class="mb-0">
-                      {{
-                        authStore.loggedInUser?.firstName +
-                        " " +
-                        authStore.loggedInUser?.lastName
-                      }}
-                    </h6>
-                    <p class="text-muted small mb-1">
-                      {{ authStore.loggedInUser?.sub }}
-                    </p>
-                    <router-link
-                        :to="{ name: 'my-profile' }"
-                        class="btn btn-sm btn-secondary"
-                    >
-                      View Profile
-                    </router-link>
+            <ul class="dropdown-menu dropdown-user animated fadeIn">
+              <div class="dropdown-user-scroll scrollbar-outer">
+                <li>
+                  <div class="user-box">
+
+                    <div class="u-text">
+                      <h4>{{ authStore.loggedInUser?.firstName + " " + authStore.loggedInUser?.lastName }}</h4>
+                      <p class="text-muted">{{ authStore.loggedInUser?.sub }}</p>
+                      <router-link
+                          :to="{name:'my-profile'}"
+                          class="btn btn-xs btn-secondary btn-sm"
+                      >View Profile
+                      </router-link
+                      >
+                    </div>
                   </div>
-                </div>
-              </li>
-              <li><hr class="dropdown-divider" /></li>
-              <li>
-                <router-link
-                    class="dropdown-item"
-                    :to="{ name: 'change-password' }"
-                >
-                  Change Password
-                </router-link>
-              </li>
-              <li><hr class="dropdown-divider" /></li>
-              <li>
-                <a class="dropdown-item" @click.prevent="onLogout">
-                  Logout
-                </a>
-              </li>
+                </li>
+                <li>
+                  <div class="dropdown-divider"></div>
+
+                  <router-link :to="{name:'change-password'}" class="dropdown-item" href="#">Change Password</router-link>
+                  <div class="dropdown-divider"></div>
+                  <a class="dropdown-item" @click="onLogout">Logout</a>
+                </li>
+              </div>
             </ul>
           </li>
         </ul>
       </div>
     </nav>
+    <!-- End Navbar -->
   </div>
-</template>
 
-<style scoped>
-.btn-toggle {
-  border: none;
-  background: transparent;
-  font-size: 1.25rem;
-  color: #333;
-}
-.profile-username {
-  font-size: 0.9rem;
-}
-.user-box {
-  text-align: left;
-}
-</style>
+</template>
