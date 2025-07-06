@@ -2,6 +2,7 @@
 import { ref } from 'vue';
 import TheSideBar from './TheSideBar.vue';
 import TheNavBar from './TheNavBar.vue';
+import TheFooter from '@/components/ui/TheFooter.vue';
 
 const sidebarVisible = ref(false);
 
@@ -12,29 +13,16 @@ function toggleSidebar() {
 
 <template>
   <div id="app">
-    <!-- Sidebar me prop për visibility -->
-    <TheSideBar :visible="sidebarVisible" />
+    <TheSideBar :visible="sidebarVisible" :is-admin="true" />  <!-- ose boolean sipas rolit -->
 
     <div class="main-panel">
-      <!-- Navbar me event për toggle -->
       <TheNavBar @toggle-sidebar="toggleSidebar" />
 
-      <div class="container mt-3">
+      <div class="container">
         <router-view />
       </div>
+
+      <TheFooter />
     </div>
   </div>
 </template>
-
-<style scoped>
-.main-panel {
-  margin-left: 250px; /* sidebar width */
-  transition: margin-left 0.3s ease;
-}
-
-@media (max-width: 991px) {
-  .main-panel {
-    margin-left: 0;
-  }
-}
-</style>

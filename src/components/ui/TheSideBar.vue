@@ -1,19 +1,15 @@
 <script setup>
-import { defineProps, computed } from 'vue';
-import { useAuthStore } from '@/stores/authStore.js';
+import { defineProps } from "vue";
 
-const props = defineProps({
+const { visible } = defineProps({
   visible: Boolean,
 });
-
-const authStore = useAuthStore();
-const isAdmin = computed(() => authStore.isAdmin);
 </script>
 
 <template>
   <aside
       class="sidebar"
-      :class="{ 'sidebar--visible': props.visible }"
+      :class="{ 'sidebar--visible': visible }"
   >
     <div class="sidebar-logo">
       <div class="logo-header" data-background-color="white">
@@ -22,8 +18,8 @@ const isAdmin = computed(() => authStore.isAdmin);
               src="@/assets/img/foto/ks.jpeg"
               alt="navbar brand"
               class="navbar-brand"
-              height="50"
-              width="50"
+              height="50px"
+              width="50px"
           />
         </router-link>
       </div>
@@ -32,7 +28,7 @@ const isAdmin = computed(() => authStore.isAdmin);
     <div class="sidebar-wrapper scrollbar scrollbar-inner">
       <div class="sidebar-content">
         <ul class="nav nav-secondary">
-          <li class="nav-item">
+          <li class="nav-item ">
             <router-link :to="{ name: 'home' }">
               <i class="fas fa-home"></i>
               <p>Results</p>
@@ -42,7 +38,6 @@ const isAdmin = computed(() => authStore.isAdmin);
           <li class="nav-section">
             <h4 class="text-section">Components</h4>
           </li>
-
           <li class="nav-item">
             <router-link :to="{ name: 'party' }">
               <i class="bi-flag"></i>
@@ -64,21 +59,21 @@ const isAdmin = computed(() => authStore.isAdmin);
             </router-link>
           </li>
 
-          <li class="nav-item" v-if="isAdmin">
+          <li v-if="visible && $attrs.isAdmin" class="nav-item">
             <router-link :to="{ name: 'admin-users' }">
               <i class="bi bi-people"></i>
               <p>All Registered Users</p>
             </router-link>
           </li>
 
-          <li class="nav-item" v-if="isAdmin">
+          <li v-if="visible && $attrs.isAdmin" class="nav-item">
             <router-link :to="{ name: 'admin-votes' }">
               <i class="bi bi-check-all"></i>
               <p>All Users that has Voted</p>
             </router-link>
           </li>
 
-          <li class="nav-item" v-if="isAdmin">
+          <li v-if="visible && $attrs.isAdmin" class="nav-item">
             <router-link :to="{ name: 'candidate-results' }">
               <i class="bi bi-person"></i>
               <p>Candidate Results</p>
@@ -116,10 +111,11 @@ const isAdmin = computed(() => authStore.isAdmin);
   transform: translateX(0);
 }
 
-/* Sidebar always visible on desktop */
+/* Desktop: sidebar always visible */
 @media (min-width: 992px) {
   .sidebar {
     transform: translateX(0) !important;
+    position: fixed;
   }
 }
 </style>

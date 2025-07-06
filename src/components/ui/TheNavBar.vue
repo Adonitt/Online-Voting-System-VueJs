@@ -1,8 +1,8 @@
 <script setup>
-import { ref } from 'vue';
-import { useAuthStore } from '@/stores/authStore.js';
-import { useRouter } from 'vue-router';
-import { useAppToast } from '@/composables/useAppToast.js';
+import {ref} from 'vue';
+import {useAuthStore} from '@/stores/authStore.js';
+import {useRouter} from 'vue-router';
+import {useAppToast} from '@/composables/useAppToast.js';
 
 const emit = defineEmits(['toggle-sidebar']);
 
@@ -18,7 +18,7 @@ function toggleProfileDropdown() {
 
 function onLogout() {
   authStore.logout();
-  router.push({ name: 'login' });
+  router.push({name: 'login'});
   toast.showSuccess("You're logged out!");
   showProfileDropdown.value = false;
 }
@@ -32,17 +32,12 @@ function onToggleSidebar() {
   <nav class="navbar mobile-navbar d-lg-none">
     <div class="container-fluid d-flex justify-content-between align-items-center">
       <!-- Butoni për toggle sidebar -->
-      <button
-          class="btn btn-link text-dark"
-          aria-label="Toggle sidebar"
-          @click="onToggleSidebar"
-      >
-        <i class="bi bi-list fs-4"></i>
-      </button>
+      <button @click="emit('toggle-sidebar')">Toggle Sidebar</button>
+
 
       <!-- Logo -->
       <router-link to="/" class="navbar-brand">
-        <img src="@/assets/img/foto/ks.jpeg" alt="Logo" height="40" />
+        <img src="@/assets/img/foto/ks.jpeg" alt="Logo" height="40"/>
       </router-link>
 
       <!-- Butoni Profile -->
