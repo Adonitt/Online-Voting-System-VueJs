@@ -1,33 +1,30 @@
 <!-- TheLayout.vue -->
 <script setup>
-import { ref } from "vue";
 import TheSideBar from "./TheSideBar.vue";
 import TheNavBar from "./TheNavBar.vue";
+import TheFooter from "@/components/ui/TheFooter.vue";
+import {ref} from "vue";
 
-const sidebarVisible = ref(false);
-
+const sidebarVisible = ref(true)
 const handleSidebarToggle = () => {
-  sidebarVisible.value = !sidebarVisible.value;
-  console.log("Sidebar visible:", sidebarVisible.value);
-};
+  sidebarVisible.value = !sidebarVisible.value
+}
+
+
 </script>
 
 <template>
-  <div id="app" class="d-flex">
-    <!-- Desktop sidebar: gjithmonë e dukshme -->
-    <the-side-bar class="d-none d-lg-block" />
+  <div id="app">
+    <the-side-bar/>
 
-    <!-- Mobile sidebar toggle -->
-    <the-side-bar
-        v-if="sidebarVisible"
-        class="d-lg-none position-fixed"
-        style="z-index: 1050; background:white; width:250px; height:100vh;"
-    />
+    <div class="main-panel">
+      <the-nav-bar @toggleSidebar="handleSidebarToggle"/>
 
-    <div class="main-panel flex-grow-1">
-      <the-nav-bar @toggleSidebar="handleSidebarToggle" />
-
-      <router-view />
+      <div class="container">
+        <router-view/>
+      </div>
+      <the-footer/>
     </div>
+
   </div>
 </template>

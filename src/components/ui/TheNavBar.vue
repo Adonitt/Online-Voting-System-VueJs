@@ -38,10 +38,9 @@ const onLogout = () => {
       </router-link>
 
       <!-- Sidebar Toggle Button -->
-      <button class="btn btn-sm text-white d-lg-none" @click="$emit('toggleSidebar')">
+      <button class="btn btn-sm text-white" @click="$emit('toggleSidebar')">
         <i class="gg-menu-left fs-5"></i>
       </button>
-
 
       <!-- Profile Button -->
       <div class="position-relative">
