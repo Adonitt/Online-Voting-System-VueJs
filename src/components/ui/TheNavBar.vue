@@ -7,6 +7,12 @@ const showProfileDropdown = ref(false);
 const toggleProfileDropdown = () => {
   showProfileDropdown.value = !showProfileDropdown.value;
 };
+
+// Nëse dëshiron dropdown për sidebar toggle (opsionale)
+const showSidebarDropdown = ref(false);
+const toggleSidebarDropdown = () => {
+  showSidebarDropdown.value = !showSidebarDropdown.value;
+};
 </script>
 
 <template>
@@ -26,12 +32,23 @@ const toggleProfileDropdown = () => {
         />
       </router-link>
 
-      <!-- Sidebar Toggle Button -->
+      <!-- Sidebar Toggle Button me event dhe opsional dropdown -->
       <button class="btn btn-sm text-white" @click="emit('toggle-sidebar')">
         <i class="gg-menu-left fs-5"></i>
       </button>
 
-      <!-- Profile Button (optional) -->
+      <!-- Shembull: Sidebar Toggle Dropdown (opsionale, nëse e do) -->
+      <!--
+      <button class="btn btn-sm text-white" @click="toggleSidebarDropdown">
+        <i class="gg-menu-left fs-5"></i>
+      </button>
+      <ul v-if="showSidebarDropdown" class="dropdown-menu">
+        <li>Option 1</li>
+        <li>Option 2</li>
+      </ul>
+      -->
+
+      <!-- Profile Button -->
       <div class="position-relative">
         <button class="btn btn-sm text-white" @click="toggleProfileDropdown">
           <i class="gg-more-vertical-alt fs-5"></i>
@@ -66,7 +83,5 @@ const toggleProfileDropdown = () => {
         </ul>
       </div>
     </div>
-
-    <!-- Desktop Navbar, etj (sipas nevojës) -->
   </div>
 </template>
