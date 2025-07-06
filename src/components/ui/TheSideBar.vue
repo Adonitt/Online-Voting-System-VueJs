@@ -97,23 +97,4 @@ const isAdmin = computed(() => authStore.isAdmin);
 </template>
 
 <style scoped>
-@media (max-width: 991.98px) {
-  .sidebar {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 250px;
-    height: 100vh;
-    background: white;
-    z-index: 1050;
-    overflow-y: auto;
-    box-shadow: 2px 0 12px rgba(0, 0, 0, 0.15);
-    transition: transform 0.3s ease;
-    transform: translateX(-100%);
-  }
-
-  .sidebar[style*="display: block"] {
-    transform: translateX(0);
-  }
-}
 </style>
