@@ -1,8 +1,10 @@
 <script setup>
-import { ref } from "vue";
-import { useAuthStore } from "@/stores/authStore.js";
-import { useRouter } from "vue-router";
-import { useAppToast } from "@/composables/useAppToast.js";
+import { ref } from 'vue';
+import { useAuthStore } from '@/stores/authStore.js';
+import { useRouter } from 'vue-router';
+import { useAppToast } from '@/composables/useAppToast.js';
+
+const emit = defineEmits(['toggle-sidebar']);
 
 const authStore = useAuthStore();
 const router = useRouter();
@@ -10,27 +12,40 @@ const toast = useAppToast();
 
 const showProfileDropdown = ref(false);
 
-const toggleProfileDropdown = () => {
+function toggleProfileDropdown() {
   showProfileDropdown.value = !showProfileDropdown.value;
-};
+}
 
-const onLogout = () => {
+function onLogout() {
   authStore.logout();
-  router.push({ name: "login" });
+  router.push({ name: 'login' });
   toast.showSuccess("You're logged out!");
   showProfileDropdown.value = false;
-};
+}
+
+function onToggleSidebar() {
+  emit('toggle-sidebar');
+}
 </script>
 
 <template>
   <nav class="navbar mobile-navbar d-lg-none">
     <div class="container-fluid d-flex justify-content-between align-items-center">
+      <!-- Butoni për toggle sidebar -->
+      <button
+          class="btn btn-link text-dark"
+          aria-label="Toggle sidebar"
+          @click="onToggleSidebar"
+      >
+        <i class="bi bi-list fs-4"></i>
+      </button>
+
       <!-- Logo -->
       <router-link to="/" class="navbar-brand">
         <img src="@/assets/img/foto/ks.jpeg" alt="Logo" height="40" />
       </router-link>
 
-      <!-- Profile button -->
+      <!-- Butoni Profile -->
       <button
           @click="toggleProfileDropdown"
           class="btn btn-link text-dark position-relative"
@@ -39,7 +54,7 @@ const onLogout = () => {
         <i class="bi bi-person-circle fs-4"></i>
       </button>
 
-      <!-- Profile dropdown -->
+      <!-- Dropdown Profile -->
       <ul
           v-if="showProfileDropdown"
           class="profile-dropdown position-absolute bg-white shadow rounded p-2"
