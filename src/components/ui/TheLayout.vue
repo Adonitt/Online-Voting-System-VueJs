@@ -1,30 +1,28 @@
-<!-- TheLayout.vue -->
 <script setup>
+import { ref } from "vue";
 import TheSideBar from "./TheSideBar.vue";
 import TheNavBar from "./TheNavBar.vue";
 import TheFooter from "@/components/ui/TheFooter.vue";
-import {ref} from "vue";
 
-const sidebarVisible = ref(true)
-const handleSidebarToggle = () => {
-  sidebarVisible.value = !sidebarVisible.value
-}
+const sidebarVisible = ref(true); // visible by default
 
-
+const toggleSidebar = () => {
+  sidebarVisible.value = !sidebarVisible.value;
+};
 </script>
 
 <template>
-  <div id="app">
-    <the-side-bar/>
+  <div id="app" class="d-flex">
+    <the-side-bar v-if="sidebarVisible" />
 
-    <div class="main-panel">
-      <the-nav-bar @toggleSidebar="handleSidebarToggle" />
+    <div class="main-panel w-100">
+      <the-nav-bar @toggleSidebar="toggleSidebar" />
 
       <div class="container">
-        <router-view/>
+        <router-view />
       </div>
-      <the-footer/>
-    </div>
 
+      <the-footer />
+    </div>
   </div>
 </template>
