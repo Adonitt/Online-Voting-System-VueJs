@@ -1,8 +1,8 @@
 import axios from 'axios';
-import { useAuthStore } from '@/stores/authStore';
+import {useAuthStore} from '@/stores/authStore';
 
 const client = axios.create({
-    baseURL: 'https://online-voting-system-rest-api-1-xvys.onrender.com/api/v1//api/v1/',
+    baseURL: 'https://online-voting-system-rest-api-1-xvys.onrender.com/api/v1/',
     headers: {
         'Content-Type': 'application/json',
     },
