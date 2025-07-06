@@ -2,10 +2,19 @@
 import { useAuthStore } from "@/stores/authStore.js";
 import { useRouter } from "vue-router";
 import { useAppToast } from "@/composables/useAppToast.js";
+import { ref } from "vue";
 
 const authStore = useAuthStore();
 const router = useRouter();
 const toast = useAppToast();
+
+// Profile dropdown state
+const showProfileDropdown = ref(false);
+
+// Toggle profile dropdown
+const toggleProfileDropdown = () => {
+  showProfileDropdown.value = !showProfileDropdown.value;
+};
 
 const onLogout = () => {
   authStore.logout();
@@ -16,9 +25,10 @@ const onLogout = () => {
 
 <template>
   <div class="main-header">
-    <!-- Logo Header with Toggle Button -->
-    <div class="logo-header" data-background-color="dark">
-      <router-link :to="{ name: 'home' }" class="logo">
+    <!-- Mobile Header -->
+    <div class="logo-header d-block d-lg-none px-3 py-2 d-flex align-items-center justify-content-between" data-background-color="dark">
+      <!-- Logo -->
+      <router-link :to="{ name: 'home' }" class="logo d-flex align-items-center">
         <img
             src="@/assets/img/foto/ks.jpeg"
             alt="navbar brand"
@@ -26,24 +36,47 @@ const onLogout = () => {
             height="40"
         />
       </router-link>
-      <!-- Sidebar Toggle -->
-      <button class="navbar-toggler sidenav-toggler ms-auto" type="button" data-toggle="collapse" data-target="collapse">
-        <span class="navbar-toggler-icon">
-          <i class="gg-menu-left text-white"></i>
-        </span>
+
+      <!-- Sidebar Toggle Button -->
+      <button class="btn btn-sm text-white" @click="$emit('toggleSidebar')">
+        <i class="gg-menu-left fs-5"></i>
       </button>
-      <button class="topbar-toggler more">
-        <i class="gg-more-vertical-alt text-white"></i>
-      </button>
+
+      <!-- Profile Button -->
+      <div class="position-relative">
+        <button class="btn btn-sm text-white" @click="toggleProfileDropdown">
+          <i class="gg-more-vertical-alt fs-5"></i>
+        </button>
+
+        <!-- Profile Dropdown -->
+        <ul v-if="showProfileDropdown" class="dropdown-menu dropdown-user show animated fadeIn" style="right: 0; left: auto;">
+          <li>
+            <div class="user-box text-center p-2">
+              <h6>{{ authStore.loggedInUser?.firstName + " " + authStore.loggedInUser?.lastName }}</h6>
+              <p class="text-muted small">{{ authStore.loggedInUser?.sub }}</p>
+              <router-link
+                  :to="{ name: 'my-profile' }"
+                  class="btn btn-sm btn-secondary mb-1"
+              >View Profile</router-link>
+            </div>
+          </li>
+          <li>
+            <div class="dropdown-divider"></div>
+            <router-link
+                :to="{ name: 'change-password' }"
+                class="dropdown-item"
+            >Change Password</router-link>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" @click="onLogout">Logout</a>
+          </li>
+        </ul>
+      </div>
     </div>
 
-    <!-- Main Navbar -->
-    <nav
-        class="navbar navbar-header navbar-expand-lg border-bottom"
-        data-background-color="white"
-    >
+    <!-- Desktop Navbar -->
+    <nav class="navbar navbar-header navbar-expand-lg border-bottom d-none d-lg-flex" data-background-color="white">
       <div class="container-fluid">
-        <ul class="navbar-nav topbar-nav ms-auto align-items-center">
+        <ul class="navbar-nav ms-auto align-items-center">
           <!-- User Dropdown -->
           <li class="nav-item dropdown hidden-caret">
             <a
@@ -55,33 +88,19 @@ const onLogout = () => {
               <span class="profile-username">
                 <span class="op-7">Hi, </span>
                 <span class="fw-bold">
-                  {{
-                    authStore.loggedInUser?.firstName +
-                    " " +
-                    authStore.loggedInUser?.lastName
-                  }}
+                  {{ authStore.loggedInUser?.firstName + " " + authStore.loggedInUser?.lastName }}
                 </span>
               </span>
             </a>
             <ul class="dropdown-menu dropdown-user animated fadeIn">
               <li>
-                <div class="user-box">
-                  <div class="u-text text-center">
-                    <h4>
-                      {{
-                        authStore.loggedInUser?.firstName +
-                        " " +
-                        authStore.loggedInUser?.lastName
-                      }}
-                    </h4>
-                    <p class="text-muted">{{ authStore.loggedInUser?.sub }}</p>
-                    <router-link
-                        :to="{ name: 'my-profile' }"
-                        class="btn btn-secondary btn-sm"
-                    >
-                      View Profile
-                    </router-link>
-                  </div>
+                <div class="user-box text-center p-2">
+                  <h6>{{ authStore.loggedInUser?.firstName + " " + authStore.loggedInUser?.lastName }}</h6>
+                  <p class="text-muted small">{{ authStore.loggedInUser?.sub }}</p>
+                  <router-link
+                      :to="{ name: 'my-profile' }"
+                      class="btn btn-sm btn-secondary mb-1"
+                  >View Profile</router-link>
                 </div>
               </li>
               <li>
@@ -89,9 +108,7 @@ const onLogout = () => {
                 <router-link
                     :to="{ name: 'change-password' }"
                     class="dropdown-item"
-                >
-                  Change Password
-                </router-link>
+                >Change Password</router-link>
                 <div class="dropdown-divider"></div>
                 <a class="dropdown-item" @click="onLogout">Logout</a>
               </li>

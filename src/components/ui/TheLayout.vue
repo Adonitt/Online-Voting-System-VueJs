@@ -3,6 +3,14 @@
 import TheSideBar from "./TheSideBar.vue";
 import TheNavBar from "./TheNavBar.vue";
 import TheFooter from "@/components/ui/TheFooter.vue";
+import {ref} from "vue";
+
+const sidebarVisible = ref(true)
+const handleSidebarToggle = () => {
+  sidebarVisible.value = !sidebarVisible.value
+}
+
+
 </script>
 
 <template>
@@ -10,7 +18,7 @@ import TheFooter from "@/components/ui/TheFooter.vue";
     <the-side-bar/>
 
     <div class="main-panel">
-      <the-nav-bar/>
+      <the-nav-bar @toggleSidebar="handleSidebarToggle" />
 
       <div class="container">
         <router-view/>
