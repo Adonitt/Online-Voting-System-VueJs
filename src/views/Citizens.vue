@@ -1,76 +1,85 @@
 <template>
+  <div class="max-w-5xl mx-auto p-6 font-sans">
+    <div class="bg-white shadow-lg rounded-xl p-6">
+      <p class="mb-6 text-gray-600 leading-relaxed">
+        <strong class="text-gray-800">Note:</strong> Here are the citizens' data used to register a user or a candidate.<br />
+        You must use <strong>exact matching data</strong> (personal number, first name, last name, birth date) to register.<br />
+        Only citizens of Kosovo can be registered. This table is based on a mock dataset.
+      </p>
 
-  <p class="mb-6 text-gray-700">
-    Here are the citizens data to register as user, or to register a candidate.<br/>
-    You must use all data for user, such as personal number, first name, last name, birth date to register.<br/>
-    They must be the same.<br/>
-    The logic is that only citizens of Kosovo can be registered.<br/>
-    This was a mock table.
-  </p>
+      <h2 class="text-2xl font-semibold text-gray-800 mb-4">🧑‍🤝‍🧑 Citizens List</h2>
 
-  <div class="container mx-auto p-4 font-sans">
-    <h2 class="text-2xl font-bold mb-4">Citizens List</h2>
+      <!-- Search -->
+      <input
+          v-model="search"
+          type="search"
+          placeholder="🔍 Search by name..."
+          class="mb-6 w-full max-w-md px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+      />
 
-    <input
-        v-model="search"
-        type="search"
-        placeholder="Search by first or last name..."
-        class="mb-4 p-2 border rounded w-full max-w-md"
-    />
+      <!-- Table -->
+      <div class="overflow-x-auto rounded-lg border border-gray-200">
+        <table class="min-w-full text-sm text-left">
+          <thead class="bg-gray-50 text-gray-700 uppercase text-xs tracking-wider">
+          <tr>
+            <th class="px-4 py-3">ID</th>
+            <th class="px-4 py-3">Personal No</th>
+            <th class="px-4 py-3">First Name</th>
+            <th class="px-4 py-3">Last Name</th>
+            <th class="px-4 py-3">Birth Date</th>
+            <th class="px-4 py-3">Nationality</th>
+            <th class="px-4 py-3">City</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr
+              v-for="person in paginatedData"
+              :key="person.id"
+              class="border-t hover:bg-gray-100 transition"
+          >
+            <td class="px-4 py-2">{{ person.id }}</td>
+            <td class="px-4 py-2">{{ person.personalNo }}</td>
+            <td class="px-4 py-2">{{ person.firstName }}</td>
+            <td class="px-4 py-2">{{ person.lastName }}</td>
+            <td class="px-4 py-2">{{ formatDate(person.birthDate) }}</td>
+            <td class="px-4 py-2">{{ person.nationality }}</td>
+            <td class="px-4 py-2">{{ person.city }}</td>
+          </tr>
+          <tr v-if="filteredData.length === 0">
+            <td colspan="7" class="text-center py-6 text-gray-500">
+              No results found.
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
 
-    <table class="min-w-full border-collapse border border-gray-300">
-      <thead class="bg-gray-100">
-      <tr>
-        <th class="border border-gray-300 p-2 text-left">ID</th>
-        <th class="border border-gray-300 p-2 text-left">Personal No</th>
-        <th class="border border-gray-300 p-2 text-left">First Name</th>
-        <th class="border border-gray-300 p-2 text-left">Last Name</th>
-        <th class="border border-gray-300 p-2 text-left">Birth Date</th>
-        <th class="border border-gray-300 p-2 text-left">Nationality</th>
-        <th class="border border-gray-300 p-2 text-left">City</th>
-      </tr>
-      </thead>
-      <tbody>
-      <tr v-for="person in paginatedData" :key="person.id" class="hover:bg-gray-50">
-        <td class="border border-gray-300 p-2">{{ person.id }}</td>
-        <td class="border border-gray-300 p-2">{{ person.personalNo }}</td>
-        <td class="border border-gray-300 p-2">{{ person.firstName }}</td>
-        <td class="border border-gray-300 p-2">{{ person.lastName }}</td>
-        <td class="border border-gray-300 p-2">{{ formatDate(person.birthDate) }}</td>
-        <td class="border border-gray-300 p-2">{{ person.nationality }}</td>
-        <td class="border border-gray-300 p-2">{{ person.city }}</td>
-      </tr>
-      <tr v-if="filteredData.length === 0">
-        <td class="p-4 text-center" colspan="7">No results found.</td>
-      </tr>
-      </tbody>
-    </table>
+      <!-- Pagination -->
+      <div class="mt-6 flex justify-between items-center text-sm">
+        <button
+            :disabled="currentPage === 1"
+            @click="currentPage--"
+            class="px-4 py-2 bg-gray-200 hover:bg-gray-300 text-gray-700 font-medium rounded disabled:opacity-50"
+        >
+          ⬅ Prev
+        </button>
 
-    <!-- Pagination -->
-    <div class="mt-4 flex justify-center items-center space-x-3">
-      <button
-          :disabled="currentPage === 1"
-          @click="currentPage--"
-          class="px-3 py-1 border rounded disabled:opacity-50"
-      >
-        Prev
-      </button>
+        <span class="text-gray-600">Page {{ currentPage }} of {{ totalPages }}</span>
 
-      <span>Page {{ currentPage }} of {{ totalPages }}</span>
-
-      <button
-          :disabled="currentPage === totalPages"
-          @click="currentPage++"
-          class="px-3 py-1 border rounded disabled:opacity-50"
-      >
-        Next
-      </button>
+        <button
+            :disabled="currentPage === totalPages"
+            @click="currentPage++"
+            class="px-4 py-2 bg-gray-200 hover:bg-gray-300 text-gray-700 font-medium rounded disabled:opacity-50"
+        >
+          Next ➡
+        </button>
+      </div>
     </div>
   </div>
 </template>
 
 <script setup>
-import {ref, computed, onMounted} from "vue";
+import { ref, computed, onMounted } from "vue";
 import axios from "axios";
 
 const data = ref([]);
@@ -122,9 +131,3 @@ function formatDate(dateStr) {
   });
 }
 </script>
-
-<style scoped>
-.container {
-  max-width: 900px;
-}
-</style>
