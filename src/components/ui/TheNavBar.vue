@@ -21,14 +21,7 @@ const onLogout = () => {
 
 <template>
   <div class="main-header">
-    <div class="nav-toggle">
-      <button class="btn btn-toggle toggle-sidebar">
-        <i class="gg-menu-right"></i>
-      </button>
-      <button class="btn btn-toggle sidenav-toggler">
-        <i class="gg-menu-left"></i>
-      </button>
-    </div>
+
     <nav
         class="navbar navbar-header navbar-header-transparent navbar-expand-lg border-bottom"
         data-background-color="white"
@@ -53,6 +46,14 @@ const onLogout = () => {
             >
               <i class="fa fa-search"></i>
             </a>
+            <div class="nav-toggle">
+              <button class="btn btn-toggle toggle-sidebar">
+                <i class="gg-menu-right"></i>
+              </button>
+              <button class="btn btn-toggle sidenav-toggler">
+                <i class="gg-menu-left"></i>
+              </button>
+            </div>
             <ul class="dropdown-menu dropdown-search animated fadeIn">
               <form class="navbar-left navbar-form nav-search">
                 <div class="input-group">
