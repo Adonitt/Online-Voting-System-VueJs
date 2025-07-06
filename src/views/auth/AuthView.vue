@@ -42,7 +42,7 @@ const handleSubmit = async () => {
   <section class="login-section vh-100 d-flex align-items-center justify-content-center">
     <div class="card shadow p-4" style="max-width: 500px; width: 100%;">
       <div class="text-center mb-4">
-        <img src="@/assets/img/foto/ks.jpeg" alt="Logo" class="img-fluid mb-3" style="max-height: 150px;">
+        <img :src="require('@/assets/img/foto/ks.jpeg')" alt="Logo" class="img-fluid mb-3" style="max-height: 150px;">
         <h2 class="fw-bold">Login to Voting System</h2>
       </div>
 
