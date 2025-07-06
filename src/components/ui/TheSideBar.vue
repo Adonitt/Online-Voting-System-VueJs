@@ -1,90 +1,65 @@
 <script setup>
-import { computed } from "vue";
-import { useAuthStore } from "@/stores/authStore.js";
+import TheSideBar from "./TheSideBar.vue";
+import TheNavBar from "./TheNavBar.vue";
+import TheFooter from "@/components/ui/TheFooter.vue";
+import {ref, onMounted, onUnmounted} from 'vue';
 
-const authStore = useAuthStore();
-const isAdmin = computed(() => authStore.isAdmin);
+const isSidebarOpen = ref(false);
+const isUserMenuOpen = ref(false);
+
+const toggleSidebar = () => {
+  isSidebarOpen.value = !isSidebarOpen.value;
+  if (isSidebarOpen.value) {
+    document.body.classList.add('sidenav-toggled');
+  } else {
+    document.body.classList.remove('sidenav-toggled');
+  }
+};
+
+const toggleUserMenu = () => {
+  isUserMenuOpen.value = !isUserMenuOpen.value;
+};
+
+onMounted(() => {
+  // Add a class to body when the component mounts to handle initial sidebar state if needed
+  // This is a common pattern for dashboard templates that control sidebar visibility via body classes
+});
+
+onUnmounted(() => {
+  // Clean up body classes when the component is unmounted
+  document.body.classList.remove('sidenav-toggled');
+});
 </script>
 
 <template>
-  <div class="sidebar">
-    <div class="sidebar-logo">
-      <div class="logo-header" data-background-color="white">
-        <router-link :to="{ name: 'home' }" class="logo">
-          <img
-              src="@/assets/img/foto/ks.jpeg"
-              alt="navbar brand"
-              class="navbar-brand"
-              height="50px"
-              width="50px"
-          />
-        </router-link>
+  <div id="app" :class="{'sidenav-toggled': isSidebarOpen}">
+    <the-side-bar/>
+
+    <div class="main-panel">
+      <div class="main-header">
+        <div class="logo-header" data-background-color="dark">
+          <a href="index.html" class="logo">
+            <img src="assets/img/kaiadmin/logo_light.svg" alt="navbar brand" class="navbar-brand" height="20">
+          </a>
+          <div class="nav-toggle">
+            <button class="btn btn-toggle toggle-sidebar" @click="toggleSidebar">
+              <i class="gg-menu-right"></i>
+            </button>
+            <button class="btn btn-toggle sidenav-toggler" @click="toggleSidebar">
+              <i class="gg-menu-left"></i>
+            </button>
+          </div>
+          <button class="topbar-toggler more" @click="toggleUserMenu">
+            <i class="gg-more-vertical-alt"></i>
+          </button>
+        </div>
+        <the-nav-bar :is-user-menu-open="isUserMenuOpen"/>
       </div>
-    </div>
-    <div class="sidebar-wrapper scrollbar scrollbar-inner">
-      <div class="sidebar-content">
-        <ul class="nav nav-secondary">
-          <li class="nav-item">
-            <router-link :to="{ name: 'home' }">
-              <i class="fas fa-home"></i>
-              <p>Results</p>
-            </router-link>
-          </li>
 
-          <li class="nav-section">
-            <h4 class="text-section">Components</h4>
-          </li>
-
-          <li class="nav-item">
-            <router-link :to="{ name: 'party' }">
-              <i class="bi-flag"></i>
-              <p>Parties</p>
-            </router-link>
-          </li>
-
-          <li class="nav-item">
-            <router-link :to="{ name: 'candidates' }">
-              <i class="bi-file-person"></i>
-              <p>Candidates</p>
-            </router-link>
-          </li>
-
-          <li class="nav-item">
-            <router-link :to="{ name: 'cast-vote' }">
-              <i class="bi-pen"></i>
-              <p>Cast Vote</p>
-            </router-link>
-          </li>
-
-          <li class="nav-item" v-if="isAdmin">
-            <router-link :to="{ name: 'admin-users' }">
-              <i class="bi bi-people"></i>
-              <p>All Registered Users</p>
-            </router-link>
-          </li>
-
-          <li class="nav-item" v-if="isAdmin">
-            <router-link :to="{ name: 'admin-votes' }">
-              <i class="bi bi-check-all"></i>
-              <p>All Users that has Voted</p>
-            </router-link>
-          </li>
-
-          <li class="nav-item" v-if="isAdmin">
-            <router-link :to="{ name: 'candidate-results' }">
-              <i class="bi bi-person"></i>
-              <p>Candidate Results</p>
-            </router-link>
-          </li>
-
-          <li class="nav-item">
-            <router-link :to="{ name: 'my-profile' }">
-              <i class="bi-person"></i>
-              <p>My Profile</p>
-            </router-link>
-          </li>
-        </ul>
+      <div class="container">
+        <router-view/>
       </div>
+      <the-footer/>
     </div>
   </div>
 </template>
