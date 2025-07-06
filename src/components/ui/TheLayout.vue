@@ -1,28 +1,22 @@
+<!-- TheLayout.vue -->
 <script setup>
-import { ref } from 'vue';
-import TheSideBar from './TheSideBar.vue';
-import TheNavBar from './TheNavBar.vue';
-import TheFooter from '@/components/ui/TheFooter.vue';
-
-const sidebarVisible = ref(false);
-
-function toggleSidebar() {
-  sidebarVisible.value = !sidebarVisible.value;
-}
+import TheSideBar from "./TheSideBar.vue";
+import TheNavBar from "./TheNavBar.vue";
+import TheFooter from "@/components/ui/TheFooter.vue";
 </script>
 
 <template>
   <div id="app">
-    <TheSideBar :visible="sidebarVisible" :is-admin="true" />  <!-- ose boolean sipas rolit -->
+    <the-side-bar/>
 
     <div class="main-panel">
-      <TheNavBar @toggle-sidebar="toggleSidebar" />
+      <the-nav-bar/>
 
       <div class="container">
-        <router-view />
+        <router-view/>
       </div>
-
-      <TheFooter />
+      <the-footer/>
     </div>
+
   </div>
 </template>

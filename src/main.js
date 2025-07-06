@@ -8,7 +8,6 @@ import './assets/css/fonts.css';
 import './assets/css/kaiadmin.css';
 import './assets/css/plugins.css';
 import 'datatables.net-bs5/css/dataTables.bootstrap5.min.css';
-import './assets/js/kaiadmin.js'
 
 import {createApp} from 'vue'
 import App from './App.vue'
