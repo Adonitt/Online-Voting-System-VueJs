@@ -36,7 +36,7 @@ function onToggleSidebar() {
 
 
       <!-- Logo -->
-      <router-link to="/" class="navbar-brand">
+      <router-link to="/" class="navbar-brand logo-header">
         <img src="@/assets/img/foto/ks.jpeg" alt="Logo" height="40"/>
       </router-link>
 
