@@ -1,5 +1,5 @@
 <script setup>
-import { defineProps } from "vue";
+import {defineProps} from "vue";
 
 const props = defineProps({
   visible: Boolean,
@@ -112,7 +112,6 @@ const props = defineProps({
   transform: translateX(0);
 }
 
-/* Desktop: sidebar always visible */
 @media (min-width: 992px) {
   .sidebar {
     transform: translateX(0) !important;
