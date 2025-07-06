@@ -23,7 +23,7 @@ const onLogout = () => {
 </script>
 
 <template>
-  <nav class="navbar mobile-navbar d-lg-none">
+  <nav class="navbar mobile-navbar ">
     <div class="container-fluid d-flex justify-content-between align-items-center">
       <!-- Logo -->
       <router-link to="/" class="navbar-brand">
