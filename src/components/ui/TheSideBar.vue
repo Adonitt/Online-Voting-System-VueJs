@@ -1,65 +1,122 @@
 <script setup>
-import TheSideBar from "./TheSideBar.vue";
-import TheNavBar from "./TheNavBar.vue";
-import TheFooter from "@/components/ui/TheFooter.vue";
-import {ref, onMounted, onUnmounted} from 'vue';
+import { useAuthStore } from "@/stores/authStore.js";
+import { computed } from "vue";
 
-const isSidebarOpen = ref(false);
-const isUserMenuOpen = ref(false);
+const authStore = useAuthStore();
 
-const toggleSidebar = () => {
-  isSidebarOpen.value = !isSidebarOpen.value;
-  if (isSidebarOpen.value) {
-    document.body.classList.add('sidenav-toggled');
-  } else {
-    document.body.classList.remove('sidenav-toggled');
-  }
-};
-
-const toggleUserMenu = () => {
-  isUserMenuOpen.value = !isUserMenuOpen.value;
-};
-
-onMounted(() => {
-  // Add a class to body when the component mounts to handle initial sidebar state if needed
-  // This is a common pattern for dashboard templates that control sidebar visibility via body classes
-});
-
-onUnmounted(() => {
-  // Clean up body classes when the component is unmounted
-  document.body.classList.remove('sidenav-toggled');
-});
+const isAdmin = computed(() => authStore.isAdmin);
 </script>
 
 <template>
-  <div id="app" :class="{'sidenav-toggled': isSidebarOpen}">
-    <the-side-bar/>
-
-    <div class="main-panel">
-      <div class="main-header">
-        <div class="logo-header" data-background-color="dark">
-          <a href="index.html" class="logo">
-            <img src="assets/img/kaiadmin/logo_light.svg" alt="navbar brand" class="navbar-brand" height="20">
-          </a>
-          <div class="nav-toggle">
-            <button class="btn btn-toggle toggle-sidebar" @click="toggleSidebar">
-              <i class="gg-menu-right"></i>
-            </button>
-            <button class="btn btn-toggle sidenav-toggler" @click="toggleSidebar">
-              <i class="gg-menu-left"></i>
-            </button>
+  <div class="sidebar">
+    <div class="sidebar-wrapper scrollbar scrollbar-inner">
+      <div class="sidebar-content">
+        <!-- User Profile in Sidebar (Optional, if you want it here) -->
+        <!-- You had a user section here previously, re-adding it based on your original code -->
+        <div class="user">
+          <div class="avatar-sm float-left mr-2">
+            <img
+                src="assets/img/profile.jpg"
+                alt="..."
+                class="avatar-img rounded-circle"
+            />
           </div>
-          <button class="topbar-toggler more" @click="toggleUserMenu">
-            <i class="gg-more-vertical-alt"></i>
-          </button>
-        </div>
-        <the-nav-bar :is-user-menu-open="isUserMenuOpen"/>
-      </div>
+          <div class="info">
+            <a
+                data-toggle="collapse"
+                href="#collapseExample"
+                aria-expanded="true"
+            >
+              <span>
+                {{ authStore.loggedInUser?.firstName }}
+                <span class="user-level">{{ authStore.loggedInUser?.sub }}</span>
+                <span class="caret"></span>
+              </span>
+            </a>
+            <div class="clearfix"></div>
 
-      <div class="container">
-        <router-view/>
+            <div class="collapse in" id="collapseExample">
+              <ul class="nav">
+                <li>
+                  <router-link :to="{ name: 'my-profile' }">
+                    <span class="link-collapse">My Profile</span>
+                  </router-link>
+                </li>
+                <li>
+                  <router-link :to="{ name: 'change-password' }">
+                    <span class="link-collapse">Change Password</span>
+                  </router-link>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <ul class="nav nav-secondary">
+          <li class="nav-item">
+            <router-link :to="{ name: 'home' }">
+              <i class="fas fa-home"></i>
+              <p>Results</p>
+            </router-link>
+          </li>
+
+          <li class="nav-section">
+            <h4 class="text-section">Components</h4>
+          </li>
+          <li class="nav-item">
+            <router-link :to="{ name: 'party' }">
+              <i class="bi-flag"></i>
+              <p>Parties</p>
+            </router-link>
+          </li>
+
+          <li class="nav-item">
+            <router-link :to="{ name: 'candidates' }">
+              <i class="bi-file-person"></i>
+              <p>Candidates</p>
+            </router-link>
+          </li>
+
+          <li class="nav-item">
+            <router-link :to="{ name: 'cast-vote' }">
+              <i class="bi-pen"></i>
+              <p>Cast Vote</p>
+            </router-link>
+          </li>
+
+          <li class="nav-item" v-if="isAdmin">
+            <router-link :to="{ name: 'admin-users' }">
+              <i class="bi bi-people"></i>
+              <p>All Registered Users</p>
+            </router-link>
+          </li>
+
+          <li class="nav-item" v-if="isAdmin">
+            <router-link :to="{ name: 'admin-votes' }">
+              <i class="bi bi-check-all"></i>
+              <p>All Users that has Voted</p>
+            </router-link>
+          </li>
+
+          <li class="nav-item" v-if="isAdmin">
+            <router-link :to="{ name: 'candidate-results' }">
+              <i class="bi bi-person"></i>
+              <p>Candidate Results</p>
+            </router-link>
+          </li>
+
+          <li class="nav-item">
+            <router-link :to="{ name: 'my-profile' }">
+              <i class="bi-person"></i>
+              <p>My Profile</p>
+            </router-link>
+          </li>
+        </ul>
       </div>
-      <the-footer/>
     </div>
   </div>
 </template>
+
+<style scoped>
+/* Add any specific styles for TheSideBar here if needed, or rely on global CSS */
+</style>
