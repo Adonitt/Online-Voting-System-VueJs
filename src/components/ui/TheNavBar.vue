@@ -1,34 +1,25 @@
 <script setup>
-import {useAuthStore} from "@/stores/authStore.js";
-import {useRouter} from "vue-router";
-import {useAppToast} from "@/composables/useAppToast.js";
-import {ref} from "vue";
+import { ref, watch } from "vue";
+import { useAuthStore } from "@/stores/authStore.js";
 
+const emit = defineEmits(["toggle-sidebar", "toggle-profile-dropdown", "logout"]);
 
-const authStore = useAuthStore();
-const router = useRouter();
-const toast = useAppToast();
+const props = defineProps({
+  showProfileDropdown: Boolean,
+  authStore: Object,
+});
 
-const showProfileDropdown = ref(false);
 const toggleProfileDropdown = () => {
-  showProfileDropdown.value = !showProfileDropdown.value;
+  emit("toggle-profile-dropdown");
+};
+
+const onToggleSidebar = () => {
+  emit("toggle-sidebar");
 };
 
 const onLogout = () => {
-  authStore.logout();
-  router.push({name: "login"});
-  toast.showSuccess("You're logged out!");
+  emit("logout");
 };
-
-
-const emit = defineEmits(['toggle-sidebar']);
-
-const toggleSidebar = () => {
-  console.log("Emiting toggle-sidebar event");
-  emit('toggle-sidebar');
-};
-
-
 </script>
 
 <template>
@@ -38,21 +29,14 @@ const toggleSidebar = () => {
         class="logo-header d-block d-lg-none px-3 py-2 d-flex align-items-center justify-content-between"
         data-background-color="dark"
     >
-      <!-- Logo -->
       <router-link :to="{ name: 'home' }" class="logo d-flex align-items-center">
-        <img
-            src="@/assets/img/foto/ks.jpeg"
-            alt="navbar brand"
-            class="navbar-brand"
-            height="40"
-        />
+        <img src="@/assets/img/foto/ks.jpeg" alt="navbar brand" class="navbar-brand" height="40" />
       </router-link>
 
       <!-- Sidebar Toggle Button -->
-      <button @click="toggleSidebar" class="btn btn-sm text-white">
+      <button @click="onToggleSidebar" class="btn btn-sm text-white">
         <i class="gg-menu-left fs-5"></i>
       </button>
-
 
       <!-- Profile Button -->
       <div class="position-relative">
@@ -61,30 +45,22 @@ const toggleSidebar = () => {
         </button>
 
         <ul
-            v-if="showProfileDropdown"
+            v-if="props.showProfileDropdown"
             class="dropdown-menu dropdown-user show animated fadeIn"
             style="right: 0; left: auto"
         >
           <li>
             <div class="user-box text-center p-2">
-              <h6>{{ authStore.loggedInUser?.firstName + " " + authStore.loggedInUser?.lastName }}</h6>
-              <p class="text-muted small">{{ authStore.loggedInUser?.sub }}</p>
-              <router-link
-                  :to="{ name: 'my-profile' }"
-                  class="btn btn-sm btn-secondary mb-1"
-              >View Profile
-              </router-link
-              >
+              <h6>{{ props.authStore.loggedInUser?.firstName + " " + props.authStore.loggedInUser?.lastName }}</h6>
+              <p class="text-muted small">{{ props.authStore.loggedInUser?.sub }}</p>
+              <router-link :to="{ name: 'my-profile' }" class="btn btn-sm btn-secondary mb-1">
+                View Profile
+              </router-link>
             </div>
           </li>
           <li>
             <div class="dropdown-divider"></div>
-            <router-link
-                :to="{ name: 'change-password' }"
-                class="dropdown-item"
-            >Change Password
-            </router-link
-            >
+            <router-link :to="{ name: 'change-password' }" class="dropdown-item">Change Password</router-link>
             <div class="dropdown-divider"></div>
             <a class="dropdown-item" @click="onLogout">Logout</a>
           </li>
@@ -101,47 +77,26 @@ const toggleSidebar = () => {
         <ul class="navbar-nav ms-auto align-items-center">
           <!-- User Dropdown -->
           <li class="nav-item dropdown hidden-caret">
-            <a
-                class="dropdown-toggle profile-pic"
-                data-bs-toggle="dropdown"
-                href="#"
-                aria-expanded="false"
-            >
+            <a class="dropdown-toggle profile-pic" data-bs-toggle="dropdown" href="#" aria-expanded="false">
               <span class="profile-username">
                 <span class="op-7">Hi, </span>
                 <span class="fw-bold">
-                  {{ authStore.loggedInUser?.firstName + " " + authStore.loggedInUser?.lastName }}
+                  {{ props.authStore.loggedInUser?.firstName + " " + props.authStore.loggedInUser?.lastName }}
                 </span>
               </span>
             </a>
             <ul class="dropdown-menu dropdown-user animated fadeIn">
               <li>
                 <div class="user-box text-center p-2">
-                  <h6>{{ authStore.loggedInUser?.firstName + " " + authStore.loggedInUser?.lastName }}</h6>
-                  <p class="text-muted small">{{ authStore.loggedInUser?.sub }}</p>
-                  <router-link
-                      :to="{ name: 'my-profile' }"
-                      class="btn btn-sm btn-secondary mb-1"
-                  >View Profile
-                  </router-link
-                  >
+                  <h6>{{ props.authStore.loggedInUser?.firstName + " " + props.authStore.loggedInUser?.lastName }}</h6>
+                  <p class="text-muted small">{{ props.authStore.loggedInUser?.sub }}</p>
+                  <router-link :to="{ name: 'my-profile' }" class="btn btn-sm btn-secondary mb-1">
+                    View Profile
+                  </router-link>
                 </div>
               </li>
               <li>
                 <div class="dropdown-divider"></div>
-                <router-link
-                    :to="{ name: 'change-password' }"
-                    class="dropdown-item"
-                >Change Password
-                </router-link
-                >
+                <router-link :to="{ name: 'change-password' }" class="dropdown-item">Change Password</router-link>
                 <div class="dropdown-divider"></div>
                 <a class="dropdown-item" @click="onLogout">Logout</a>
-              </li>
-            </ul>
-          </li>
-        </ul>
-      </div>
-    </nav>
-  </div>
-</template>
