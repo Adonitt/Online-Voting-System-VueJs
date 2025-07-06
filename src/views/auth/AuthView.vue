@@ -23,7 +23,7 @@ const handleSubmit = async () => {
   try {
     isLoading.value = true
     const response = await authStore.login(user)
-    const redirect = route.query.redirect || { name: 'home' }
+    const redirect = route.query.redirect || {name: 'home'}
     await router.push(redirect)
 
   } catch (error) {
@@ -70,7 +70,8 @@ const handleSubmit = async () => {
         </div>
 
         <div class="d-flex justify-content-between align-items-center mb-3">
-          <router-link :to="{ name: 'forgot-password' }" class="text-decoration-none small">Forgot password?</router-link>
+          <router-link :to="{ name: 'forgot-password' }" class="text-decoration-none small">Forgot password?
+          </router-link>
         </div>
 
         <div class="d-grid">
@@ -81,6 +82,7 @@ const handleSubmit = async () => {
       </form>
       <div class="mt-3">Don't have an account?
         <router-link :to="{name:'register'}">Register now</router-link>
+        <br>
         <router-link :to="{name:'citizens'}">How to register</router-link>
       </div>
     </div>

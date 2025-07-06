@@ -1,87 +1,60 @@
 
 <script setup>
-import { computed } from "vue";
 import { useAuthStore } from "@/stores/authStore.js";
+import { computed, ref, watch } from "vue";
+import { useRoute } from "vue-router";
 
-const props = defineProps({ open: Boolean });
-const emit = defineEmits(["close"]);
 const authStore = useAuthStore();
 const isAdmin = computed(() => authStore.isAdmin);
+const isSidebarVisible = ref(false);
+const route = useRoute();
+
+watch(route, () => {
+  isSidebarVisible.value = false;
+});
 </script>
 
 <template>
-  <div
-      class="sidebar bg-white shadow fixed top-0 left-0 h-full z-50 transition-transform duration-300 ease-in-out"
-      :class="{
-      'translate-x-0': open,
-      '-translate-x-full': !open,
-      'sm:translate-x-0 sm:static sm:block': true
-    }"
-  >
-    <div class="sidebar-logo p-3 border-bottom">
+  <div :class="['sidebar bg-white border-end', 'd-none d-lg-block', { 'd-block': isSidebarVisible }]" id="sidebarCollapse">
+    <div class="sidebar-header p-3 border-bottom">
       <router-link :to="{ name: 'home' }">
-        <img src="@/assets/img/foto/ks.jpeg" alt="KS Logo" width="50" height="50" />
+        <img src="@/assets/img/foto/ks.jpeg" alt="Logo" width="40" height="40" />
+        <span class="ms-2 fw-bold">KQZ</span>
       </router-link>
     </div>
-    <div class="sidebar-content overflow-y-auto p-3">
-      <ul class="nav flex-column">
-        <li class="nav-item">
-          <router-link :to="{ name: 'home' }" @click="emit('close')" class="nav-link">
-            <i class="fas fa-home me-2"></i> Results
-          </router-link>
-        </li>
-        <li class="nav-item">
-          <router-link :to="{ name: 'party' }" @click="emit('close')" class="nav-link">
-            <i class="bi bi-flag me-2"></i> Parties
-          </router-link>
-        </li>
-        <li class="nav-item">
-          <router-link :to="{ name: 'candidates' }" @click="emit('close')" class="nav-link">
-            <i class="bi bi-file-person me-2"></i> Candidates
-          </router-link>
-        </li>
-        <li class="nav-item">
-          <router-link :to="{ name: 'cast-vote' }" @click="emit('close')" class="nav-link">
-            <i class="bi bi-pen me-2"></i> Cast Vote
-          </router-link>
-        </li>
-        <li class="nav-item" v-if="isAdmin">
-          <router-link :to="{ name: 'admin-users' }" @click="emit('close')" class="nav-link">
-            <i class="bi bi-people me-2"></i> All Registered Users
-          </router-link>
-        </li>
-        <li class="nav-item" v-if="isAdmin">
-          <router-link :to="{ name: 'admin-votes' }" @click="emit('close')" class="nav-link">
-            <i class="bi bi-check-all me-2"></i> All Voted Users
-          </router-link>
-        </li>
-        <li class="nav-item" v-if="isAdmin">
-          <router-link :to="{ name: 'candidate-results' }" @click="emit('close')" class="nav-link">
-            <i class="bi bi-person me-2"></i> Candidate Results
-          </router-link>
-        </li>
-        <li class="nav-item">
-          <router-link :to="{ name: 'my-profile' }" @click="emit('close')" class="nav-link">
-            <i class="bi bi-person me-2"></i> My Profile
-          </router-link>
-        </li>
-      </ul>
-    </div>
+
+    <ul class="list-unstyled px-2">
+      <li><router-link class="nav-link" :to="{ name: 'home' }">Results</router-link></li>
+      <li><router-link class="nav-link" :to="{ name: 'party' }">Parties</router-link></li>
+      <li><router-link class="nav-link" :to="{ name: 'candidates' }">Candidates</router-link></li>
+      <li><router-link class="nav-link" :to="{ name: 'cast-vote' }">Cast Vote</router-link></li>
+      <li v-if="isAdmin"><router-link class="nav-link" :to="{ name: 'admin-users' }">All Registered Users</router-link></li>
+      <li v-if="isAdmin"><router-link class="nav-link" :to="{ name: 'admin-votes' }">All Users That Voted</router-link></li>
+      <li v-if="isAdmin"><router-link class="nav-link" :to="{ name: 'candidate-results' }">Candidate Results</router-link></li>
+      <li><router-link class="nav-link" :to="{ name: 'my-profile' }">My Profile</router-link></li>
+    </ul>
   </div>
 </template>
 
 <style scoped>
 .sidebar {
-  width: 260px;
-  background-color: #fff;
+  width: 240px;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  overflow-y: auto;
+  z-index: 1030;
 }
-@media (max-width: 768px) {
+
+@media (max-width: 991px) {
   .sidebar {
-    position: fixed;
-    transform: translateX(-100%);
+    display: none;
+    position: absolute;
+    background-color: white;
   }
-  .sidebar.translate-x-0 {
-    transform: translateX(0);
+  .sidebar.d-block {
+    display: block !important;
   }
 }
 </style>

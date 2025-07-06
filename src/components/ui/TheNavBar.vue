@@ -10,46 +10,49 @@ const toast = useAppToast();
 
 const onLogout = () => {
   authStore.logout();
-  router.push({ name: "login" });
+  router.push({ name: 'login' });
   toast.showSuccess("You're logged out!");
 };
 </script>
 
 <template>
   <div class="main-header">
-    <nav
-        class="navbar navbar-header navbar-header-transparent navbar-expand-lg border-bottom"
-        data-background-color="white"
-    >
-      <div class="container-fluid d-flex align-items-center">
-        <!-- Hamburger for mobile -->
+    <nav class="navbar navbar-expand-lg navbar-light border-bottom">
+      <div class="container-fluid d-flex justify-content-between align-items-center">
+
+        <!-- Mobile hamburger button -->
         <button
-            class="btn btn-sm btn-outline-secondary d-lg-none me-3"
-            @click="$emit('toggle-sidebar')"
+            class="navbar-toggler d-lg-none"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#sidebarCollapse"
+            aria-controls="sidebarCollapse"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
         >
-          <i class="fas fa-bars"></i>
+          <span class="navbar-toggler-icon"></span>
         </button>
 
-        <ul class="navbar-nav topbar-nav ms-auto align-items-center">
-          <li class="nav-item topbar-user dropdown hidden-caret">
-            <a class="dropdown-toggle profile-pic" data-bs-toggle="dropdown" href="#">
-              <span class="profile-username">
-                <span class="op-7">Hi, </span>
-                <span class="fw-bold">
-                  {{ authStore.loggedInUser?.firstName }} {{ authStore.loggedInUser?.lastName }}
-                </span>
-              </span>
+        <!-- Optional title or logo -->
+        <span class="navbar-brand">Voting System</span>
+
+        <!-- Profile dropdown -->
+        <ul class="navbar-nav ms-auto align-items-center">
+          <li class="nav-item dropdown">
+            <a
+                class="nav-link dropdown-toggle"
+                href="#"
+                role="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+            >
+              {{ authStore.loggedInUser?.firstName }} {{ authStore.loggedInUser?.lastName }}
             </a>
-            <ul class="dropdown-menu dropdown-user animated fadeIn">
-              <li>
-                <router-link :to="{ name: 'my-profile' }" class="dropdown-item">View Profile</router-link>
-              </li>
-              <li>
-                <router-link :to="{ name: 'change-password' }" class="dropdown-item">Change Password</router-link>
-              </li>
-              <li>
-                <a class="dropdown-item" @click="onLogout">Logout</a>
-              </li>
+            <ul class="dropdown-menu">
+              <li><router-link class="dropdown-item" :to="{ name: 'my-profile' }">View Profile</router-link></li>
+              <li><router-link class="dropdown-item" :to="{ name: 'change-password' }">Change Password</router-link></li>
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item" @click="onLogout">Logout</a></li>
             </ul>
           </li>
         </ul>
