@@ -8,7 +8,6 @@ const toggleProfileDropdown = () => {
   showProfileDropdown.value = !showProfileDropdown.value;
 };
 
-// Nëse dëshiron dropdown për sidebar toggle (opsionale)
 const showSidebarDropdown = ref(false);
 const toggleSidebarDropdown = () => {
   showSidebarDropdown.value = !showSidebarDropdown.value;
