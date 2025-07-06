@@ -7,7 +7,7 @@ class EnumService {
     }
 
     async getCities() {
-        const response = await axios.get('https://online-voting-system-rest-api-1-xvys.onrender.com/api/v1/api/enums/cities')
+        const response = await axios.get('https://online-voting-system-rest-api-1-xvys.onrender.com/api/enums/cities')
         return response.data
     }
 
