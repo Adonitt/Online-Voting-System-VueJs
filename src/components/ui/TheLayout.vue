@@ -2,7 +2,7 @@
 import TheSideBar from "./TheSideBar.vue";
 import TheNavBar from "./TheNavBar.vue";
 import TheFooter from "@/components/ui/TheFooter.vue";
-import { ref } from "vue";
+import {ref} from "vue";
 
 const sidebarVisible = ref(true);
 
@@ -14,17 +14,17 @@ const handleSidebarToggle = () => {
 <template>
   <div id="app" class="app-container">
     <transition name="sidebar-fade">
-      <the-side-bar v-if="sidebarVisible" />
+      <the-side-bar v-if="sidebarVisible"/>
     </transition>
 
     <div class="main-panel">
-      <the-nav-bar @toggleSidebar="handleSidebarToggle" />
+      <the-nav-bar @toggle-sidebar="handleSidebarToggle"/>
 
       <div class="container mt-4">
-        <router-view />
+        <router-view/>
       </div>
 
-      <the-footer />
+      <the-footer/>
     </div>
   </div>
 </template>
@@ -56,6 +56,7 @@ the-side-bar {
 .sidebar-fade-leave-active {
   transition: opacity 0.3s ease;
 }
+
 .sidebar-fade-enter-from,
 .sidebar-fade-leave-to {
   opacity: 0;
