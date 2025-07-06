@@ -21,7 +21,14 @@ const onLogout = () => {
 
 <template>
   <div class="main-header">
-    <!-- Navbar Header -->
+    <div class="nav-toggle">
+      <button class="btn btn-toggle toggle-sidebar">
+        <i class="gg-menu-right"></i>
+      </button>
+      <button class="btn btn-toggle sidenav-toggler">
+        <i class="gg-menu-left"></i>
+      </button>
+    </div>
     <nav
         class="navbar navbar-header navbar-header-transparent navbar-expand-lg border-bottom"
         data-background-color="white"
@@ -93,7 +100,8 @@ const onLogout = () => {
                 <li>
                   <div class="dropdown-divider"></div>
 
-                  <router-link :to="{name:'change-password'}" class="dropdown-item" href="#">Change Password</router-link>
+                  <router-link :to="{name:'change-password'}" class="dropdown-item" href="#">Change Password
+                  </router-link>
                   <div class="dropdown-divider"></div>
                   <a class="dropdown-item" @click="onLogout">Logout</a>
                 </li>
