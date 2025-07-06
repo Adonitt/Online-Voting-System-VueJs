@@ -1,22 +1,18 @@
-// TheNavBar.vue
-<script setup>
 
-import {useAuthStore} from "@/stores/authStore.js";
-import {useRouter} from "vue-router";
-import {useAppToast} from "@/composables/useAppToast.js";
-import {toFormData} from "axios";
+<script setup>
+import { useAuthStore } from "@/stores/authStore.js";
+import { useRouter } from "vue-router";
+import { useAppToast } from "@/composables/useAppToast.js";
 
 const authStore = useAuthStore();
-const router = useRouter()
-const toast = useAppToast()
+const router = useRouter();
+const toast = useAppToast();
 
 const onLogout = () => {
-  authStore.logout()
-  router.push({name: 'login'})
+  authStore.logout();
+  router.push({ name: "login" });
   toast.showSuccess("You're logged out!");
-}
-
-
+};
 </script>
 
 <template>
@@ -25,84 +21,39 @@ const onLogout = () => {
         class="navbar navbar-header navbar-header-transparent navbar-expand-lg border-bottom"
         data-background-color="white"
     >
-      <div class="container-fluid">
-        <nav
-            class="navbar navbar-header-left navbar-expand-lg navbar-form nav-search p-0 d-none d-lg-flex"
+      <div class="container-fluid d-flex align-items-center">
+        <!-- Hamburger for mobile -->
+        <button
+            class="btn btn-sm btn-outline-secondary d-lg-none me-3"
+            @click="$emit('toggle-sidebar')"
         >
-        </nav>
+          <i class="fas fa-bars"></i>
+        </button>
 
-        <ul class="navbar-nav topbar-nav ms-md-auto align-items-center">
-          <li
-              class="nav-item topbar-icon dropdown hidden-caret d-flex d-lg-none"
-          >
-            <a
-                class="nav-link dropdown-toggle"
-                data-bs-toggle="dropdown"
-                href="#"
-                role="button"
-                aria-expanded="false"
-                aria-haspopup="true"
-            >
-              <i class="fa fa-search"></i>
-            </a>
-            <ul class="dropdown-menu dropdown-search animated fadeIn">
-              <form class="navbar-left navbar-form nav-search">
-                <div class="input-group">
-                  <input
-                      type="text"
-                      placeholder="Search ..."
-                      class="form-control"
-                  />
-                </div>
-              </form>
-            </ul>
-          </li>
+        <ul class="navbar-nav topbar-nav ms-auto align-items-center">
           <li class="nav-item topbar-user dropdown hidden-caret">
-            <a
-                class="dropdown-toggle profile-pic"
-                data-bs-toggle="dropdown"
-                href="#"
-                aria-expanded="false"
-            >
-
+            <a class="dropdown-toggle profile-pic" data-bs-toggle="dropdown" href="#">
               <span class="profile-username">
-                      <span class="op-7">Hi, </span>
-                      <span class="fw-bold">{{
-                          authStore.loggedInUser?.firstName + " " + authStore.loggedInUser?.lastName
-                        }}</span>
-                    </span>
+                <span class="op-7">Hi, </span>
+                <span class="fw-bold">
+                  {{ authStore.loggedInUser?.firstName }} {{ authStore.loggedInUser?.lastName }}
+                </span>
+              </span>
             </a>
             <ul class="dropdown-menu dropdown-user animated fadeIn">
-              <div class="dropdown-user-scroll scrollbar-outer">
-                <li>
-                  <div class="user-box">
-
-                    <div class="u-text">
-                      <h4>{{ authStore.loggedInUser?.firstName + " " + authStore.loggedInUser?.lastName }}</h4>
-                      <p class="text-muted">{{ authStore.loggedInUser?.sub }}</p>
-                      <router-link
-                          :to="{name:'my-profile'}"
-                          class="btn btn-xs btn-secondary btn-sm"
-                      >View Profile
-                      </router-link
-                      >
-                    </div>
-                  </div>
-                </li>
-                <li>
-                  <div class="dropdown-divider"></div>
-
-                  <router-link :to="{name:'change-password'}" class="dropdown-item" href="#">Change Password</router-link>
-                  <div class="dropdown-divider"></div>
-                  <a class="dropdown-item" @click="onLogout">Logout</a>
-                </li>
-              </div>
+              <li>
+                <router-link :to="{ name: 'my-profile' }" class="dropdown-item">View Profile</router-link>
+              </li>
+              <li>
+                <router-link :to="{ name: 'change-password' }" class="dropdown-item">Change Password</router-link>
+              </li>
+              <li>
+                <a class="dropdown-item" @click="onLogout">Logout</a>
+              </li>
             </ul>
           </li>
         </ul>
       </div>
     </nav>
-    <!-- End Navbar -->
   </div>
-
 </template>

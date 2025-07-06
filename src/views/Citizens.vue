@@ -1,24 +1,26 @@
 <template>
-  <div class="max-w-5xl mx-auto p-6 font-sans">
-    <div class="bg-white shadow-lg rounded-xl p-6">
-      <p class="mb-6 text-gray-600 leading-relaxed">
+  <div class="max-w-5xl mx-auto p-4 sm:p-6 font-sans">
+    <div class="bg-white shadow-xl rounded-xl p-4 sm:p-6">
+      <!-- Note -->
+      <p class="mb-6 text-gray-600 leading-relaxed text-sm sm:text-base">
         <strong class="text-gray-800">Note:</strong> Here are the citizens' data used to register a user or a candidate.<br />
         You must use <strong>exact matching data</strong> (personal number, first name, last name, birth date) to register.<br />
         Only citizens of Kosovo can be registered. This table is based on a mock dataset.
       </p>
 
-      <h2 class="text-2xl font-semibold text-gray-800 mb-4">🧑‍🤝‍🧑 Citizens List</h2>
+      <!-- Title -->
+      <h2 class="text-xl sm:text-2xl font-semibold text-gray-800 mb-4">🧑‍🤝‍🧑 Citizens List</h2>
 
       <!-- Search -->
       <input
           v-model="search"
           type="search"
           placeholder="🔍 Search by name..."
-          class="mb-6 w-full max-w-md px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+          class="mb-6 w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
       />
 
-      <!-- Table -->
-      <div class="overflow-x-auto rounded-lg border border-gray-200">
+      <!-- Full Table on Desktop -->
+      <div class="overflow-x-auto rounded-lg border border-gray-200 hidden sm:block">
         <table class="min-w-full text-sm text-left">
           <thead class="bg-gray-50 text-gray-700 uppercase text-xs tracking-wider">
           <tr>
@@ -45,34 +47,52 @@
             <td class="px-4 py-2">{{ person.nationality }}</td>
             <td class="px-4 py-2">{{ person.city }}</td>
           </tr>
-          <tr v-if="filteredData.length === 0">
-            <td colspan="7" class="text-center py-6 text-gray-500">
-              No results found.
-            </td>
-          </tr>
           </tbody>
         </table>
       </div>
 
+      <!-- Responsive Cards on Mobile -->
+      <div class="sm:hidden space-y-4">
+        <div
+            v-for="person in paginatedData"
+            :key="person.id"
+            class="bg-gray-50 border border-gray-200 rounded-lg p-4 shadow-sm"
+        >
+          <p><strong>ID:</strong> {{ person.id }}</p>
+          <p><strong>Personal No:</strong> {{ person.personalNo }}</p>
+          <p><strong>Name:</strong> {{ person.firstName }} {{ person.lastName }}</p>
+          <p><strong>Birth Date:</strong> {{ formatDate(person.birthDate) }}</p>
+          <p><strong>Nationality:</strong> {{ person.nationality }}</p>
+          <p><strong>City:</strong> {{ person.city }}</p>
+        </div>
+        <div v-if="filteredData.length === 0" class="text-center text-gray-500 py-4">
+          No results found.
+        </div>
+      </div>
+
       <!-- Pagination -->
-      <div class="mt-6 flex justify-between items-center text-sm">
-        <button
-            :disabled="currentPage === 1"
-            @click="currentPage--"
-            class="px-4 py-2 bg-gray-200 hover:bg-gray-300 text-gray-700 font-medium rounded disabled:opacity-50"
-        >
-          ⬅ Prev
-        </button>
+      <div class="mt-6 flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
+        <div class="flex justify-center sm:justify-start space-x-2">
+          <button
+              :disabled="currentPage === 1"
+              @click="currentPage--"
+              class="px-4 py-2 bg-gray-200 hover:bg-gray-300 text-gray-700 font-medium rounded disabled:opacity-50"
+          >
+            ⬅ Prev
+          </button>
 
-        <span class="text-gray-600">Page {{ currentPage }} of {{ totalPages }}</span>
+          <button
+              :disabled="currentPage === totalPages"
+              @click="currentPage++"
+              class="px-4 py-2 bg-gray-200 hover:bg-gray-300 text-gray-700 font-medium rounded disabled:opacity-50"
+          >
+            Next ➡
+          </button>
+        </div>
 
-        <button
-            :disabled="currentPage === totalPages"
-            @click="currentPage++"
-            class="px-4 py-2 bg-gray-200 hover:bg-gray-300 text-gray-700 font-medium rounded disabled:opacity-50"
-        >
-          Next ➡
-        </button>
+        <p class="text-center sm:text-right text-gray-600">
+          Page {{ currentPage }} of {{ totalPages }}
+        </p>
       </div>
     </div>
   </div>
@@ -130,6 +150,4 @@ function formatDate(dateStr) {
     day: "numeric",
   });
 }
-
-
 </script>
