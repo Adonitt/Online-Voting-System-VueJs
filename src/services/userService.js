@@ -71,7 +71,7 @@ class UserService {
     }
 
     async getAllCitizens() {
-        const response = await axios.get("https://online-voting-system-rest-api-1-xvys.onrender.com/rks/suffrages")
+        const response = await axios.get("https://online-voting-system-rest-api-xw5q.onrender.com/rks/suffrages")
         return response.data;
     }
 

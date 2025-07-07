@@ -2,12 +2,12 @@ import axios from "axios";
 
 class EnumService {
     async getNationalities() {
-        const response = await axios.get('https://online-voting-system-rest-api-1-xvys.onrender.com/api/enums/nationalities')
+        const response = await axios.get('https://online-voting-system-rest-api-xw5q.onrender.com/api/enums/nationalities')
         return response.data
     }
 
     async getCities() {
-        const response = await axios.get('https://online-voting-system-rest-api-1-xvys.onrender.com/api/enums/cities')
+        const response = await axios.get('https://online-voting-system-rest-api-xw5q.onrender.com/api/enums/cities')
         return response.data
     }
 

@@ -1,101 +1,109 @@
+// TheNavBar.vue
 <script setup>
-import { ref } from "vue";
-import { useAuthStore } from "@/stores/authStore.js";
-import { useRouter } from "vue-router";
-import { useAppToast } from "@/composables/useAppToast.js";
+
+import {useAuthStore} from "@/stores/authStore.js";
+import {useRouter} from "vue-router";
+import {useAppToast} from "@/composables/useAppToast.js";
+import {toFormData} from "axios";
 
 const authStore = useAuthStore();
-const router = useRouter();
-const toast = useAppToast();
-
-const showProfileDropdown = ref(false);
-
-const toggleProfileDropdown = () => {
-  showProfileDropdown.value = !showProfileDropdown.value;
-};
+const router = useRouter()
+const toast = useAppToast()
 
 const onLogout = () => {
-  authStore.logout();
-  router.push({ name: "login" });
+  authStore.logout()
+  router.push({name: 'login'})
   toast.showSuccess("You're logged out!");
-  showProfileDropdown.value = false;
-};
+}
+
+
 </script>
 
 <template>
-  <nav class="navbar mobile-navbar ">
-    <div class="container-fluid d-flex justify-content-between align-items-center">
-      <!-- Logo -->
-      <router-link to="/" class="navbar-brand">
-        <img src="@/assets/img/foto/ks.jpeg" alt="Logo" height="40" />
-      </router-link>
+  <div class="main-header">
+    <!-- Navbar Header -->
+    <nav
+        class="navbar navbar-header navbar-header-transparent navbar-expand-lg border-bottom"
+        data-background-color="white"
+    >
+      <div class="container-fluid">
+        <nav
+            class="navbar navbar-header-left navbar-expand-lg navbar-form nav-search p-0 d-none d-lg-flex"
+        >
+        </nav>
 
-      <!-- Profile button -->
-      <button
-          @click="toggleProfileDropdown"
-          class="btn btn-link text-dark position-relative"
-          aria-label="Toggle profile menu"
-      >
-        <i class="bi bi-person-circle fs-4"></i>
-      </button>
+        <ul class="navbar-nav topbar-nav ms-md-auto align-items-center">
+          <li
+              class="nav-item topbar-icon dropdown hidden-caret d-flex d-lg-none"
+          >
+            <a
+                class="nav-link dropdown-toggle"
+                data-bs-toggle="dropdown"
+                href="#"
+                role="button"
+                aria-expanded="false"
+                aria-haspopup="true"
+            >
+              <i class="fa fa-search"></i>
+            </a>
+            <ul class="dropdown-menu dropdown-search animated fadeIn">
+              <form class="navbar-left navbar-form nav-search">
+                <div class="input-group">
+                  <input
+                      type="text"
+                      placeholder="Search ..."
+                      class="form-control"
+                  />
+                </div>
+              </form>
+            </ul>
+          </li>
+          <li class="nav-item topbar-user dropdown hidden-caret">
+            <a
+                class="dropdown-toggle profile-pic"
+                data-bs-toggle="dropdown"
+                href="#"
+                aria-expanded="false"
+            >
 
-      <!-- Profile dropdown -->
-      <ul
-          v-if="showProfileDropdown"
-          class="profile-dropdown position-absolute bg-white shadow rounded p-2"
-          style="top: 50px; right: 10px; width: 180px; z-index: 1050;"
-      >
-        <li class="mb-2 fw-semibold">
-          {{ authStore.loggedInUser?.firstName }} {{ authStore.loggedInUser?.lastName }}
-        </li>
-        <li class="mb-2 text-muted small">{{ authStore.loggedInUser?.sub }}</li>
-        <li>
-          <router-link @click="showProfileDropdown = false" class="dropdown-item" :to="{ name: 'my-profile' }">
-            View Profile
-          </router-link>
-        </li>
-        <li>
-          <router-link @click="showProfileDropdown = false" class="dropdown-item" :to="{ name: 'change-password' }">
-            Change Password
-          </router-link>
-        </li>
-        <li>
-          <a href="#" @click.prevent="onLogout" class="dropdown-item text-danger">
-            Logout
-          </a>
-        </li>
-      </ul>
-    </div>
-  </nav>
+              <span class="profile-username">
+                      <span class="op-7">Hi, </span>
+                      <span class="fw-bold">{{
+                          authStore.loggedInUser?.firstName + " " + authStore.loggedInUser?.lastName
+                        }}</span>
+                    </span>
+            </a>
+            <ul class="dropdown-menu dropdown-user animated fadeIn">
+              <div class="dropdown-user-scroll scrollbar-outer">
+                <li>
+                  <div class="user-box">
+
+                    <div class="u-text">
+                      <h4>{{ authStore.loggedInUser?.firstName + " " + authStore.loggedInUser?.lastName }}</h4>
+                      <p class="text-muted">{{ authStore.loggedInUser?.sub }}</p>
+                      <router-link
+                          :to="{name:'my-profile'}"
+                          class="btn btn-xs btn-secondary btn-sm"
+                      >View Profile
+                      </router-link
+                      >
+                    </div>
+                  </div>
+                </li>
+                <li>
+                  <div class="dropdown-divider"></div>
+
+                  <router-link :to="{name:'change-password'}" class="dropdown-item" href="#">Change Password</router-link>
+                  <div class="dropdown-divider"></div>
+                  <a class="dropdown-item" @click="onLogout">Logout</a>
+                </li>
+              </div>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </nav>
+    <!-- End Navbar -->
+  </div>
+
 </template>
-
-<style scoped>
-.mobile-navbar {
-  position: relative;
-  background: white;
-  border-bottom: 1px solid #ddd;
-  padding: 0.5rem 1rem;
-}
-
-.profile-dropdown {
-  list-style: none;
-  margin: 0;
-  padding: 0.5rem 0;
-}
-
-.profile-dropdown li {
-  padding: 0.3rem 0.5rem;
-}
-
-.dropdown-item {
-  display: block;
-  color: #333;
-  text-decoration: none;
-  padding: 0.3rem 0.5rem;
-  border-radius: 4px;
-}
-
-.dropdown-item:hover {
-  background-color: #f0f0f0;
-}
-</style>

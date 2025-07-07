@@ -2,7 +2,7 @@
 import 'bootstrap/dist/css/bootstrap.min.css'
 import 'bootstrap/dist/js/bootstrap.min.js'
 import 'bootstrap-icons/font/bootstrap-icons.css'
-import './assets/css/bootstrap.min.css';
+
 import './assets/css/demo.css';
 import './assets/css/fonts.css';
 import './assets/css/kaiadmin.css';
