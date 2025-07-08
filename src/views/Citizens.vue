@@ -13,9 +13,11 @@
         <b>admin@rks.com<br>
           Password1.</b><br>
         Feel free to register, and create users...<br>
-        <b> While registering, add datas form mock table ⚠️Case-Sensitive⚠️, but enter your Email Address, so you can receive the updates per mail.
+        <b> While registering, add datas form mock table ⚠️Case-Sensitive⚠️, but enter your Email Address, so you can
+          receive the updates per mail.
         </b></p>
 
+      <router-link :to="{name:'login'}" class="btn btn-primary">Back</router-link>
       <!-- Title -->
       <h2 class="text-xl sm:text-2xl font-semibold text-gray-800 mb-4">🧑‍🤝‍🧑 Citizens List</h2>
 
