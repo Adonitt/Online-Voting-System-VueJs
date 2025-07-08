@@ -6,22 +6,27 @@ import {useRouter} from "vue-router";
 import {useAppToast} from "@/composables/useAppToast.js";
 import {toFormData} from "axios";
 
+const emit = defineEmits(['toggle-sidebar'])
+
 const authStore = useAuthStore();
-const router = useRouter()
-const toast = useAppToast()
+const router = useRouter();
+const toast = useAppToast();
 
 const onLogout = () => {
-  authStore.logout()
-  router.push({name: 'login'})
+  authStore.logout();
+  router.push({name: 'login'});
   toast.showSuccess("You're logged out!");
-}
-
-
+};
 </script>
 
 <template>
   <div class="main-header">
-    <!-- Navbar Header -->
+    <button class="navbar-toggler sidenav-toggler" @click="emit('toggle-sidebar')" type="button">
+      <span class="navbar-toggler-icon">
+        <i class="icon-menu"></i>
+      </span>
+    </button>
+
     <nav
         class="navbar navbar-header navbar-header-transparent navbar-expand-lg border-bottom"
         data-background-color="white"
@@ -93,7 +98,8 @@ const onLogout = () => {
                 <li>
                   <div class="dropdown-divider"></div>
 
-                  <router-link :to="{name:'change-password'}" class="dropdown-item" href="#">Change Password</router-link>
+                  <router-link :to="{name:'change-password'}" class="dropdown-item" href="#">Change Password
+                  </router-link>
                   <div class="dropdown-divider"></div>
                   <a class="dropdown-item" @click="onLogout">Logout</a>
                 </li>

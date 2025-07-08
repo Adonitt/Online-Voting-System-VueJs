@@ -3,14 +3,22 @@ import {useAuthStore} from "@/stores/authStore.js";
 import {computed} from "vue";
 
 const authStore = useAuthStore();
-
+const emit = defineEmits(['link-clicked'])
 
 const isAdmin = computed(() => authStore.isAdmin);
+defineProps({
+  visible: Boolean,
+})
 
+const handleLinkClick = () => {
+  if (window.innerWidth < 992) {
+    emit('link-clicked')
+  }
+}
 </script>
 
 <template>
-  <div class="sidebar">
+  <div class="sidebar" :class="{ 'sidebar-hidden': !visible }">
     <div class="sidebar-logo">
 
       <div class="logo-header" data-background-color="white">
@@ -28,7 +36,7 @@ const isAdmin = computed(() => authStore.isAdmin);
       <div class="sidebar-content">
         <ul class="nav nav-secondary">
           <li class="nav-item ">
-            <router-link :to="{name:'home'}">
+            <router-link :to="{name:'home'} " @click="handleLinkClick">
               <i class="fas fa-home"></i>
               <p>Results</p>
             </router-link>
@@ -38,7 +46,7 @@ const isAdmin = computed(() => authStore.isAdmin);
             <h4 class="text-section">Components</h4>
           </li>
           <li class="nav-item">
-            <router-link
+            <router-link @click="handleLinkClick"
                 :to="{name:'party'}">
               <i class="bi-flag"></i>
               <p>Parties</p>
@@ -46,7 +54,7 @@ const isAdmin = computed(() => authStore.isAdmin);
           </li>
 
           <li class="nav-item">
-            <router-link
+            <router-link @click="handleLinkClick"
                 :to="{name:'candidates'}">
               <i class="bi-file-person"></i>
               <p>Candidates</p>
@@ -54,7 +62,7 @@ const isAdmin = computed(() => authStore.isAdmin);
           </li>
 
           <li class="nav-item">
-            <router-link
+            <router-link @click="handleLinkClick"
                 :to="{name:'cast-vote'}">
               <i class="bi-pen"></i>
               <p>Cast Vote</p>
@@ -63,28 +71,28 @@ const isAdmin = computed(() => authStore.isAdmin);
 
 
           <li class="nav-item" v-if="isAdmin">
-            <router-link :to="{ name: 'admin-users' }">
+            <router-link :to="{ name: 'admin-users' }" @click="handleLinkClick">
               <i class="bi bi-people"></i>
               <p>All Registered Users</p>
             </router-link>
           </li>
 
           <li class="nav-item" v-if="isAdmin">
-            <router-link :to="{ name: 'admin-votes' }">
+            <router-link :to="{ name: 'admin-votes' }" @click="handleLinkClick">
               <i class="bi bi-check-all"></i>
               <p>All Users that has Voted</p>
             </router-link>
           </li>
 
           <li class="nav-item" v-if="isAdmin">
-            <router-link :to="{ name: 'candidate-results' }">
+            <router-link :to="{ name: 'candidate-results' }" @click="handleLinkClick">
               <i class="bi bi-person"></i>
               <p>Candidate Results</p>
             </router-link>
           </li>
 
           <li class="nav-item">
-            <router-link
+            <router-link @click="handleLinkClick"
                 :to="{name:'my-profile'}">
               <i class="bi-person"></i>
               <p>My Profile</p>
