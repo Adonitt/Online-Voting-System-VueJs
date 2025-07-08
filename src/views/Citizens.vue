@@ -3,10 +3,18 @@
     <div class="bg-white shadow-xl rounded-xl p-4 sm:p-6">
       <!-- Note -->
       <p class="mb-6 text-gray-600 leading-relaxed text-sm sm:text-base">
-        <strong class="text-gray-800">Note:</strong> Here are the citizens' data used to register a user or a candidate.<br />
-        You must use <strong>exact matching data</strong> (personal number, first name, last name, birth date) to register.<br />
+        <strong class="text-gray-800">Note:</strong> Here are the citizens' data used to register a user or a candidate.<br/>
+        You must use <strong>exact matching data</strong> (personal number, first name, last name, birth date) to
+        register.<br/>
         Only citizens of Kosovo can be registered. This table is based on a mock dataset.
       </p>
+
+      <p class="mb-6 text-gray-600 leading-relaxed text-sm sm:text-base">Admin login is:<br>
+        <b>admin@rks.com<br>
+          Password1.</b><br>
+        Feel free to register, and create users...<br>
+        <b> While registering, add datas form mock table ⚠️Case-Sensitive⚠️, but enter your Email Address, so you can receive the updates per mail.
+        </b></p>
 
       <!-- Title -->
       <h2 class="text-xl sm:text-2xl font-semibold text-gray-800 mb-4">🧑‍🤝‍🧑 Citizens List</h2>
@@ -99,7 +107,7 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from "vue";
+import {ref, computed, onMounted} from "vue";
 import axios from "axios";
 
 const data = ref([]);

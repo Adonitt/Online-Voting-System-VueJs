@@ -1,5 +1,6 @@
 import client from "@/helpers/client.js";
 import axios from "axios";
+import data from "bootstrap/js/src/dom/data.js";
 
 class VoteService {
     async castVote(vote) {
@@ -39,7 +40,17 @@ class VoteService {
     }
 
     async getVotingDates() {
-        const response = await client.get('votes/voting-days');
+        const response = await client.get('/voting-dates');
+        return response.data;
+    }
+
+    async createVotingDate(dates){
+        const response = await client.post('voting-dates/create', dates);
+        return response.data;
+    }
+
+    async updateVotingDate(id, dates){
+        const response = await client.put(`voting-dates/${id}`, dates);
         return response.data;
     }
 

@@ -43,7 +43,7 @@ const loadCityVoteSummary = async () => {
   }
 };
 
-/* Computed */
+
 const userCount = computed(() => users.value.length);
 const userVoteCount = computed(() => usersVote.value.length);
 const votedPercentageFormatted = computed(() => {
@@ -131,7 +131,8 @@ onMounted(async () => {
     ]);
     new DataTablesCore("#parties");
     const res = await VoteService.getVotingDates()
-    votingDay.value = res.votingDay
+    votingDay.value = res[0]?.votingDay
+
   });
 });
 
@@ -214,7 +215,6 @@ const daysLeft = computed(() => {
         </div>
       </div>
 
-      <!-- City Vote Summary -->
       <div class="row">
         <div class="col-12 d-flex align-items-center mb-3">
           <label for="citySelect" class="form-label me-3 mb-0 fw-semibold">Select City:</label>
@@ -239,7 +239,6 @@ const daysLeft = computed(() => {
           </div>
         </div>
 
-        <!-- City Party Table -->
         <div class="col-12 col-lg-4">
           <div class="table-responsive shadow-sm rounded border bg-white p-3">
             <table class="table table-striped table-hover align-middle mb-0">

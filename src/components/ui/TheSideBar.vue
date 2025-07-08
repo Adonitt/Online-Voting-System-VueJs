@@ -47,7 +47,7 @@ const handleLinkClick = () => {
           </li>
           <li class="nav-item">
             <router-link @click="handleLinkClick"
-                :to="{name:'party'}">
+                         :to="{name:'party'}">
               <i class="bi-flag"></i>
               <p>Parties</p>
             </router-link>
@@ -55,7 +55,7 @@ const handleLinkClick = () => {
 
           <li class="nav-item">
             <router-link @click="handleLinkClick"
-                :to="{name:'candidates'}">
+                         :to="{name:'candidates'}">
               <i class="bi-file-person"></i>
               <p>Candidates</p>
             </router-link>
@@ -63,7 +63,7 @@ const handleLinkClick = () => {
 
           <li class="nav-item">
             <router-link @click="handleLinkClick"
-                :to="{name:'cast-vote'}">
+                         :to="{name:'cast-vote'}">
               <i class="bi-pen"></i>
               <p>Cast Vote</p>
             </router-link>
@@ -84,16 +84,22 @@ const handleLinkClick = () => {
             </router-link>
           </li>
 
-          <li class="nav-item" v-if="isAdmin">
+          <li class="nav-item">
             <router-link :to="{ name: 'candidate-results' }" @click="handleLinkClick">
               <i class="bi bi-person"></i>
               <p>Candidate Results</p>
             </router-link>
           </li>
+          <li class="nav-item" v-if="isAdmin">
+            <router-link :to="{ name: 'voting-dates' }" @click="handleLinkClick">
+              <i class="bi bi-plus"></i>
+              <p>Voting Dates</p>
+            </router-link>
+          </li>
 
           <li class="nav-item">
             <router-link @click="handleLinkClick"
-                :to="{name:'my-profile'}">
+                         :to="{name:'my-profile'}">
               <i class="bi-person"></i>
               <p>My Profile</p>
             </router-link>

@@ -1,21 +1,16 @@
 import {createRouter, createWebHistory} from "vue-router";
-import {useAuthStore} from "@/stores/authStore.js"; // Correct import path
+import {useAuthStore} from "@/stores/authStore.js";
 import AuthView from "@/views/auth/AuthView.vue";
 import TheContainer from "@/components/ui/TheContainer.vue";
-import ProfileView from "@/views/profile/ProfileView.vue";
-import ChangePasswordView from "@/views/profile/ChangePasswordView.vue";
 import RegisterView from "@/views/auth/RegisterView.vue";
 import TheLayout from "@/components/ui/TheLayout.vue";
 import partyRoutes from "@/router/partyRoutes.js";
 import candidateRoutes from "@/router/candidateRoutes.js";
-import voteRoutes from "@/router/voteRoutes.js"; // This might be for user-specific votes, not admin
+import voteRoutes from "@/router/voteRoutes.js";
 import ForgotPasswordView from "@/views/auth/ForgotPasswordView.vue";
 
-// *** EXISTING ADMIN IMPORTS ***
-import UserList from "@/views/admin/UserListView.vue"; // Your existing Admin Users List component
-import profileRoutes from "@/router/profileRoutes.js"; // Ensure this is not a duplicate import if already used
+import profileRoutes from "@/router/profileRoutes.js";
 
-import AllVotesView from "@/views/vote/AllVotesView.vue";
 import userRoutes from "@/router/userRoutes.js";
 import VoteService from "@/services/voteService.js";
 import Citizens from "@/views/Citizens.vue";
@@ -41,9 +36,7 @@ const routes = [
         path: '/auth/citizens',
         name: 'citizens',
         component: Citizens,
-        meta: {
-            requireAuth: false,
-        }
+
     },
     {
         path: '/auth/forgot-password',
@@ -86,13 +79,11 @@ router.beforeEach(async (to, from) => {
 
     if (to.meta.roles && to.meta.roles.length > 0 && authStore.isLoggedIn) {
         const isAllowed = to.meta.roles.includes(authStore.loggedInUser?.role);
-
         if (!isAllowed) {
             console.warn('Access Denied: You do not have the required role for this page.');
             return {name: 'home'}
         }
     }
-
 
     if (to.meta.checkDeadline) {
         try {
@@ -113,15 +104,14 @@ router.beforeEach(async (to, from) => {
         }
     }
 
+    const publicPages = ['login', 'register', 'forgot-password'];
 
     if (to.meta.requireAuth && !authStore.isLoggedIn) {
         return {
             name: 'login',
-            query: {
-                redirect: to.fullPath
-            }
+            query: {redirect: to.fullPath}
         };
-    } else if (!to.meta.requireAuth && authStore.isLoggedIn) {
+    } else if (publicPages.includes(to.name) && authStore.isLoggedIn) {
         return {name: 'home'};
     }
 

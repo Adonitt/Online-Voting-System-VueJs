@@ -34,8 +34,8 @@ onMounted(async () => {
   } catch (error) {
     console.log(error.response?.data);
   }
-  const res = await VoteService.getVotingDates();
-  votingDay.value = res.votingDay;
+  const res = await VoteService.getVotingDates()
+  votingDay.value = res[0]?.votingDay
 });
 
 watch(selectedParty, async (partyId) => {
