@@ -5,6 +5,7 @@ import toast from "bootstrap/js/src/toast.js";
 import DataTable from "datatables.net-vue3";
 import DataTablesCore from "datatables.net";
 import DataTablesBS5 from "datatables.net-bs5";
+import BreadCrumb from "@/components/shared/BreadCrumb.vue";
 
 DataTable.use(DataTablesCore);
 DataTable.use(DataTablesBS5);
@@ -88,11 +89,18 @@ onMounted(async () => {
   new DataTablesCore("#users")
 });
 
+
+const breadcrumb = [
+  {label: 'Dashboard', to: '/',},
+  {label: 'Users'},
+]
+
 </script>
 
 <template>
 
   <div class="admin-users-view">
+  <bread-crumb :items="breadcrumb"/>
     <div class="card">
       <div class="card-header">
         <div class="card-title">All Registered Users</div>

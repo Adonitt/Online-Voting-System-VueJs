@@ -182,7 +182,7 @@ const availableCities = [
           <span class="text-muted">Already have an account?
             <router-link to="/auth/login" class="text-decoration-none">Login</router-link><br>
 
-        <router-link :to="{name:'citizens'}">How to register</router-link>
+        <router-link :to="{name:'citizens'}" target="_blank">How to register</router-link>
           </span>
         </div>
       </form>

@@ -84,124 +84,122 @@ onMounted(async () => {
 })
 
 
-</script>
-<template>
-  <bread-crumb :items="breadcrumb"/>
+</script><template>
+  <bread-crumb :items="breadcrumb" />
+
   <app-card>
     <div v-if="party && party.id">
+      <!-- Buttons -->
       <div class="d-flex justify-content-center gap-2 mt-3">
-        <router-link class="btn btn-secondary  " :to="{name:'updateParty', params:{id:route.params.id}}"
-                     v-if="isBeforeDeadline && role === ROLES.ADMIN"
-        >Update Party
+        <router-link
+            class="btn btn-secondary"
+            :to="{ name: 'updateParty', params: { id: route.params.id } }"
+            v-if="isBeforeDeadline && role === ROLES.ADMIN"
+        >
+          Update Party
         </router-link>
 
-        <app-button class="btn btn-danger flex" @click="onDeleteParty(partyId)"
-                    v-if="isBeforeDeadline && role === ROLES.ADMIN "
-        >Delete
+        <app-button
+            class="btn btn-danger"
+            @click="onDeleteParty(partyId)"
+            v-if="isBeforeDeadline && role === ROLES.ADMIN"
+        >
+          Delete
         </app-button>
       </div>
-      <div class="page-inner">
-        <div class="container" id="main-body">
-          <div class="main-body">
-            <div class="row gutters-sm">
-              <div class="col-md-4 mb-3">
-                <div class="card">
-                  <div class="card-body">
-                    <p class="text-center text-secondary">Party ID: {{ partyId }}</p>
-                    <div class="d-flex flex-column align-items-center text-center">
 
-                      <img
-                          v-if="party.symbol"
-                          :src="getFullImageUrl(party.symbol)"
-                          :alt="`Image of ${party.name}`"
-                          style="max-width: 300px"
-                          class="rounded-circle"
-                          width="200"
-                          height="200"
-                      />
-
-                      <div class="mt-3 text-secondary">
-                        <h4>{{ party.name + ' - ' + party.abbreviationName }} </h4>
-                        <h4>Number: <b>{{ party.numberOfParty }} </b></h4>
-                        <p class="text-muted font-size-sm">
-                          {{ party.description }}
-                        </p>
-
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="card" v-if="role === ROLES.ADMIN">
-                  <div class="card-body">
-                    <p class="text-muted font-size-sm">
-                      Created By: <span class="text-secondary">{{ party.createdBy }}</span>
-                    </p>
-                    <p class="text-muted font-size-sm">
-                      Created At: <span class="text-secondary">                      {{
-                        new Date(party.createdAt).toISOString().slice(0, 16).replace('T', ' ')
-                      }}
-</span>
-                    </p>
-                    <p v-if="party.updatedAt" class="text-muted font-size-sm">
-                      Updated At: <span class="text-secondary">
-    {{ new Date(party.updatedAt).toISOString().slice(0, 16).replace('T', ' ') }}
-  </span>
-                    </p>
-
-                    <p v-if="party.updatedBy" class="text-muted font-size-sm">
-                      Updated By: <span class="text-secondary">{{ party.updatedBy }}</span>
-
-                    </p>
-                  </div>
+      <!-- Party Details -->
+      <div class="container" id="main-body">
+        <div class="row">
+          <!-- Left Column -->
+          <div class="col-12 col-md-4 mb-3">
+            <div class="card mb-3">
+              <div class="card-body text-center">
+                <p class="text-secondary">Party ID: {{ partyId }}</p>
+                <img
+                    v-if="party.symbol"
+                    :src="getFullImageUrl(party.symbol)"
+                    :alt="`Image of ${party.name}`"
+                    class="rounded-circle mb-3"
+                    style="max-width: 100%; height: auto; width: 200px;"
+                />
+                <div class="text-secondary">
+                  <h4>{{ party.name + ' - ' + party.abbreviationName }}</h4>
+                  <h5>Number: <b>{{ party.numberOfParty }}</b></h5>
+                  <p class="text-muted">{{ party.description }}</p>
                 </div>
               </div>
+            </div>
 
-              <div class="col-md-8">
-                <div class="card mb-5">
-                  <div class="card-body">
-
-                    <table id="candidates" class="table" v-if="party.candidates && party.candidates.length">
-                      <thead>
-                      <tr>
-                        <th scope="col" style="width: 33%;">ID</th>
-                        <th scope="col" style="width: 33%;">Candidate Number</th>
-                        <th scope="col" style="width: 33%;">Candidate Name</th>
-                        <th scope="col" style="width: 33%;">Nationality</th>
-                        <th scope="col" style="width: 33%;">Actions</th>
-                      </tr>
-                      </thead>
-                      <tbody>
-                      <tr v-for="candidate in party.candidates" :key="candidate.id" style="font-size: 13px;">
-                        <td style="padding: 2px 4px; width: 50px;">{{ candidate.id }}</td>
-                        <td style="padding: 2px 4px; width: 50px;">{{ candidate.candidateNumber }}</td>
-                        <td style="padding: 2px 4px; max-width: 100px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
-                          {{ candidate.firstName + ' ' + candidate.lastName }}
-                        </td>
-                        <td style="padding: 2px 4px; max-width: 80px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
-                          {{ candidate.nationality }}
-                        </td>
-                        <td style="padding: 2px 4px; width: 60px;">
-                          <router-link :to="{name:'candidate-details',params:{id:candidate.id}}"
-                                       class="btn btn-sm btn-outline-primary py-0 px-1" style="font-size: 11px;">Details
-                          </router-link>
-                        </td>
-                      </tr>
-                      </tbody>
-                    </table>
-                    <p v-else>No candidates found.</p>
-
-                  </div>
-                </div>
+            <div class="card" v-if="role === ROLES.ADMIN">
+              <div class="card-body">
+                <p class="text-muted mb-1">
+                  Created By: <span class="text-secondary">{{ party.createdBy }}</span>
+                </p>
+                <p class="text-muted mb-1">
+                  Created At:
+                  <span class="text-secondary">
+                    {{ new Date(party.createdAt).toISOString().slice(0, 16).replace('T', ' ') }}
+                  </span>
+                </p>
+                <p v-if="party.updatedAt" class="text-muted mb-1">
+                  Updated At:
+                  <span class="text-secondary">
+                    {{ new Date(party.updatedAt).toISOString().slice(0, 16).replace('T', ' ') }}
+                  </span>
+                </p>
+                <p v-if="party.updatedBy" class="text-muted mb-1">
+                  Updated By: <span class="text-secondary">{{ party.updatedBy }}</span>
+                </p>
               </div>
+            </div>
+          </div>
 
+          <!-- Right Column -->
+          <div class="col-12 col-md-8">
+            <div class="card mb-4">
+              <div class="card-body">
+                <div class="table-responsive" v-if="party.candidates && party.candidates.length">
+                  <table id="candidates" class="table table-sm table-striped table-bordered">
+                    <thead>
+                    <tr>
+                      <th>ID</th>
+                      <th>Candidate Number</th>
+                      <th>Candidate Name</th>
+                      <th>Nationality</th>
+                      <th>Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr v-for="candidate in party.candidates" :key="candidate.id">
+                      <td>{{ candidate.id }}</td>
+                      <td>{{ candidate.candidateNumber }}</td>
+                      <td>
+                        {{ candidate.firstName + ' ' + candidate.lastName }}
+                      </td>
+                      <td>{{ candidate.nationality }}</td>
+                      <td>
+                        <router-link
+                            :to="{ name: 'candidate-details', params: { id: candidate.id } }"
+                            class="btn btn-sm btn-outline-primary"
+                        >
+                          Details
+                        </router-link>
+                      </td>
+                    </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <p v-else>No candidates found.</p>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-
   </app-card>
 </template>
+
 
 <style scoped>
 

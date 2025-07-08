@@ -74,68 +74,89 @@ onMounted(async () => {
 })
 
 </script>
-
 <template>
+  <bread-crumb :items="breadcrumb" />
 
-  <bread-crumb :items="breadcrumb"/>
   <app-card>
+    <!-- Header -->
     <template #header>
-      <h1>Candidates</h1>
+      <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3">
+        <h1 class="mb-0">Candidates</h1>
+        <router-link
+            v-if="role === ROLES.ADMIN && isBeforeDeadline"
+            :to="{ name: 'create-candidate' }"
+            class="btn btn-secondary"
+        >
+          Add Candidate
+        </router-link>
+      </div>
     </template>
 
-    <div class="alert alert-warning text-center mx-3" v-if="role === ROLES.ADMIN">
-      The deadline for creating or updating parties is on ({{ deadline?.toLocaleDateString() }}).
+    <!-- Deadline Alert -->
+    <div
+        class="alert alert-warning text-center mx-3"
+        v-if="role === ROLES.ADMIN"
+    >
+      The deadline for creating or updating parties is on
+      ({{ deadline?.toLocaleDateString() }}).
     </div>
 
-    <div class="d-flex justify-content-end m-3 " v-if="role === ROLES.ADMIN && isBeforeDeadline">
-      <router-link :to="{name:'create-candidate'}" class="btn btn-secondary">Add Candidate</router-link>
+    <!-- Spinner -->
+    <div class="text-center my-4" v-if="isLoading">
+      <app-spinner :isLoading="isLoading" />
     </div>
 
-    <div class="text-center" v-if="isLoading">
-      <app-spinner :isLoading="isLoading"/>
+    <!-- Table -->
+    <div class="table-responsive" v-else>
+      <table id="candidates" class="table table-striped table-bordered">
+        <thead>
+        <tr>
+          <th>#</th>
+          <th>Candidate Number</th>
+          <th>First Name</th>
+          <th>Last Name</th>
+          <th>Party</th>
+          <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr v-for="candidate in candidates" :key="candidate.id">
+          <td>{{ candidate.id }}</td>
+          <td>{{ candidate.candidateNumber }}</td>
+          <td>{{ candidate.firstName }}</td>
+          <td>{{ candidate.lastName }}</td>
+          <td>{{ candidate.party }}</td>
+          <td class="d-flex flex-wrap gap-2">
+            <router-link
+                :to="{ name: 'candidate-details', params: { id: candidate.id } }"
+                class="btn btn-icon btn-round btn-info"
+            >
+              <i class="fas fa-info-circle m-1"></i>
+            </router-link>
+
+            <router-link
+                v-if="role === ROLES.ADMIN && isBeforeDeadline"
+                :to="{ name: 'edit-candidate', params: { id: candidate.id } }"
+                class="btn btn-icon btn-round btn-warning"
+            >
+              <i class="fas fa-edit m-1"></i>
+            </router-link>
+
+            <app-button
+                v-if="role === ROLES.ADMIN && isBeforeDeadline"
+                class="btn btn-icon btn-round btn-danger"
+                @click="onDeleteCandidate(candidate.id)"
+            >
+              <i class="fas fa-trash m-1"></i>
+            </app-button>
+          </td>
+        </tr>
+        </tbody>
+      </table>
     </div>
-    <table v-else id="candidates" class="table table-striped table-bordered">
-      <thead>
-      <tr>
-        <th>#</th>
-        <th>Candidate Number</th>
-        <th>First Name</th>
-        <th>Last Name</th>
-        <th>Party</th>
-        <th>Actions</th>
-      </tr>
-      </thead>
-      <tbody>
-      <tr v-for="candidate in candidates" :key="candidate.id">
-        <td>{{ candidate.id }}</td>
-        <td>{{ candidate.candidateNumber }}</td>
-        <td>{{ candidate.firstName }}</td>
-        <td>{{ candidate.lastName }}</td>
-        <td>{{ candidate.party }}</td>
-        <td>
-          <router-link :to="{name:'candidate-details', params:{id:candidate.id}}"
-                       class="btn btn-icon btn-round btn-info me-2">
-            <i class="fas fa-info-circle m-2"></i>
-          </router-link>
-
-          <router-link :to="{name:'edit-candidate',params:{id:candidate.id}}"
-                       v-if="role === ROLES.ADMIN && isBeforeDeadline"
-                       class="btn btn-icon btn-round btn-warning me-2">
-            <i class="fas fa-edit m-2"></i>
-          </router-link>
-
-          <app-button class="btn btn-icon btn-round btn-danger" @click="onDeleteCandidate(candidate.id)"
-                      v-if="role === ROLES.ADMIN && isBeforeDeadline">
-            <i class="fas fa-trash m-2"></i>
-          </app-button>
-
-        </td>
-      </tr>
-      </tbody>
-    </table>
-
   </app-card>
 </template>
+
 
 <style scoped>
 

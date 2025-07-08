@@ -190,7 +190,7 @@ onMounted(async () => {
                         :is-valid="formData.nationality.isValid"
                         :options="enumStore.nationalitiesForDropdown"/>
 
-            <button type="submit" class="btn btn-primary m-3">
+            <button type="submit" class="btn btn-primary mt-3">
               <i class="fas fa-save me-2"></i>
               Update Candidate
             </button>
@@ -199,7 +199,6 @@ onMounted(async () => {
       </form>
     </div>
 
-    <!-- Optionally show loading or error -->
     <div v-else class="text-center my-5">
       <div class="spinner-border text-primary" role="status"></div>
       <p class="mt-3">Loading candidate...</p>

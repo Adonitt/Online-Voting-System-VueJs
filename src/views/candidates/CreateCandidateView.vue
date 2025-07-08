@@ -172,7 +172,7 @@ onMounted(async () => {
               :options="enumStore.nationalitiesForDropdown"
           />
 
-          <button type="submit" class="btn btn-primary profile-button m-3">
+          <button type="submit" class="btn btn-primary profile-button mt-3">
             <i class="fas fa-save me-2"></i>
             Create Candidate
           </button>

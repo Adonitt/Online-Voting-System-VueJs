@@ -206,7 +206,7 @@ const getFullImageUrl = (path) => {
                 <p class="invalid-feedback">Description is required</p>
               </div>
 
-              <button type="submit" class="btn btn-primary profile-button m-3">
+              <button type="submit" class="btn btn-primary profile-button col-md-12 mt-3">
                 <i class="fas fa-save" style="margin: 5px"></i>
                 Update Party
               </button>
