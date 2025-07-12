@@ -9,13 +9,15 @@
         Only citizens of Kosovo can be registered. This table is based on a mock dataset.
       </p>
 
-      <p class="mb-6 text-gray-600 leading-relaxed text-sm sm:text-base">Admin login is:<br>
-        <b>admin@rks.com<br>
-          Password1.</b><br>
-        Feel free to register, and create users...<br>
-        <b> While registering, add datas form mock table ⚠️Case-Sensitive⚠️, but enter your Email Address, so you can
-          receive the updates per mail.
-        </b></p>
+      <p class="mb-6 text-gray-600 leading-relaxed text-sm sm:text-base">
+        <strong>Admin Login:</strong><br>
+        <b>admin@rks.com</b><br>
+        <b>Password1.</b><br><br>
+        Feel free to register and create users.<br><br>
+        <b>While registering, use data from the mock table ⚠️ Case-Sensitive ⚠️. Be sure to enter your real email address so you can receive updates via email.</b><br><br>
+        Please note: The login request may take up to 1 minute to process — this is beyond our control.
+      </p>
+
 
       <router-link :to="{name:'login'}" class="btn btn-primary">Back</router-link>
       <!-- Title -->
